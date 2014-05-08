@@ -1,0 +1,29 @@
+2D side scroller
+
+Core gameplay: choices made by the player
+
+The game world consists of events that the player may or may not take part in. The game world is timed, and each event happens at a given time each play-though. Thus the player's experience should be different each time, given he not make the same choices.
+
+Areas in game:
+-Town
+-Forest
+-Bad guy's lair
+(more if possible)
+
+Example events in the game (game time (min:sec) beginning-end):
+-summoned by king (0:05- 0:08)
+-meet traveller in forest ( 0:06 - 0:09)
+-town is attacked&ravaged by dragon (0:12 - 0:25)
+-confront bandits in forest ( 0:16-0:20)
+-engage dragon in its lair (whenever)
+(lots more; the more the better. Mostly coding after initial assets (player, locations, enemies, etc.) are done, so it's not so hard on Esa)
+
+The idea is that the player will not be able to make all events during one playthrough. There should always be enough information for the player to know what he COULD be doing; it's up to the player to actually go and do it. 
+
+Example 1 of a possible play-through:
+
+The player wakes up to be summoned by the king. The player answers the summon and receives a mission to kill a dragon. The player then decides not to head out immediately (for whatever reason, shopping?) and the dragon attacks the town, the player then chooses to flee and is confronted by bandits in the forest. Kills them, and gets enough xp/loot/whatever to kill the dragon in its lair
+
+Example 2 of a possible play-through:
+
+The player is summoned by the king, decides not to anser and goes to the forest. Meets a traveller in the forest who tells of a dragon plaguing the countryside. The player decides not to care and goes to town, which is being ravaged by the dragon. He stays and fights the dragon off. He then decides to take the dragon on in its lair, and kills it there.
