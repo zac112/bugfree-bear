@@ -17,14 +17,13 @@ public class PlayerMover : MonoBehaviour, IMovable {
 		set {speed = value;}
 	}
 
-	void Update(){
+	void FixedUpdate(){
 		Move ();
 	}
 
 
 	public void Move ()
 	{
-		transform.rotation = Quaternion.identity;
 		if(Input.GetButtonDown("Jump"))
 			rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x,jumpSpeed);
 		rigidbody2D.velocity = new Vector2(Input.GetAxis("Horizontal")*speed,rigidbody2D.velocity.y);
