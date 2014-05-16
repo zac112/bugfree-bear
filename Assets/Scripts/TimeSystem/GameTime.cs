@@ -1,58 +1,72 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class GameTime : MonoBehaviour{
+//Damn Unity for not serializing structs properly
+[System.Serializable]
+public class GameTime {
 
-	/// <summary>
-	/// The time scale. How fast time moves.
-	/// </summary>
-	public static float TimeScale{
-		get{ return Time.timeScale; }
-		set{ Time.timeScale = value; }
+	[SerializeField]
+	private float time;
+
+	public float SinceBeginning{
+		get{ return time; }
+		set{ time = value; }
 	}
 
-	/// <summary>
-	/// The passed game time in minutes.
-	/// </summary>
-	private static double passedTime = 0;
-	public static float PassedGameTime{
-		get{ return (float)passedTime; }
-		private set { passedTime = value; }
+	public int Day{
+		get{ return (int)(time/1440f); }
 	}
 
-	/// <summary>
-	/// Gets the current in-game time of day in 24h format. E.g. 1.5 is 1:30 am, 13.5 is 1:30 pm
-	/// </summary>
-	/// <value>The current time.</value>
-	public static float CurrentTime{
+	public int Hours{
+		get{ return (int)((time/60f)%24); }
+	}
+
+	public int Minutes{
+		get{ return (int)( (time%60) ); }
+	}
+
+	public override string ToString (){
+		return "Day "+Day+ " "+Hours+":"+Minutes;
+	}
+
+	public GameTime(float time){
 		//1440 = 24*60
-		get{ return (PassedGameTime%1440*24)/1440f; }
+		this.time = time;
 	}
 
-	public static event System.Action OnGameTimeUpdate;
-
-	void Awake(){
-		OnGameTimeUpdate += () => {};
-		StartCoroutine("GameLoop");
+	public static bool operator < (GameTime thisTime, GameTime other){
+		return thisTime.time < other.time;
 	}
 
-	void Update(){
-		PassedTime += (Time.deltaTime*TimeScale);
+	public static bool operator > (GameTime thisTime, GameTime other){
+		return thisTime.time > other.time;
 	}
 
-	private IEnumerator GameLoop(){
+	public static bool operator == (GameTime thisTime, GameTime other){
+		return thisTime.time == other.time;
+	}
 
-		float timesCallable = 0f;
+	public static bool operator != (GameTime thisTime, GameTime other){
+		return thisTime.time != other.time;
+	}
 
-		while(true){
-			timesCallable += TimeScale;
-
-			while(timesCallable >= 1f){
-				OnGameTimeUpdate();
-				timesCallable -= 1f;
-			}
-			Debug.Log("Game Time: "+PassedGameTime+" Real time: "+Time.time);
-			yield return null;
+	public override bool Equals (object obj)
+	{
+		if (obj == null)
+			return false;
+		if (ReferenceEquals (this, obj))
+			return true;
+		if (obj.GetType () != typeof(GameTime))
+			return false;
+		GameTime other = (GameTime)obj;
+		return time == other.time;
+	}
+	
+	public override int GetHashCode ()
+	{
+		unchecked {
+			return time.GetHashCode ();
 		}
 	}
+	
+
 }
