@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
+/// <summary>
+/// Game time manager. Read-Only global access to the in-game time. Allows to modify the rate at which time passes in-game.
+/// </summary>
 public class GameTimeManager : MonoBehaviour{
 
 	/// <summary>
@@ -14,9 +17,15 @@ public class GameTimeManager : MonoBehaviour{
 	/// <summary>
 	/// The passed game time in minutes.
 	/// </summary>
-	private static double passedTime = 0;
+	private static double passedTime = 0.0;
 	public static float PassedTime{
-		get{ return (float)passedTime; }
+		get{
+#if UNITY_EDITOR
+			if(passedTime == 0.0 && Time.timeSinceLevelLoad != 0f )
+				Debug.LogWarning("No time has passed in-game. There might not be a GameTimeManager in the scene.");
+#endif
+			return (float)passedTime; 
+		}
 		private set { passedTime = value; }
 	}
 
@@ -30,7 +39,6 @@ public class GameTimeManager : MonoBehaviour{
 
 	private static List<NotificationReceiver> notifications = new List<NotificationReceiver>();
 	public static void ReceiveNotificationAt(GameTime time, System.Action action){
-		Debug.Log("received "+time);
 		notifications.Add(new NotificationReceiver(time,action));
 		OrganizeList();
 	}
@@ -55,20 +63,35 @@ public class GameTimeManager : MonoBehaviour{
 		notifications[index2] = temp;
 	}
 
-	void Update(){
+	//Only the first one will get the real update method, rest will get an empty anonymous one.
+	//This way, even if there are more than one time manager, game time moves at the correct rate.
+	private static System.Action StaticUpdate = UpdateMethod;
+	private System.Action AppropriateUpdate;
+
+	static void UpdateMethod(){
 		PassedTime += (Time.deltaTime*TimeScale);
 
 		SendNotifications();
 	}
 
-	void SendNotifications ()
+	static void SendNotifications ()
 	{
 		int lastIndex = notifications.Count-1;
 		while(notifications.Count > 0 && CurrentTime > notifications[lastIndex].time){
+			//Moving backwards to minimize amount of memory operations on the array
 			notifications[lastIndex].action();
 			notifications.RemoveAt(lastIndex);
 			lastIndex--;
 		}
+	}
+
+	void Start(){
+		AppropriateUpdate = StaticUpdate;
+		StaticUpdate = () => {};
+	}
+
+	void Update(){
+		AppropriateUpdate();
 	}
 
 	private class NotificationReceiver{

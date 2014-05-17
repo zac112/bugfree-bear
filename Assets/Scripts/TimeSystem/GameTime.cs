@@ -1,27 +1,26 @@
 ﻿using UnityEngine;
 
-//Damn Unity for not serializing structs properly
+//Damn Unity for not serializing structs properly; this class should be a struct
 [System.Serializable]
 public class GameTime {
 
 	[SerializeField]
 	private float time;
-
 	public float SinceBeginning{
 		get{ return time; }
 		set{ time = value; }
 	}
 
 	public int Day{
-		get{ return (int)(time/1440f); }
+		get{ return (int)(SinceBeginning/1440f); }
 	}
 
 	public int Hours{
-		get{ return (int)((time/60f)%24); }
+		get{ return (int)((SinceBeginning/60f)%24); }
 	}
 
 	public int Minutes{
-		get{ return (int)( (time%60) ); }
+		get{ return (int)( (SinceBeginning%60) ); }
 	}
 
 	public override string ToString (){
@@ -29,24 +28,23 @@ public class GameTime {
 	}
 
 	public GameTime(float time){
-		//1440 = 24*60
-		this.time = time;
+		this.SinceBeginning = time;
 	}
 
 	public static bool operator < (GameTime thisTime, GameTime other){
-		return thisTime.time < other.time;
+		return thisTime.SinceBeginning < other.SinceBeginning;
 	}
 
 	public static bool operator > (GameTime thisTime, GameTime other){
-		return thisTime.time > other.time;
+		return thisTime.SinceBeginning > other.SinceBeginning;
 	}
 
 	public static bool operator == (GameTime thisTime, GameTime other){
-		return thisTime.time == other.time;
+		return thisTime.SinceBeginning == other.SinceBeginning;
 	}
 
 	public static bool operator != (GameTime thisTime, GameTime other){
-		return thisTime.time != other.time;
+		return thisTime.SinceBeginning != other.SinceBeginning;
 	}
 
 	public override bool Equals (object obj)
@@ -58,13 +56,13 @@ public class GameTime {
 		if (obj.GetType () != typeof(GameTime))
 			return false;
 		GameTime other = (GameTime)obj;
-		return time == other.time;
+		return SinceBeginning == other.SinceBeginning;
 	}
 	
 	public override int GetHashCode ()
 	{
 		unchecked {
-			return time.GetHashCode ();
+			return SinceBeginning.GetHashCode ();
 		}
 	}
 	
