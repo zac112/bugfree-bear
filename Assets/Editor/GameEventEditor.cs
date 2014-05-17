@@ -4,25 +4,37 @@ using UnityEditor;
 [CustomEditor(typeof(GameEvent))]
 public class GameEventEditor: Editor{
 
-	int day = 0;
-	int hour = 0;
-	int minute = 0;
-	GameEvent _target;
 	GameTime eventStart;
+	GameTime eventStop;
+	GUIContent dayContent = new GUIContent("Day:","The day this event should start. Day 11600 is the practical limit due to floating point limitations.");
 
 	void OnEnable(){
-		_target = (GameEvent)target;
+		GameEvent _target = (GameEvent)target;
 		eventStart = _target.startTime;
+		eventStop = _target.endTime;
 	}
 
 	public override void OnInspectorGUI(){
-		EditorGUI.BeginChangeCheck();
-		{
-			day = Mathf.Max(0,EditorGUILayout.IntField("Day:",eventStart.Day));
-			hour = EditorGUILayout.IntSlider("Hour:",eventStart.Hours,0,23);
-			minute = EditorGUILayout.IntSlider("Minute:",eventStart.Minutes,0,59);
-		}if(EditorGUI.EndChangeCheck()){
-			eventStart.SinceBeginning = day*1440+hour*60f+minute;
-		}
+		GUILayout.Label("Event start time");
+		Sliders(eventStart);
+
+		if(eventStop<eventStart)
+			eventStop.SinceBeginning = eventStart.SinceBeginning;
+
+		GUILayout.Label("Event stop time");
+		Sliders(eventStop);
+
+		if(eventStop<eventStart)
+			eventStart.SinceBeginning = eventStop.SinceBeginning;
+
+	}
+
+	private void Sliders(GameTime time){
+		int day = Mathf.Max(0,EditorGUILayout.IntField(dayContent,time.Day));
+		int hour = EditorGUILayout.IntSlider("Hour:",time.Hours,0,23);
+		int minute = EditorGUILayout.IntSlider("Minute:",time.Minutes,0,59);
+		
+		float gameTime = day*1440+hour*60f+minute;
+		time.SinceBeginning = gameTime;
 	}
 }

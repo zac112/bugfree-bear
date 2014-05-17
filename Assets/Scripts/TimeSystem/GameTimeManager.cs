@@ -57,11 +57,17 @@ public class GameTimeManager : MonoBehaviour{
 
 	void Update(){
 		PassedTime += (Time.deltaTime*TimeScale);
-		Debug.Log(CurrentTime);
+
+		SendNotifications();
+	}
+
+	void SendNotifications ()
+	{
 		int lastIndex = notifications.Count-1;
 		while(notifications.Count > 0 && CurrentTime > notifications[lastIndex].time){
 			notifications[lastIndex].action();
 			notifications.RemoveAt(lastIndex);
+			lastIndex--;
 		}
 	}
 

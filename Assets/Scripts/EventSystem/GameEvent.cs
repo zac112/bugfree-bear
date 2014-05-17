@@ -9,9 +9,14 @@ public class GameEvent : MonoBehaviour {
 
 	void Start(){
 		GameTimeManager.ReceiveNotificationAt(startTime, BeginEvent);
+		GameTimeManager.ReceiveNotificationAt(endTime, EndEvent);
 	}
 
-	private void BeginEvent(){
-		Debug.Log("works");
+	void BeginEvent(){
+		Debug.Log(this +" Event Begun");
+	}
+
+	void EndEvent(){
+		Debug.Log(this +" Event over");
 	}
 }
