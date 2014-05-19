@@ -17,24 +17,24 @@ public class GameTimeManager : MonoBehaviour{
 	/// <summary>
 	/// The passed game time in minutes.
 	/// </summary>
-	private static double passedTime = 0.0;
 	public static float PassedTime{
 		get{
 #if UNITY_EDITOR
-			if(passedTime == 0.0 && Time.timeSinceLevelLoad != 0f )
+			if(gameTime.SinceBeginning == 0.0 && Time.timeSinceLevelLoad != 0f )
 				Debug.LogWarning("No time has passed in-game. There might not be a GameTimeManager in the scene.");
 #endif
-			return (float)passedTime; 
+			return (float)gameTime.SinceBeginning; 
 		}
-		private set { passedTime = value; }
+		private set { gameTime.SinceBeginning = value; }
 	}
 
+	private static MutableGameTime gameTime = new MutableGameTime(Time.timeSinceLevelLoad);
 	/// <summary>
 	/// Gets the current in-game time of day in 24h format. E.g. 1.5 is 1:30 am, 13.5 is 1:30 pm
 	/// </summary>
 	/// <value>The current time.</value>
 	public static GameTime CurrentTime{
-		get{ return new GameTime(PassedTime); }
+		get{ return (GameTime)gameTime; }
 	}
 
 	private static List<NotificationReceiver> notifications = new List<NotificationReceiver>();
@@ -106,6 +106,19 @@ public class GameTimeManager : MonoBehaviour{
 
 		public bool BeginsLaterThan(NotificationReceiver other){
 			return time > other.time;
+		}
+	}
+
+	[System.Serializable]
+	private class MutableGameTime : GameTime{
+
+		public MutableGameTime(float gameTime) : base(gameTime){
+
+		}
+
+		public new float SinceBeginning{
+			get{ return (float)time; }
+			set{ time = value; }
 		}
 	}
 }

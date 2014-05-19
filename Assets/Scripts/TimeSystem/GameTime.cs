@@ -1,14 +1,15 @@
 ﻿using UnityEngine;
 
-//Damn Unity for not serializing structs properly; this class should be a struct
+/// <summary>
+/// Game time. An Immutable class representing game time.
+/// </summary>
 [System.Serializable]
 public class GameTime {
 
 	[SerializeField]
-	private float time;
+	protected double time;
 	public float SinceBeginning{
-		get{ return time; }
-		set{ time = value; }
+		get{ return (float)time; }
 	}
 
 	public int Day{
@@ -28,7 +29,7 @@ public class GameTime {
 	}
 
 	public GameTime(float time){
-		this.SinceBeginning = time;
+		this.time = time;
 	}
 
 	public static bool operator < (GameTime thisTime, GameTime other){
@@ -40,10 +41,12 @@ public class GameTime {
 	}
 
 	public static bool operator == (GameTime thisTime, GameTime other){
+		if(ReferenceEquals(thisTime,null) || ReferenceEquals(other,null)) return false;
 		return thisTime.SinceBeginning == other.SinceBeginning;
 	}
 
 	public static bool operator != (GameTime thisTime, GameTime other){
+		if(ReferenceEquals(thisTime,null) || ReferenceEquals(other,null)) return true;
 		return thisTime.SinceBeginning != other.SinceBeginning;
 	}
 
