@@ -8,18 +8,29 @@ public class GameEventEditor: Editor{
 	MutableGameTime eventStart;
 	MutableGameTime eventStop;
 	GUIContent dayContent = new GUIContent("Day:","Day 11600 is the practical limit due to floating point limitations.");
+	private bool ready = false;
 
 	void OnEnable(){
 		_target = (GameEvent)target;
-		if(_target.endTime == null || _target.startTime == null){
+
+		EditorApplication.delayCall += EnsureTargetNotNull;
+
+	}
+	private void EnsureTargetNotNull(){
+		if(_target.endTime.Equals(null) || _target.startTime.Equals(null)){
 			_target.startTime = new MutableGameTime(new GameTime(0f));
 			_target.endTime = new MutableGameTime(new GameTime(0f));
 		}
+
 		eventStart = new MutableGameTime(_target.startTime);
 		eventStop = new MutableGameTime(_target.endTime);
+		ready = true;
 	}
 
+
 	public override void OnInspectorGUI(){
+		if(!ready) return;
+
 		GUILayout.Label("Event start time");
 		Sliders(eventStart);
 

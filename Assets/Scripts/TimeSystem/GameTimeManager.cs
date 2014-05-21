@@ -20,7 +20,7 @@ public class GameTimeManager : MonoBehaviour{
 	public static float PassedTime{
 		get{
 #if UNITY_EDITOR
-			if(gameTime.SinceBeginning == 0.0 && Time.timeSinceLevelLoad != 0f )
+			if( (gameTime == null || gameTime.SinceBeginning == 0.0) && Time.timeSinceLevelLoad != 0f )
 				Debug.LogWarning("No time has passed in-game. There might not be a GameTimeManager in the scene.");
 #endif
 			return (float)gameTime.SinceBeginning; 
@@ -28,7 +28,7 @@ public class GameTimeManager : MonoBehaviour{
 		private set { gameTime.SinceBeginning = value; }
 	}
 
-	private static MutableGameTime gameTime = new MutableGameTime(Time.timeSinceLevelLoad);
+	private static MutableGameTime gameTime = new MutableGameTime(0f);
 	/// <summary>
 	/// Gets the current in-game time of day in 24h format. E.g. 1.5 is 1:30 am, 13.5 is 1:30 pm
 	/// </summary>
@@ -39,28 +39,7 @@ public class GameTimeManager : MonoBehaviour{
 
 	private static List<NotificationReceiver> notifications = new List<NotificationReceiver>();
 	public static void ReceiveNotificationAt(GameTime time, System.Action action){
-		notifications.Add(new NotificationReceiver(time,action));
-		OrganizeList();
-	}
-
-	/// <summary>
-	/// Organizes the list to descending order (latest at index 0).
-	/// Assumes the list is otherwise in order and the element to be moved is at the last index.
-	/// </summary>
-	private static void OrganizeList(){
-		for(int i=notifications.Count-1; i>0; i--){
-			if(notifications[i].BeginsLaterThan(notifications[i-1]))
-				Swap(i,i-1);
-			else
-				break;
-		}
-	}
-
-	private static void Swap (int index1, int index2)
-	{
-		NotificationReceiver temp = notifications[index1];
-		notifications[index1] = notifications[index2];
-		notifications[index2] = temp;
+		notifications.MaintainDescending(new NotificationReceiver(time,action));
 	}
 
 	//Only the first one will get the real update method, rest will get an empty anonymous one.
@@ -86,6 +65,8 @@ public class GameTimeManager : MonoBehaviour{
 	}
 
 	void Start(){
+		if(gameTime == null)
+			gameTime = new MutableGameTime(Time.timeSinceLevelLoad);
 		AppropriateUpdate = StaticUpdate;
 		StaticUpdate = () => {};
 	}
@@ -94,7 +75,7 @@ public class GameTimeManager : MonoBehaviour{
 		AppropriateUpdate();
 	}
 
-	private class NotificationReceiver{
+	private class NotificationReceiver : System.IComparable<NotificationReceiver>{
 
 		public GameTime time;
 		public System.Action action;
@@ -106,6 +87,13 @@ public class GameTimeManager : MonoBehaviour{
 
 		public bool BeginsLaterThan(NotificationReceiver other){
 			return time > other.time;
+		}
+
+		public int CompareTo (NotificationReceiver other)
+		{
+			if(other.time == this.time)
+				return 0;
+			return other.time<this.time ? 1 : -1;
 		}
 	}
 
