@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(GameEvent))]
+[CustomEditor(typeof(GameEvent),true)]
 public class GameEventEditor: Editor{
 
 	GameEvent _target;

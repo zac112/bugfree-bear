@@ -1,22 +1,18 @@
 ﻿using UnityEngine;
 
-public class GameEvent : MonoBehaviour {
+public abstract class GameEvent : MonoBehaviour {
 
 	[SerializeField]
 	public GameTime startTime;
 	[SerializeField]
 	public GameTime endTime;
 
-	void Start(){
+	protected void Start(){
 		GameTimeManager.ReceiveNotificationAt(startTime, BeginEvent);
 		GameTimeManager.ReceiveNotificationAt(endTime, EndEvent);
 	}
 
-	void BeginEvent(){
-		Debug.Log(this +" Event Begun");
-	}
+	protected abstract void BeginEvent();
 
-	void EndEvent(){
-		Debug.Log(this +" Event over");
-	}
+	protected virtual void EndEvent(){}
 }

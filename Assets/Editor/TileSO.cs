@@ -3,13 +3,13 @@
 [System.Serializable]
 public class TileSO : ScriptableObject {
 
-	[SerializeField]
+	//[SerializeField]
 	private GameObject walkableParent; //for serialization
 	public GameObject WalkableParent{
 		get{ return walkableParent; }
 		set{ walkableParent = value; }
 	}
-	[SerializeField]
+	//[SerializeField]
 	private GameObject unwalkableParent; //for serialization
 	public GameObject UnwalkableParent{
 		get{ return unwalkableParent; }

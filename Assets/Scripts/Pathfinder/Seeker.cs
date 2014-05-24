@@ -3,14 +3,15 @@
 public class Seeker : MonoBehaviour {
 
 	public GameObject endPos;
+	public Mover mover;
+	public Vector2[] path;
 
-	void Update(){
-		Debug.Log(transform.position);
-		Vector2[] path = Nav.map.FindPath(transform, endPos.transform);
-
-		Debug.Log("The path found was:");
-		foreach(Vector2 v in path){
-			Debug.Log(v);
-		}
+	void FixedUpdate(){
+		path = Nav.map.FindPath(transform, endPos.transform);
+		int index = Mathf.Min(path.Length-1,1);
+		//Vector2 v2 = (path[index]-(Vector2)transform.position).normalized;
+		Vector2 v2 = (path[index]);
+		mover.Move(v2);
 	}
+
 }

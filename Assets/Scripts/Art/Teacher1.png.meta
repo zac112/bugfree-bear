@@ -1,0 +1,1759 @@
+fileFormatVersion: 2
+guid: f76f7bc33be077e47be86f16435c4228
+TextureImporter:
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 1024
+  textureSettings:
+    filterMode: -1
+    aniso: 1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spritePixelsToUnits: 64
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings:
+  - buildTarget: iPhone
+    maxTextureSize: 1024
+    textureFormat: -2
+    compressionQuality: 50
+  spriteSheet:
+    sprites:
+    - name: Teacher1_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 626
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 626
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_2
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 626
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_3
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 626
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_4
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 626
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_5
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 626
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_6
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 626
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_7
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 626
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_8
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 626
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_9
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 626
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_10
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 626
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_11
+      rect:
+        serializedVersion: 2
+        x: 704
+        y: 626
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_12
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 626
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_13
+      rect:
+        serializedVersion: 2
+        x: 832
+        y: 626
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_14
+      rect:
+        serializedVersion: 2
+        x: 896
+        y: 626
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_15
+      rect:
+        serializedVersion: 2
+        x: 960
+        y: 626
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_16
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 626
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_17
+      rect:
+        serializedVersion: 2
+        x: 1088
+        y: 626
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_18
+      rect:
+        serializedVersion: 2
+        x: 1152
+        y: 626
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_19
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 562
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_20
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 562
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_21
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 562
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_22
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 562
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_23
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 562
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_24
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 562
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_25
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 562
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_26
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 562
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_27
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 562
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_28
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 562
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_29
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 562
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_30
+      rect:
+        serializedVersion: 2
+        x: 704
+        y: 562
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_31
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 562
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_32
+      rect:
+        serializedVersion: 2
+        x: 832
+        y: 562
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_33
+      rect:
+        serializedVersion: 2
+        x: 896
+        y: 562
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_34
+      rect:
+        serializedVersion: 2
+        x: 960
+        y: 562
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_35
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 562
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_36
+      rect:
+        serializedVersion: 2
+        x: 1088
+        y: 562
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_37
+      rect:
+        serializedVersion: 2
+        x: 1152
+        y: 562
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_38
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 498
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_39
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 498
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_40
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 498
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_41
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 498
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_42
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 498
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_43
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 498
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_44
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 498
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_45
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 498
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_46
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 498
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_47
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 498
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_48
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 498
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_49
+      rect:
+        serializedVersion: 2
+        x: 704
+        y: 498
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_50
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 498
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_51
+      rect:
+        serializedVersion: 2
+        x: 832
+        y: 498
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_52
+      rect:
+        serializedVersion: 2
+        x: 896
+        y: 498
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_53
+      rect:
+        serializedVersion: 2
+        x: 960
+        y: 498
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_54
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 498
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_55
+      rect:
+        serializedVersion: 2
+        x: 1088
+        y: 498
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_56
+      rect:
+        serializedVersion: 2
+        x: 1152
+        y: 498
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_57
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 434
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_58
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 434
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_59
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 434
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_60
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 434
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_61
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 434
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_62
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 434
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_63
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 434
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_64
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 434
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_65
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 434
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_66
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 434
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_67
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 434
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_68
+      rect:
+        serializedVersion: 2
+        x: 704
+        y: 434
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_69
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 434
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_70
+      rect:
+        serializedVersion: 2
+        x: 832
+        y: 434
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_71
+      rect:
+        serializedVersion: 2
+        x: 896
+        y: 434
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_72
+      rect:
+        serializedVersion: 2
+        x: 960
+        y: 434
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_73
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 434
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_74
+      rect:
+        serializedVersion: 2
+        x: 1088
+        y: 434
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_75
+      rect:
+        serializedVersion: 2
+        x: 1152
+        y: 434
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_76
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 370
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_77
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 370
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_78
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 370
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_79
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 370
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_80
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 370
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_81
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 370
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_82
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 370
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_83
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 370
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_84
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 370
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_85
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 370
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_86
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 370
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_87
+      rect:
+        serializedVersion: 2
+        x: 704
+        y: 370
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_88
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 370
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_89
+      rect:
+        serializedVersion: 2
+        x: 832
+        y: 370
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_90
+      rect:
+        serializedVersion: 2
+        x: 896
+        y: 370
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_91
+      rect:
+        serializedVersion: 2
+        x: 960
+        y: 370
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_92
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 370
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_93
+      rect:
+        serializedVersion: 2
+        x: 1088
+        y: 370
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_94
+      rect:
+        serializedVersion: 2
+        x: 1152
+        y: 370
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_95
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 306
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_96
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 306
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_97
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 306
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_98
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 306
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_99
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 306
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_100
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 306
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_101
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 306
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_102
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 306
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_103
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 306
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_104
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 306
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_105
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 306
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_106
+      rect:
+        serializedVersion: 2
+        x: 704
+        y: 306
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_107
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 306
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_108
+      rect:
+        serializedVersion: 2
+        x: 832
+        y: 306
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_109
+      rect:
+        serializedVersion: 2
+        x: 896
+        y: 306
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_110
+      rect:
+        serializedVersion: 2
+        x: 960
+        y: 306
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_111
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 306
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_112
+      rect:
+        serializedVersion: 2
+        x: 1088
+        y: 306
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_113
+      rect:
+        serializedVersion: 2
+        x: 1152
+        y: 306
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_114
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 242
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_115
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 242
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_116
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 242
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_117
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 242
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_118
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 242
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_119
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 242
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_120
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 242
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_121
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 242
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_122
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 242
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_123
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 242
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_124
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 242
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_125
+      rect:
+        serializedVersion: 2
+        x: 704
+        y: 242
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_126
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 242
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_127
+      rect:
+        serializedVersion: 2
+        x: 832
+        y: 242
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_128
+      rect:
+        serializedVersion: 2
+        x: 896
+        y: 242
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_129
+      rect:
+        serializedVersion: 2
+        x: 960
+        y: 242
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_130
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 242
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_131
+      rect:
+        serializedVersion: 2
+        x: 1088
+        y: 242
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_132
+      rect:
+        serializedVersion: 2
+        x: 1152
+        y: 242
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_133
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 178
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_134
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 178
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_135
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 178
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_136
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 178
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_137
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 178
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_138
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 178
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_139
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 178
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_140
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 178
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_141
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 178
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_142
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 178
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_143
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 178
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_144
+      rect:
+        serializedVersion: 2
+        x: 704
+        y: 178
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_145
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 178
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_146
+      rect:
+        serializedVersion: 2
+        x: 832
+        y: 178
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_147
+      rect:
+        serializedVersion: 2
+        x: 896
+        y: 178
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_148
+      rect:
+        serializedVersion: 2
+        x: 960
+        y: 178
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_149
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 178
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_150
+      rect:
+        serializedVersion: 2
+        x: 1088
+        y: 178
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_151
+      rect:
+        serializedVersion: 2
+        x: 1152
+        y: 178
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_152
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 114
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_153
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 114
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_154
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 114
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_155
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 114
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_156
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 114
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_157
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 114
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_158
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 114
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_159
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 114
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_160
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 114
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_161
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 114
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_162
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 114
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_163
+      rect:
+        serializedVersion: 2
+        x: 704
+        y: 114
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_164
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 114
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_165
+      rect:
+        serializedVersion: 2
+        x: 832
+        y: 114
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_166
+      rect:
+        serializedVersion: 2
+        x: 896
+        y: 114
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_167
+      rect:
+        serializedVersion: 2
+        x: 960
+        y: 114
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_168
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 114
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_169
+      rect:
+        serializedVersion: 2
+        x: 1088
+        y: 114
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_170
+      rect:
+        serializedVersion: 2
+        x: 1152
+        y: 114
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_171
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 50
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_172
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 50
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_173
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 50
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_174
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 50
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_175
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 50
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_176
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 50
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_177
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 50
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_178
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 50
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_179
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 50
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_180
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 50
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_181
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 50
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_182
+      rect:
+        serializedVersion: 2
+        x: 704
+        y: 50
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_183
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 50
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_184
+      rect:
+        serializedVersion: 2
+        x: 832
+        y: 50
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_185
+      rect:
+        serializedVersion: 2
+        x: 896
+        y: 50
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_186
+      rect:
+        serializedVersion: 2
+        x: 960
+        y: 50
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_187
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 50
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_188
+      rect:
+        serializedVersion: 2
+        x: 1088
+        y: 50
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+    - name: Teacher1_189
+      rect:
+        serializedVersion: 2
+        x: 1152
+        y: 50
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+  spritePackingTag: 
+  userData: 

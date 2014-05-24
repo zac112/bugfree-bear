@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerMover : MonoBehaviour, IMovable {
+public class PlayerMover : Mover {
 
 	[SerializeField]
 	private float jumpSpeed = 7f;
@@ -18,16 +18,7 @@ public class PlayerMover : MonoBehaviour, IMovable {
 	}
 
 	void FixedUpdate(){
-		Move ();
-	}
-
-
-	public void Move ()
-	{
-		if(Input.GetButtonDown("Jump"))
-			rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x,jumpSpeed);
-		rigidbody2D.velocity = new Vector2(Input.GetAxis("Horizontal")*speed,rigidbody2D.velocity.y);
-
+		Move (new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
 	}
 
 }
