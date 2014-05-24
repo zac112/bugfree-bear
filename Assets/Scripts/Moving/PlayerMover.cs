@@ -3,22 +3,25 @@ using System.Collections;
 
 public class PlayerMover : Mover {
 
-	[SerializeField]
-	private float jumpSpeed = 7f;
-	public float JumpSpeed {
-		get {return jumpSpeed;}
-		set {jumpSpeed = value;}
+	void Start(){
+		InputHandler.OnMoveDown += DoMove;
+		InputHandler.OnMoveUp += DoMove;
+		InputHandler.OnMoveRight += DoMove;
+		InputHandler.OnMoveLeft += DoMove;
+	}
+	
+	public void DoMove(){
+		Move(InputHandler.GetInputVector());
 	}
 
-	[SerializeField]
-	private float speed = 2f;
-	public float Speed {
-		get {return speed;}
-		set {speed = value;}
+	public override void Move (Vector2 direction){
+		transform.position += ((Vector3)direction).normalized*Time.deltaTime*Speed;
 	}
 
-	void FixedUpdate(){
-		Move (new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
+	void OnDisable(){
+		InputHandler.OnMoveDown -= DoMove;
+		InputHandler.OnMoveUp -= DoMove;
+		InputHandler.OnMoveRight -= DoMove;
+		InputHandler.OnMoveLeft -= DoMove;
 	}
-
 }

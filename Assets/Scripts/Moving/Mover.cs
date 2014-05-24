@@ -2,10 +2,14 @@
 
 public abstract class Mover : MonoBehaviour {
 
-	public float movingSpeed = 1f;
+	[SerializeField]
+	private float speed = 2f;
+	public float Speed {
+		get {return speed;}
+		set {speed = value;}
+	}
 
 	public virtual void Move (Vector2 direction){
-		//rigidbody2D.velocity = direction.normalized*movingSpeed;
-		transform.position = Vector2.MoveTowards(transform.position,direction,movingSpeed/100);
+		transform.position = Vector2.MoveTowards(transform.position,direction,Speed/100);
 	}
 }
