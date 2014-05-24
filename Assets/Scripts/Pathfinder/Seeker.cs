@@ -8,9 +8,12 @@ public class Seeker : MonoBehaviour {
 
 	void FixedUpdate(){
 		path = Nav.map.FindPath(transform, endPos.transform);
-		int index = Mathf.Min(path.Length-1,1);
-		//Vector2 v2 = (path[index]-(Vector2)transform.position).normalized;
-		Vector2 v2 = (path[index]);
+		Vector2 v2;
+		if(path.Length <= 1){
+			v2 = endPos.transform.position;
+		}else{
+			v2 = (path[0]);
+		}
 		mover.Move(v2);
 	}
 

@@ -109,12 +109,6 @@ public class NavMap {
 				unvisitedNeighbors[i] = unvisitedNeighbors[i].CalculateDistanceTo(end);
 				openSet.MaintainAscending(unvisitedNeighbors[i]);
 				if(end.Equals(unvisitedNeighbors[i])){
-					#if UNITY_EDITOR
-					foreach(Coordinate v in path){
-						Debug.Log(v);
-					}
-					Debug.Log("----------------------");
-					#endif					
 					//found path
 					path.Add(end);
 					return findShortestPath(path);
@@ -145,9 +139,9 @@ public class NavMap {
 		}
 
 		for(int i= path.Count-2; i>=0;i--){
-			result.Add(current.GetAsMapPosition(offset));
 			if(path[i].tentativeDistance>current.tentativeDistance){
 				current = path[i];
+				result.Add(current.GetAsMapPosition(offset));
 			}
 		}
 		result.Reverse();
