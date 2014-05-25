@@ -9,6 +9,11 @@ public class Seeker : MonoBehaviour {
 	void FixedUpdate(){
 		path = Nav.map.FindPath(transform, endPos.transform);
 		Vector2 v2;
+		if(path == null){
+			Debug.Log("path not found!");
+			return;
+		}
+
 		if(path.Length <= 1){
 			v2 = endPos.transform.position;
 		}else{

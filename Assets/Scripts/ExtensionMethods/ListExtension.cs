@@ -36,7 +36,7 @@ public static class ListExtension{
 	/// <summary>
 	/// Gets the last element in the list.
 	/// </summary>
-	/// <returns>The last element in the list. The deafult value for the type stored in the list is returned if the list is null or there are no elements in the list</returns>
+	/// <returns>The last element in the list. The deafult value for the type stored is returned if the list is null or there are no elements in the list</returns>
 	/// <param name="list">List.</param>
 	/// <typeparam name="T">The 1st type parameter.</typeparam>
 	public static T GetLast<T> (this List<T> list){
