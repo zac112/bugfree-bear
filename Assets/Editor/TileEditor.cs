@@ -65,14 +65,18 @@ public class TileEditor: Editor{
 	private void UnWalkableGUI(){
 		data.WalkableParent = EditorGUILayout.ObjectField("Parent for walkable tiles", data.WalkableParent, typeof(GameObject), true) as GameObject;
 		if(GUILayout.Button("Make walkable")){
-			_target.transform.parent = data.WalkableParent.transform;
+			foreach(GameObject go in Selection.gameObjects){
+				go.GetComponent<Tile>().transform.parent = data.WalkableParent.transform;
+			}
 		}
 	}
 
 	private void WalkableGUI(){
 		data.UnwalkableParent = EditorGUILayout.ObjectField("Parent for unwalkable tiles", data.UnwalkableParent, typeof(GameObject), true) as GameObject;
 		if(GUILayout.Button("Make unwalkable")){
-			_target.transform.parent = data.UnwalkableParent.transform;
+			foreach(GameObject go in Selection.gameObjects){
+				go.GetComponent<Tile>().transform.parent = data.UnwalkableParent.transform;
+			}
 		}
 	}
 
