@@ -20,7 +20,7 @@ public class GameTimeManager : MonoBehaviour{
 	public static float PassedTime{
 		get{
 #if UNITY_EDITOR
-			if( (gameTime == null || gameTime.SinceBeginning == 0.0) && Time.timeSinceLevelLoad != 0f )
+			if( (gameTime == null || gameTime.SinceBeginning == 0f) && Time.timeSinceLevelLoad != 0f )
 				Debug.LogWarning("No time has passed in-game. There might not be a GameTimeManager in the scene.");
 #endif
 			return (float)gameTime.SinceBeginning; 
