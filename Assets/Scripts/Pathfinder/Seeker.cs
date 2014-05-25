@@ -1,20 +1,21 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class Seeker : MonoBehaviour {
 
 	public GameObject endPos;
 	public Mover mover;
-	public Vector2[] path;
+	public List<Vector2> path = new List<Vector2>();
 
 	void FixedUpdate(){
-		path = Nav.map.FindPath(transform, endPos.transform);
+		Nav.map.FindPath(transform, endPos.transform,path);
 		Vector2 v2;
-		if(path == null){
-			Debug.Log("path not found!");
+		if(path.Count == 0){
+			//Debug.Log("path not found!");
 			return;
 		}
 
-		if(path.Length <= 1){
+		if(path.Count <= 1){
 			v2 = endPos.transform.position;
 		}else{
 			v2 = (path[0]);

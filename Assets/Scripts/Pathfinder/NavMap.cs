@@ -14,7 +14,7 @@ public class NavMap {
 	}
 
 	public void Register(Transform position, bool walkable){
-		Coordinate c = new Coordinate(position,offset);
+		Coordinate c = Coordinate.GetCoordinate(position,offset);
 		Register(c.x,c.y,walkable);
 	}
 
@@ -42,7 +42,7 @@ public class NavMap {
 
 	private List<Coordinate> GetAvailableNeighbors(Coordinate position, Dictionary<Coordinate,Coordinate> closedSet ){
 		List<Coordinate> result = GetWalkableNeighbors(position);
-		for(int i=0; i<result.Count; i++){
+		for(int i=result.Count-1; i>=0; i--){
 			if(closedSet.ContainsKey(result[i])){
 				result.RemoveAt(i);
 			}
@@ -55,20 +55,21 @@ public class NavMap {
 		for(int x=position.x-1; x<=position.x+1; x++){
 			for(int y=position.y-1; y<=position.y+1; y++){
 					if(IsValidCoordinate(x,y) && !position.IsDiagonalto(x, y) && IsWalkable(x,y) && !position.Equals(x,y)){
-						result.Add(new Coordinate(x,y));
+						result.Add(Coordinate.GetCoordinate(x,y));
 				}
 			}
 		}
 		return result;
 	}
 
-	public Vector2[] FindPath(Transform startPosition, Transform endPosition){
+	public void FindPath(Transform startPosition, Transform endPosition, List<Vector2> resultList){
 
-		Coordinate start = new Coordinate(startPosition, offset);
-		Coordinate end = new Coordinate(endPosition, offset);
+		Coordinate start = Coordinate.GetCoordinate(startPosition, offset);
+		Coordinate end = Coordinate.GetCoordinate(endPosition, offset);
 
 		if(start == end){ //already there..
-			return new Vector2[]{end.GetAsMapPosition(offset)};
+			resultList.Clear();
+			resultList.Add(end.GetAsMapPosition(offset));
 		}
 
 #if UNITY_EDITOR && DEBUGLOGS
@@ -108,8 +109,8 @@ public class NavMap {
 				if(end.Equals(unvisitedNeighbors[i])){
 					//found path
 					closedSet.Add(unvisitedNeighbors[i], current);
-					path.Add(end);
-					return findShortestPath(closedSet,start, end);
+					ResolveShortestPath(closedSet,start, end, resultList);
+					return;
 				}
 			}
 
@@ -122,7 +123,6 @@ public class NavMap {
 
 			closest = openSet.First;
 
-			//Debug.Log(closest+" is closest");
 			if(!closedSet.ContainsKey(closest)){
 				closedSet.Add(closest,closest.Previous);
 			}
@@ -130,29 +130,32 @@ public class NavMap {
 			path.Add(closest);
 		}
 
-		return null;
+		Coordinate.ClearPool();
 	}
 
-	private Vector2[] findShortestPath(Dictionary<Coordinate,Coordinate> closedSet, Coordinate start, Coordinate end){
-		List<Vector2> result = new List<Vector2>();
+	private void ResolveShortestPath(Dictionary<Coordinate,Coordinate> closedSet, Coordinate start, Coordinate end, List<Vector2> resultList){
+		resultList.Clear();
 		if(closedSet.Count<=1){
-			return new Vector2[]{end};
+			resultList.Add(end);
+			Coordinate.ClearPool();
+			return ;
 		}
 
 		Coordinate current = end;
 		while(current != start){
-			result.Add(current.GetAsMapPosition(offset));
+			resultList.Add(current.GetAsMapPosition(offset));
 			current = closedSet[current];
 		}
 
-		result.Reverse();
+		resultList.Reverse();
 #if UNITY_EDITOR && DEGUBLOG
 		foreach(Vector2 v in result){
 			Debug.Log(v);
 		}
 		Debug.Log("----------------------");
 #endif
-		return result.ToArray();
+		Coordinate.ClearPool();
+		return ;
 	}
 
 	private class Coordinate : System.IComparable<Coordinate>, System.Collections.Generic.IEqualityComparer<Coordinate>{
@@ -167,24 +170,49 @@ public class NavMap {
 			set{ previous = value; }
 		}
 
+		private static Stack<Coordinate> coordinatePool = new Stack<Coordinate>();
+		private static Stack<Coordinate> takenCoordinates = new Stack<Coordinate>();
+		private static int count = 0;
+
 		public static Coordinate Null = new Coordinate(-1,-1);
 
-		public Coordinate(int x, int y){
+		public static Coordinate GetCoordinate(int x, int y){
+			if(coordinatePool.Count == 0 ){
+				coordinatePool.Push(new Coordinate(x,y));
+			}
+			Coordinate result = coordinatePool.Pop();
+			result.x = x;
+			result.y = y;
+			takenCoordinates.Push(result);
+			return result; 
+		}
+
+		public static Coordinate GetCoordinate(Vector2 v){
+			return GetCoordinate((int)v[0], (int)v[1]);
+		}
+
+		public static Coordinate GetCoordinate(Transform t, int[] offset){
+			return GetCoordinate(
+				Mathf.RoundToInt(t.position.x)-offset[0],
+				Mathf.RoundToInt(t.position.y)-offset[1]);
+		}
+
+		public Vector2 GetAsMapPosition(int[] offset){
+			return new Vector2(x+offset[0],y+offset[1]);
+		}
+
+		private Coordinate(int x, int y){
+			count++;
+			Debug.Log("Created "+count);
 			this.x = x;
 			this.y = y;
 			tentativeDistance = -1;
 		}
 
-		public Coordinate(Vector2 v) : this(
-			(int)v[0], 
-			(int)v[1]){}
-
-		public Coordinate(Transform t, int[] offset) : this(
-			Mathf.RoundToInt(t.position.x)-offset[0], 
-			Mathf.RoundToInt(t.position.y)-offset[1]){}
-
-		public Vector2 GetAsMapPosition(int[] offset){
-			return new Vector2(x+offset[0],y+offset[1]);
+		public static void ClearPool(){
+			while(takenCoordinates.Count > 0){
+				coordinatePool.Push(takenCoordinates.Pop());
+			}
 		}
 
 		/// <summary>
@@ -260,9 +288,6 @@ public class NavMap {
 			return new Vector2(other.x,other.y);
 		}
 
-		public static implicit operator Coordinate (Vector2 other){
-			return new Coordinate(other);
-		}
 		public override string ToString (){
 			return string.Format ("[Coordinate: x={0}, y={1}, tentativeDistance={2}]", x, y, tentativeDistance);
 		}
