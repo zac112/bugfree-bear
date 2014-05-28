@@ -1,0 +1,399 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>RuntimeHelpers</name>
+    </assembly>
+    <members>
+        <member name="T:Vexe.RuntimeHelpers.Classes.GUI.ColorDuo">
+            <summary>
+            Represents a Color Duo - used by the editor to easily alternate between colors
+            </summary>
+        </member>
+        <member name="T:Vexe.RuntimeHelpers.DirectoryHelper">
+            <summary>
+            Credits: http://www.codeproject.com/Articles/38959/A-Faster-Directory-Enumerator?msg=4824093#xx4824093xx
+            A fast enumerator of files in a directory. Use this if you need to get attributes for 
+            all files in a directory.
+            </summary>
+            <remarks>
+            This enumerator is substantially faster than using <see cref="M:System.IO.Directory.GetFiles(System.String)"/>
+            and then creating a new FileInfo object for each path.  Use this version when you 
+            will need to look at the attibutes of each file returned (for example, you need
+            to check each file in a directory to see if it was modified after a specific date).
+            </remarks>
+        </member>
+        <member name="M:Vexe.RuntimeHelpers.DirectoryHelper.LazyGetDirectoryPath(System.String@,System.String)">
+            <summary>
+            Lazy-gets a directory path to a directory named 'dir'
+            If 'current' exists it is returned otherwise it gets assigned to GetDirectoryPath(dir)
+            and then returned
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeHelpers.DirectoryHelper.GetDirectoryPath(System.String)">
+            <summary>
+            Searches the project's hierarchy (starting from "Assets") searching for the specified directory name
+            Returns the directory's full path relative to the project if found
+            Throwns a DirectoryNotFoundException otherwise
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeHelpers.DirectoryHelper.EnumerateFiles(System.String)">
+            <summary>
+            Gets <see cref="T:Vexe.RuntimeHelpers.DirectoryHelper.FileData"/> for all the files in a directory.
+            </summary>
+            <param name="path">The path to search.</param>
+            <returns>An object that implements <see cref="T:System.Collections.Generic.IEnumerable`1"/> and 
+            allows you to enumerate the files in the given directory.</returns>
+            <exception cref="T:System.ArgumentNullException">
+            <paramref name="path"/> is a null reference (Nothing in VB)
+            </exception>
+        </member>
+        <member name="M:Vexe.RuntimeHelpers.DirectoryHelper.EnumerateFiles(System.String,System.String)">
+            <summary>
+            Gets <see cref="T:Vexe.RuntimeHelpers.DirectoryHelper.FileData"/> for all the files in a directory that match a 
+            specific filter.
+            </summary>
+            <param name="path">The path to search.</param>
+            <param name="searchPattern">The search string to match against files in the path.</param>
+            <returns>An object that implements <see cref="T:System.Collections.Generic.IEnumerable`1"/> and 
+            allows you to enumerate the files in the given directory.</returns>
+            <exception cref="T:System.ArgumentNullException">
+            <paramref name="path"/> is a null reference (Nothing in VB)
+            </exception>
+            <exception cref="T:System.ArgumentNullException">
+            <paramref name="filter"/> is a null reference (Nothing in VB)
+            </exception>
+        </member>
+        <member name="M:Vexe.RuntimeHelpers.DirectoryHelper.EnumerateFiles(System.String,System.String,System.IO.SearchOption)">
+            <summary>
+            Gets <see cref="T:Vexe.RuntimeHelpers.DirectoryHelper.FileData"/> for all the files in a directory that 
+            match a specific filter, optionally including all sub directories.
+            </summary>
+            <param name="path">The path to search.</param>
+            <param name="searchPattern">The search string to match against files in the path.</param>
+            <param name="searchOption">
+            One of the SearchOption values that specifies whether the search 
+            operation should include all subdirectories or only the current directory.
+            </param>
+            <returns>An object that implements <see cref="T:System.Collections.Generic.IEnumerable`1"/> and 
+            allows you to enumerate the files in the given directory.</returns>
+            <exception cref="T:System.ArgumentNullException">
+            <paramref name="path"/> is a null reference (Nothing in VB)
+            </exception>
+            <exception cref="T:System.ArgumentNullException">
+            <paramref name="filter"/> is a null reference (Nothing in VB)
+            </exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            <paramref name="searchOption"/> is not one of the valid values of the
+            <see cref="T:System.IO.SearchOption"/> enumeration.
+            </exception>
+        </member>
+        <member name="M:Vexe.RuntimeHelpers.DirectoryHelper.GetFiles(System.String,System.String,System.IO.SearchOption)">
+            <summary>
+            Gets <see cref="T:Vexe.RuntimeHelpers.DirectoryHelper.FileData"/> for all the files in a directory that match a 
+            specific filter.
+            </summary>
+            <param name="path">The path to search.</param>
+            <param name="searchPattern">The search string to match against files in the path.</param>
+            <returns>An object that implements <see cref="T:System.Collections.Generic.IEnumerable`1"/> and 
+            allows you to enumerate the files in the given directory.</returns>
+        </member>
+        <member name="T:Vexe.RuntimeHelpers.DirectoryHelper.FileEnumerable">
+            <summary>
+            Provides the implementation of the 
+            <see cref="T:System.Collections.Generic.IEnumerable`1"/> interface
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeHelpers.DirectoryHelper.FileEnumerable.#ctor(System.String,System.String,System.IO.SearchOption)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Vexe.RuntimeHelpers.DirectoryHelper.FileEnumerable"/> class.
+            </summary>
+            <param name="path">The path to search.</param>
+            <param name="filter">The search string to match against files in the path.</param>
+            <param name="searchOption">
+            One of the SearchOption values that specifies whether the search 
+            operation should include all subdirectories or only the current directory.
+            </param>
+        </member>
+        <member name="M:Vexe.RuntimeHelpers.DirectoryHelper.FileEnumerable.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the collection.
+            </summary>
+            <returns>
+            A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can 
+            be used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="M:Vexe.RuntimeHelpers.DirectoryHelper.FileEnumerable.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>
+            An <see cref="T:System.Collections.IEnumerator"/> object that can be 
+            used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="T:Vexe.RuntimeHelpers.DirectoryHelper.SafeFindHandle">
+            <summary>
+            Wraps a FindFirstFile handle.
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeHelpers.DirectoryHelper.SafeFindHandle.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Vexe.RuntimeHelpers.DirectoryHelper.SafeFindHandle"/> class.
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeHelpers.DirectoryHelper.SafeFindHandle.ReleaseHandle">
+            <summary>
+            When overridden in a derived class, executes the code required to free the handle.
+            </summary>
+            <returns>
+            true if the handle is released successfully; otherwise, in the 
+            event of a catastrophic failure, false. In this case, it 
+            generates a releaseHandleFailed MDA Managed Debugging Assistant.
+            </returns>
+        </member>
+        <member name="T:Vexe.RuntimeHelpers.DirectoryHelper.FileEnumerator">
+            <summary>
+            Provides the implementation of the 
+            <see cref="T:System.Collections.Generic.IEnumerator`1"/> interface
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeHelpers.DirectoryHelper.FileEnumerator.#ctor(System.String,System.String,System.IO.SearchOption)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Vexe.RuntimeHelpers.DirectoryHelper.FileEnumerator"/> class.
+            </summary>
+            <param name="path">The path to search.</param>
+            <param name="filter">The search string to match against files in the path.</param>
+            <param name="searchOption">
+            One of the SearchOption values that specifies whether the search 
+            operation should include all subdirectories or only the current directory.
+            </param>
+        </member>
+        <member name="M:Vexe.RuntimeHelpers.DirectoryHelper.FileEnumerator.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, 
+            or resetting unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeHelpers.DirectoryHelper.FileEnumerator.MoveNext">
+            <summary>
+            Advances the enumerator to the next element of the collection.
+            </summary>
+            <returns>
+            true if the enumerator was successfully advanced to the next element; 
+            false if the enumerator has passed the end of the collection.
+            </returns>
+            <exception cref="T:System.InvalidOperationException">
+            The collection was modified after the enumerator was created.
+            </exception>
+        </member>
+        <member name="M:Vexe.RuntimeHelpers.DirectoryHelper.FileEnumerator.Reset">
+            <summary>
+            Sets the enumerator to its initial position, which is before the first element in the collection.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">
+            The collection was modified after the enumerator was created.
+            </exception>
+        </member>
+        <member name="P:Vexe.RuntimeHelpers.DirectoryHelper.FileEnumerator.Current">
+            <summary>
+            Gets the element in the collection at the current position of the enumerator.
+            </summary>
+            <value></value>
+            <returns>
+            The element in the collection at the current position of the enumerator.
+            </returns>
+        </member>
+        <member name="P:Vexe.RuntimeHelpers.DirectoryHelper.FileEnumerator.System#Collections#IEnumerator#Current">
+            <summary>
+            Gets the element in the collection at the current position of the enumerator.
+            </summary>
+            <value></value>
+            <returns>
+            The element in the collection at the current position of the enumerator.
+            </returns>
+        </member>
+        <member name="T:Vexe.RuntimeHelpers.DirectoryHelper.FileEnumerator.SearchContext">
+            <summary>
+            Hold context information about where we current are in the directory search.
+            </summary>
+        </member>
+        <member name="T:Vexe.RuntimeHelpers.DirectoryHelper.FileData">
+            <summary>
+            Contains information about a file returned by the 
+            <see cref="!:FastDirectoryEnumerator"/> class.
+            </summary>
+        </member>
+        <member name="F:Vexe.RuntimeHelpers.DirectoryHelper.FileData.Attributes">
+            <summary>
+            Attributes of the file.
+            </summary>
+        </member>
+        <member name="F:Vexe.RuntimeHelpers.DirectoryHelper.FileData.CreationTimeUtc">
+            <summary>
+            File creation time in UTC
+            </summary>
+        </member>
+        <member name="F:Vexe.RuntimeHelpers.DirectoryHelper.FileData.LastAccessTimeUtc">
+            <summary>
+            File last access time in UTC
+            </summary>
+        </member>
+        <member name="F:Vexe.RuntimeHelpers.DirectoryHelper.FileData.LastWriteTimeUtc">
+            <summary>
+            File last write time in UTC
+            </summary>
+        </member>
+        <member name="F:Vexe.RuntimeHelpers.DirectoryHelper.FileData.Size">
+            <summary>
+            Size of the file in bytes
+            </summary>
+        </member>
+        <member name="F:Vexe.RuntimeHelpers.DirectoryHelper.FileData.Name">
+            <summary>
+            Name of the file
+            </summary>
+        </member>
+        <member name="F:Vexe.RuntimeHelpers.DirectoryHelper.FileData.Path">
+            <summary>
+            Full path to the file.
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeHelpers.DirectoryHelper.FileData.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="M:Vexe.RuntimeHelpers.DirectoryHelper.FileData.#ctor(System.String,Vexe.RuntimeHelpers.DirectoryHelper.WIN32_FIND_DATA)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Vexe.RuntimeHelpers.DirectoryHelper.FileData"/> class.
+            </summary>
+            <param name="dir">The directory that the file is stored at</param>
+            <param name="findData">WIN32_FIND_DATA structure that this
+            object wraps.</param>
+        </member>
+        <member name="P:Vexe.RuntimeHelpers.DirectoryHelper.FileData.CreationTime">
+            <summary>
+            Time the file created
+            </summary>
+        </member>
+        <member name="P:Vexe.RuntimeHelpers.DirectoryHelper.FileData.LastAccesTime">
+            <summary>
+            Gets the last access time in local time.
+            </summary>
+        </member>
+        <member name="P:Vexe.RuntimeHelpers.DirectoryHelper.FileData.LastWriteTime">
+            <summary>
+            Gets the last access time in local time.
+            </summary>
+        </member>
+        <member name="T:Vexe.RuntimeHelpers.DirectoryHelper.WIN32_FIND_DATA">
+            <summary>
+            Contains information about the file that is found 
+            by the FindFirstFile or FindNextFile functions.
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeHelpers.DirectoryHelper.WIN32_FIND_DATA.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="M:Vexe.RuntimeHelpers.GOHelper.CreateGo(System.String,UnityEngine.Transform,UnityEngine.HideFlags)">
+            <summary>
+            Creates and returns a GameObject with the passed name, parent and HideFlags
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeHelpers.GOHelper.CreateGoWithMb``1(System.String,UnityEngine.Transform,UnityEngine.HideFlags)">
+            <summary>
+            Creates a GameObject with a MonoBehaviour specified by the generic T arg - returns the MB added
+            </summary>
+        </member>
+        <member name="T:Vexe.RuntimeHelpers.RTHelper">
+            <summary>
+            A helper Utils class for miscellaneous static methods
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeHelpers.RTHelper.GetTargetID(System.Object)">
+            <summary>
+            Attempts to cast 'target' to IUniquelyIdentifiedObject, if the cast succeeds, it returns the unique id
+            otherwise the object's hash code
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeHelpers.RTHelper.CreateDictionary``2(System.Collections.Generic.IList{``0},System.Collections.Generic.IList{``1})">
+            <summary>
+            Creates a dictionary out of the passed keys and values
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeHelpers.RTHelper.GetTexture(System.Byte,System.Byte,System.Byte,System.Byte,UnityEngine.HideFlags)">
+            <summary>
+            Creates and returns a texture whose color components are r, g, b and a with the specifed HideFlags
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeHelpers.RTHelper.HexToColor(System.String)">
+            <summary>
+            Credits to Unitywiki: http://wiki.unity3d.com/index.php?title=HexConverter
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeHelpers.ReflectionHelper.IsValidTypeName(System.String,System.Type@)">
+            <summary>
+            Returns true if the specified type name is valid (exists)
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeHelpers.ReflectionHelper.GetType(System.String)">
+            <summary>
+            Returns the type of the specified type name
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeHelpers.ReflectionHelper.GetUnityEngineAssembly">
+            <summary>
+            Returns a reference to the unity engine assembly
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeHelpers.ReflectionHelper.GetAllUnityEngineTypesOf(System.Type)">
+            <summary>
+            Retruns all UnityEngine types of the specified wantedType
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeHelpers.ReflectionHelper.GetAllUserTypesOf(System.Type)">
+            <summary>
+            Returns all user-types of the specified wantedType
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeHelpers.ReflectionHelper.GetAllTypesOf(System.Type)">
+            <summary>
+            Returns all types (user (and/or) UnityEngine types) of the specified wantedType
+            </summary>
+        </member>
+        <member name="F:Vexe.RuntimeHelpers.ReflectionHelper.TypeNameGauntlet">
+            <summary>
+            Used to filter out unwanted type names. Ex "int" instead of "Int32"
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeHelpers.SerializationHelper.SerializeToString``1(``0)">
+            <summary>
+            Serializes 'value' to a string, using BinaryFormatter
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeHelpers.SerializationHelper.DeserializeFromString``1(System.String)">
+            <summary>
+            Deserializes an object of type T from the string 'data'
+            </summary>
+        </member>
+        <member name="T:Vexe.RuntimeHelpers.Classes.SerializedClass`1">
+            <summary>
+            A wrapper to serialize classes/structs that Unity can't
+            </summary>
+        </member>
+        <member name="T:Vexe.RuntimeHelpers.Classes.GUI.StyleDuo">
+            <summary>
+            Represents a GUIStyle Duo
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>RuntimeExtensions</name>
+    </assembly>
+    <members>
+        <member name="M:Vexe.RuntimeExtensions.ComponentExtensions.ChangeState(UnityEngine.Component,System.Boolean)">
+            <summary>
+            Changes the component's state to the specified state
+            Returns true on success
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeExtensions.ComponentExtensions.ChangeState(UnityEngine.Component,System.Boolean,System.Reflection.PropertyInfo)">
+            <summary>
+            Changes the specified component's state to 'newState' using the passed enabled PropertyInfo
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeExtensions.ComponentExtensions.GetState(UnityEngine.Component)">
+            <summary>
+            Returns the current state of the component
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeExtensions.ComponentExtensions.GetState(UnityEngine.Component,System.Reflection.PropertyInfo)">
+            <summary>
+            Returns the current state of the component using the passed enabled PropertyInfo
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeExtensions.ComponentExtensions.ToggleState(UnityEngine.Component)">
+            <summary>
+            Toggles the component's state
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeExtensions.RendererExtensions.IsVisibleFrom(UnityEngine.Renderer,UnityEngine.Camera)">
+            <summary>
+            Credits: http://wiki.unity3d.com/index.php?title=IsVisibleFrom
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeExtensions.StringExtensions.SplitCamelCase(System.String)">
+            <summary>
+            Ex: "thisIsCamelCase" -> "this Is Camel Case"
+            Credits: http://stackoverflow.com/questions/155303/net-how-can-you-split-a-caps-delimited-string-into-an-array
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeExtensions.StringExtensions.SplitPascalCase(System.String)">
+            <summary>
+            Ex: "thisIsCamelCase" -> "This Is Camel Case"
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeExtensions.StringExtensions.NormalizePath(System.String)">
+            <summary>
+            Nomalizes this string by replacing all '/' with '\' and returns the normalized string instance
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeExtensions.StringExtensions.NormalizePath(System.String,System.Char,System.Char)">
+            <summary>
+            Normalizes this string by replacing all 'from's by 'to's and returns the normalized instance
+            Ex: "path/to\dir".NormalizePath('/', '\\') => "path\\to\\dir"
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeExtensions.StringExtensions.ReplaceAt(System.String,System.Int32,System.Char)">
+            <summary>
+            Replaces the character specified by the passed index with newChar and returns the new string instance
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeExtensions.StringExtensions.ToUpperAt(System.String,System.Int32)">
+            <summary>
+            Uppers the character specified by the passed index and returns the new string instance
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeExtensions.StringExtensions.IsNullOrEmpty(System.String)">
+            <summary>
+            Returns true if this string is null or empty
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeExtensions.TypeExtensions.GetFullName(System.Reflection.MethodInfo,System.String,System.Func{System.Type,System.String})">
+            <summary>
+            Returns the specified method's full name "methodName(argType1 arg1, argType2 arg2, etc)"
+            Uses the specified gauntlet to replaces type names, ex: "int" instead of "Int32"
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeExtensions.TypeExtensions.GetParamsNames(System.Reflection.MethodInfo,System.Func{System.Type,System.String})">
+            <summary>
+            Returns a string representing the passed method parameters names. Ex "int num, float damage, Transform target"
+            </summary>
+        </member>
+    </members>
+</doc>
