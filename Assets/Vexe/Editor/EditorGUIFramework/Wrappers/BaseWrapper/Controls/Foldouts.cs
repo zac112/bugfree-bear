@@ -49,7 +49,7 @@ namespace EditorGUIFramework
 
 		public void Foldout(string label, sp spFold)
 		{
-			Foldout(label, spFold);
+			Foldout(label, spFold, DefaultFoldoutStyle);
 		}
 
 		public void Foldout(sp spFold)
@@ -65,6 +65,16 @@ namespace EditorGUIFramework
 				if (GUI.Button(lastRect, GUIContent.none, NoneStyle))
 					setValue(!value);
 			});
+		}
+
+		public void CustomFoldout(sp spFoldout, string expandSymbol, string foldSymbol)
+		{
+			CustomFoldout(spFoldout.boolValue, expandSymbol, foldSymbol, f => spFoldout.boolValue = f);
+		}
+
+		public void CustomFoldout(bool value, string expandSymbol, string foldSymbol, Action<bool> setValue)
+		{
+			CustomFoldout(value, "", expandSymbol, foldSymbol, null, new TOption { Width = FOLDOUT_WIDTH }, setValue);
 		}
 
 		public void CustomFoldout(bool value, string label, GUIStyle style, TOption option, Action<bool> setValue)
@@ -94,9 +104,13 @@ namespace EditorGUIFramework
 		{
 			CustomFoldout(spFold, label, NoneStyle, option);
 		}
+		public void CustomFoldout(sp spFold, string label)
+		{
+			CustomFoldout(spFold, label, new TOption { Width = FOLD_WIDTH });
+		}
 		public void CustomFoldout(sp spFold)
 		{
-			CustomFoldout(spFold, "", new TOption { Width = FOLD_WIDTH });
+			CustomFoldout(spFold, "");
 		}
 
 		public void FoldoutBold(sp spFold, string label, TOption option)

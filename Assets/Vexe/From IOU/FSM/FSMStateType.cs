@@ -1,0 +1,1 @@
+﻿public enum FSMStateType { Start, End, Other }

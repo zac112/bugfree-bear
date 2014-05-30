@@ -18,36 +18,24 @@ namespace ShowEmAll.DrawMates
 		where TOption : LayoutOption, new()
 	{
 		private IList list;
-		private FieldInfo info;
 		private bool advancedMode;
 		private AdvancedAreaData data;
 
+		public bool readonlyCollection { get; set; }
+		public FieldInfo fieldInfo { get; set; }
 		public bool advancedCollection { get; set; }
 		private AdvancedAreaData Data { get { return RTHelper.LazyValue(() => data, d => data = d); } }
-		private Type IListType { get { return info.FieldType; } }
+		private Type IListType { get { return fieldInfo.FieldType; } }
 		private Type ElementType { get { return IsArray ? IListType.GetElementType() : IListType.GetProperty("Item").PropertyType; } }
 		private bool IsArray { get { return IListType.IsArray; } }
-		protected override string key { get { return base.key + info.Name; } }
+		protected override string key { get { return base.key + fieldInfo.Name; } }
 
-		public IListDrawer(TWrapper gui, FieldInfo iListInfo, Object target)
+		public IListDrawer(TWrapper gui, Object target)
 			: base(gui, target)
-		{
-			Set(iListInfo);
-		}
+		{ }
 
-		public IListDrawer() { }
-
-		public void Set(FieldInfo iListInfo)
-		{
-			info = iListInfo;
-		}
-
-		public void Draw(TWrapper gui, FieldInfo iListInfo, Object target)
-		{
-			Set(gui, target);
-			Set(iListInfo);
-			Draw();
-		}
+		public IListDrawer()
+		{ }
 
 		public override void Draw()
 		{
@@ -66,9 +54,14 @@ namespace ShowEmAll.DrawMates
 			{
 				list = GetList();
 
-				DrawHeader(@add: AddToList);
+				bool advanced = advancedCollection && !readonlyCollection;
+				DrawHeader(
+					@add: AddToList,
+					@enableAdd: !readonlyCollection,
+					@showAdvanedToggle: advanced
+				);
 
-				if (advancedMode)
+				if (advanced)
 					DrawAdvancedArea();
 
 				gui.Splitter();
@@ -93,15 +86,17 @@ namespace ShowEmAll.DrawMates
 								if (list[i] != newValue)
 									SetListElementAtIndex(i, newValue);
 							},
+							@showMoveUpDown: advanced,
 							@moveDown: () => list.MoveElementDownNonGen(i),
 							@moveUp: () => list.MoveElementUpNonGen(i),
+							@enableRemove: !readonlyCollection,
 							@remove: () => RemoveListElementAtIndex(i)
 						);
 					}
 				});
 			});
 
-			if (typeof(Object).IsAssignableFrom(ElementType))
+			if (!readonlyCollection && typeof(Object).IsAssignableFrom(ElementType))
 				DrawAddingArea();
 
 			ApplyList();
@@ -186,15 +181,23 @@ namespace ShowEmAll.DrawMates
 			);
 		}
 
-		private void DrawField(int numeric, object value, Action<object> setValue, Action moveDown, Action moveUp, Action remove)
+		private void DrawField(int numeric, object value, Action<object> setValue,
+			bool showMoveUpDown, Action moveDown, Action moveUp,
+			bool enableRemove, Action remove)
 		{
 			gui.HorizontalBlock(() =>
 			{
 				gui.NumericLabel(numeric);
-				gui.GuessField(value, ElementType, setValue);
-				if (advancedMode)
+				var prev = value;
+				gui.ChangeBlock(
+					() => gui.GuessField(value, ElementType, setValue),
+					() => { if (readonlyCollection) setValue(prev); }
+				);
+				if (showMoveUpDown)
 					MoveUpDown(moveDown, moveUp);
-				gui.RemoveButton("element", MiniButtonStyle.ModRight, remove);
+				gui.EnabledBlock(enableRemove, () =>
+					gui.RemoveButton("element", MiniButtonStyle.ModRight, remove)
+				);
 			});
 		}
 
@@ -207,22 +210,24 @@ namespace ShowEmAll.DrawMates
 			});
 		}
 
-		private void DrawHeader(Action add)
+		private void DrawHeader(bool enableAdd, Action add, bool showAdvanedToggle)
 		{
 			gui.HorizontalBlock(() =>
 			{
-				gui.BoldLabel("Elements");
+				gui.BoldLabel("Elements" + (readonlyCollection ? " (Readonly)" : ""));
 				gui.FlexibleSpace();
-				if (advancedCollection)
+				if (showAdvanedToggle)
 					gui.CheckButton(advancedMode, value => advancedMode = value, "advanced mode");
-				gui.AddButton("element", MiniButtonStyle.ModRight, add);
+				gui.EnabledBlock(enableAdd, () =>
+					gui.AddButton("element", MiniButtonStyle.ModRight, add)
+				);
 			});
 		}
 
 		private string GetListName()
 		{
 			var builder = new StringBuilder();
-			builder.Append(info.Name);
+			builder.Append(fieldInfo.Name.SplitPascalCase());
 			builder.Append(" (");
 			var type = IListType;
 			if (IsArray)
@@ -242,7 +247,7 @@ namespace ShowEmAll.DrawMates
 
 		private void ApplyList()
 		{
-			info.SetValue(target, IsArray ?
+			fieldInfo.SetValue(target, IsArray ?
 				(list as ArrayList).ToArray(ElementType) :
 				list);
 		}
@@ -250,8 +255,8 @@ namespace ShowEmAll.DrawMates
 		private IList GetList()
 		{
 			return IsArray ?
-				new ArrayList(info.GetValue(target) as IList) :
-				info.GetValue(target) as IList;
+				new ArrayList(fieldInfo.GetValue(target) as IList) :
+				fieldInfo.GetValue(target) as IList;
 		}
 
 		private void RemoveListElement(object value)

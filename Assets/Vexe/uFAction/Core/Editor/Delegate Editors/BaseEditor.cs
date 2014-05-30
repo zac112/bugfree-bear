@@ -192,7 +192,7 @@ namespace uFAction.Editors
 			if (!Settings.sShowExtensionMethods)
 				return Enumerable.Empty<MethodInfo>();
 
-			return from.GetExtensionMethods(asms, higherType, returnType, paramTypes, modifiers, exactBinding);
+			return from.GetType().GetExtensionMethods(asms, higherType, returnType, paramTypes, modifiers, exactBinding);
 		}
 
 		protected void ApplyGOEntries()
@@ -306,7 +306,8 @@ namespace uFAction.Editors
 		{
 			this.delegateObject = delegateObject;
 			Set(title, canSetArgsFromEditor, forceExpand);
-			Set(gui, spDelegate.serializedObject.targetObject);
+			this.gui = gui;
+			this.target = spDelegate.serializedObject.targetObject;
 			IntegrateDataToEditor();
 		}
 

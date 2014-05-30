@@ -304,6 +304,12 @@
             A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
             </returns>
         </member>
+        <member name="M:Vexe.RuntimeHelpers.EventsHelper.OnUndoRedoPerformed(System.Action)">
+            <summary>
+            Performs the specified action when a Unity Undo/Redo has been performed
+            </summary>
+            <param name="action"></param>
+        </member>
         <member name="M:Vexe.RuntimeHelpers.GOHelper.CreateGo(System.String,UnityEngine.Transform,UnityEngine.HideFlags)">
             <summary>
             Creates and returns a GameObject with the passed name, parent and HideFlags
@@ -312,6 +318,12 @@
         <member name="M:Vexe.RuntimeHelpers.GOHelper.CreateGoWithMb``1(System.String,UnityEngine.Transform,UnityEngine.HideFlags)">
             <summary>
             Creates a GameObject with a MonoBehaviour specified by the generic T arg - returns the MB added
+            </summary>
+        </member>
+        <member name="P:Vexe.RuntimeHelpers.GOHelper.EmptyGO">
+            <summary>
+            Returns a cached reference to an empty GO (think NullObject)
+            If none is found, a new one is created
             </summary>
         </member>
         <member name="T:Vexe.RuntimeHelpers.RTHelper">
@@ -383,6 +395,21 @@
         <member name="M:Vexe.RuntimeHelpers.SerializationHelper.DeserializeFromString``1(System.String)">
             <summary>
             Deserializes an object of type T from the string 'data'
+            </summary>
+        </member>
+        <member name="T:Vexe.RuntimeHelpers.Types.Lazy`1">
+            <summary>
+            A lazy memoized object
+            </summary>
+        </member>
+        <member name="P:Vexe.RuntimeHelpers.Types.Lazy`1.GetValue">
+            <summary>
+            [S|G]ets the value getter
+            </summary>
+        </member>
+        <member name="P:Vexe.RuntimeHelpers.Types.Lazy`1.Value">
+            <summary>
+            Returns the value - computed only the first time
             </summary>
         </member>
         <member name="T:Vexe.RuntimeHelpers.Classes.SerializedClass`1">

@@ -2,7 +2,6 @@
 using UnityEditor;
 using UnityEngine;
 using Vexe.RuntimeExtensions;
-using Object = UnityEngine.Object;
 using EditorGUIFramework;
 using ShowEmAll.DrawMates;
 
@@ -16,9 +15,12 @@ namespace ShowEmAll.PropertyDrawers
 		protected override void Init(SerializedProperty property, GUIContent label)
 		{
 			base.Init(property, label);
-			enumDrawer = new EnumMaskDrawer<GUIWrapper, GUIOption>();
-			enumDrawer.Set(gui, target);
-			enumDrawer.Set(fieldInfo, TypedValue.displayName.IsNullOrEmpty() ? label.text : TypedValue.displayName);
+			enumDrawer = new EnumMaskDrawer<GUIWrapper, GUIOption>(gui)
+			{
+				Text = TypedValue.displayName.IsNullOrEmpty() ? label.text : TypedValue.displayName,
+				GetValue = () => fieldInfo.GetValue(target) as Enum,
+				SetValue = newValue => fieldInfo.SetValue(target, newValue)
+			};
 		}
 
 		protected override void Code()

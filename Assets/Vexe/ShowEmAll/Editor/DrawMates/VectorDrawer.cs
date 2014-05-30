@@ -16,9 +16,9 @@ namespace ShowEmAll.DrawMates
 		private const string NORMALIZE = "1";
 		private const string RANDOMIZE = "r";
 		protected static Func<float> rand = () => UnityEngine.Random.Range(-100, 100);
-		protected string label;
 		protected override string key { get { return base.key + label; } }
 
+		public string label { get; set; }
 
 		public VectorDrawer() { }
 
@@ -118,6 +118,10 @@ namespace ShowEmAll.DrawMates
 		private Action<Vector2> setValue;
 		private Action field;
 
+		public Vector2Drawer(TWrapper gui, Object target)
+			: base(gui, target)
+		{ }
+
 		public Vector2Drawer(string label, TWrapper gui, Object target)
 			: base(label, gui, target)
 		{ }
@@ -127,9 +131,9 @@ namespace ShowEmAll.DrawMates
 			DoButtons(
 				@copy: () => Clipboard.Vector2Value = getValue(),
 				@paste: () => setValue(Clipboard.Vector2Value),
-				randomize: () => setValue(new Vector2(rand(), rand())),
-				normalize: () => setValue(Vector2.one),
-				reset: () => setValue(Vector2.zero)
+				@randomize: () => setValue(new Vector2(rand(), rand())),
+				@normalize: () => setValue(Vector2.one),
+				@reset: () => setValue(Vector2.zero)
 			);
 		}
 
@@ -193,10 +197,11 @@ namespace ShowEmAll.DrawMates
 		private Action<Vector3> setValue;
 		private Action field;
 
-		public Vector3Drawer(TWrapper gui, Object target)
-			: base(gui, target)
-		{ }
+		//public Vector3Drawer(TWrapper gui, Object target)
+		//	: base(gui, target)
+		//{ }
 
+		public Vector3Drawer() { }
 		public Vector3Drawer(string label, TWrapper gui, Object target)
 			: base(label, gui, target)
 		{ }

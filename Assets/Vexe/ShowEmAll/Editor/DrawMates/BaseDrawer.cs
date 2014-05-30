@@ -8,8 +8,9 @@ namespace ShowEmAll.DrawMates
 		where TWrapper : BaseWrapper<TOption>
 		where TOption : LayoutOption, new()
 	{
-		protected TWrapper gui;
-		protected Object target;
+		public TWrapper gui { get; set; }
+		public Object target { get; set; }
+
 		private BetterUndo _undo = new BetterUndo();
 		protected BetterUndo undo { get { return BetterUndo.MakeCurrent(ref _undo); } }
 
@@ -18,11 +19,6 @@ namespace ShowEmAll.DrawMates
 		}
 
 		public BaseDrawer(TWrapper gui, Object target)
-		{
-			Set(gui, target);
-		}
-
-		public virtual void Set(TWrapper gui, Object target)
 		{
 			this.gui = gui;
 			this.target = target;

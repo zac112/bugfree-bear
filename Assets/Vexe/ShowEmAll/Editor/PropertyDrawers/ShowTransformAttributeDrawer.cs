@@ -38,9 +38,12 @@ namespace ShowEmAll.PropertyDrawers
 			{
 				hasInit = true;
 				StuffHelper.InitTransformSPs(property, out spPos, out spRot, out spScale);
-				transformDrawer = new TransformDrawer<GUIWrapper, GUIOption>(
-					gui, target, spPos, spRot, spScale
-				);
+				transformDrawer = new TransformDrawer<GUIWrapper, GUIOption>(gui, target)
+				{
+					spPos = spPos,
+					spRot = spRot,
+					spScale = spScale
+				};
 			}
 
 			gui.HorizontalBlock(() =>

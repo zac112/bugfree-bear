@@ -12,31 +12,18 @@ using System;
 
 namespace ShowEmAll
 {
-	[CustomEditor(typeof(StereoBehaviour), true)]
-	public class StereoBehaviourEditor : BetterEditor<StereoBehaviour>
+	[CustomEditor(typeof(BetterBehaviour), true)]
+	public class BetterBehaviourEditor : BetterEditor<BetterBehaviour>
 	{
-		private const bf PUBLIC = bf.Public | bf.Instance;
-		private const bf ALL = PUBLIC | bf.NonPublic;
-		private IEnumerable<FieldInfo> fields;
-		private IEnumerable<PropertyInfo> properties;
-		private IEnumerable<MethodInfo> methods;
+		private const bf Public = bf.Public | bf.Instance;
+		private const bf AllBindings = Public | bf.NonPublic;
+		private FieldInfo[] fields;
+		private PropertyInfo[] properties;
+		private MethodInfo[] methods;
 		private IListDrawer<GLWrapper, GLOption> listDrawer;
 		private Dictionary<PropertyInfo, CSPropertyDrawer<GLWrapper, GLOption>> propertyDrawers;
 		private Dictionary<MethodInfo, MethodDrawer<GLWrapper, GLOption>> methodDrawers;
 		private Dictionary<string, sp> spDic = new Dictionary<string, sp>();
-		//private GUIStyle _bold;
-		//GUIStyle bold
-		//{
-		//	get
-		//	{
-		//		if (_bold == null)
-		//		{
-		//			_bold = new GUIStyle(EditorStyles.label);
-		//			//_bold.contentOffset = new Vector2(0, -5);
-		//		}
-		//		return _bold;
-		//	}
-		//}
 
 		// Foldouts / keys
 		#region
@@ -93,43 +80,53 @@ namespace ShowEmAll
 		// 2- draw each found field (via PropertyField)
 		// 3- draw the properties fetched in 1.5
 
-		private void OnEnable()
+		protected virtual void OnEnable()
 		{
-			listDrawer = new IListDrawer<GLWrapper, GLOption>();
+			listDrawer = new IListDrawer<GLWrapper, GLOption>(gui, target);
 			propertyDrawers = new Dictionary<PropertyInfo, CSPropertyDrawer<GLWrapper, GLOption>>();
 			methodDrawers = new Dictionary<MethodInfo, MethodDrawer<GLWrapper, GLOption>>();
 
 			var mb = TypedTarget;
 
-			fields = mb.GetFields(PUBLIC | bf.NonPublic)
-					.Where(f => f.IsPublic ? true : f.IsDefined(typeof(SerializeField)));
+			fields = (from f in mb.GetFields(AllBindings)
+					  let isHidden = f.IsDefined(typeof(HideInInspector))
+					  where !isHidden && (f.IsPublic || f.IsDefined(typeof(SerializeField)))
+					  select f)
+					 .ToArray();
 
 			spDic = fields.ToDictionary(f => f.Name,
 										f => serializedObject.FindProperty(f.Name));
 
-			properties = mb.GetProperties(PUBLIC)
-					.Where(p => p.IsDefined(typeof(ShowProperty)));
+			properties = mb.GetProperties(AllBindings)
+					.Where(p => p.IsDefined(typeof(ShowProperty)))
+					.ToArray();
 
 			foreach (var p in properties)
 			{
-				propertyDrawers[p] = new CSPropertyDrawer<GLWrapper, GLOption>(gui, p, target);
+				propertyDrawers[p] = new CSPropertyDrawer<GLWrapper, GLOption>(gui, target)
+				{
+					property = p
+				};
 			}
 
-			methods = mb.GetMethods(typeof(void), null, ALL, false)
-					.Where(m => m.IsDefined(typeof(ShowMethodAttribute)));
+			methods = mb.GetMethods(typeof(void), null, AllBindings, false)
+					.Where(m => m.IsDefined(typeof(ShowMethodAttribute)))
+					.ToArray();
 
 			foreach (var m in methods)
 			{
-				var d = new MethodDrawer<GLWrapper, GLOption>(m, ALL);
-				d.Set(gui, target);
-				methodDrawers[m] = d;
+				methodDrawers[m] = new MethodDrawer<GLWrapper, GLOption>(gui, target)
+				{
+					bindings = AllBindings,
+					method = m,
+				};
 			}
 		}
 
-		void DoMembers<T>(Func<bool> foldout, IEnumerable<T> members, Action<T> perform) where T : MemberInfo
+		void DoMembers<T>(Func<bool> foldout, T[] members, Action<T> perform) where T : MemberInfo
 		{
-			int count = members.Count();
-			if (count == 0 || !foldout()) return;
+			int len = members.Length;
+			if (len == 0 || !foldout()) return;
 
 			bool insideBox = (Settings.DisplayOptions & Settings.MembersDisplay.DisplayInsideBox) > 0;
 			bool showNumbers = (Settings.DisplayOptions & Settings.MembersDisplay.ShowNumbers) > 0;
@@ -139,9 +136,10 @@ namespace ShowEmAll
 			gui.IndentedBlock(insideBox ? GUI.skin.textArea : GUIStyle.none, .25f, () =>
 			{
 				gui.Space(5f);
-				int i = 0;
-				foreach (var m in members)
+				for (int iLoop = 0; iLoop < len; iLoop++)
 				{
+					int i = iLoop;
+					var m = members[i];
 					gui.HorizontalBlock(() =>
 					{
 						if (showNumbers)
@@ -151,10 +149,9 @@ namespace ShowEmAll
 						else gui.Space(10f);
 						perform(m);
 					});
-					if (showSplitter && i < count - 1)
+					if (showSplitter && i < len - 1)
 						gui.Splitter();
 					else gui.Space(2f);
-					i++;
 				}
 			});
 		}
@@ -169,12 +166,14 @@ namespace ShowEmAll
 						gui.VerticalBlock(() =>
 						{
 							listDrawer.advancedCollection = fieldInfo.IsDefined(typeof(AdvancedCollectionAttribute));
-							listDrawer.Draw(gui, fieldInfo, target);
+							listDrawer.readonlyCollection = fieldInfo.IsDefined(typeof(ReadonlyAttribute));
+							listDrawer.fieldInfo = fieldInfo;
+							listDrawer.Draw();
 						});
 					}
 					else
 					{
-						gui.PropertyField(spDic[fieldInfo.Name]);
+						gui.PropertyField(spDic[fieldInfo.Name], fieldInfo.Name.SplitPascalCase());
 					}
 				});
 

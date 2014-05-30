@@ -7,8 +7,8 @@ using System;
 
 namespace ShowEmAll
 {
-	[CanEditMultipleObjects]
-	[CustomEditor(typeof(Transform))]
+	//[CanEditMultipleObjects]
+	//[CustomEditor(typeof(Transform))]
 	public class TransformEditor : Editor
 	{
 		private GLWrapper gui;
@@ -21,9 +21,12 @@ namespace ShowEmAll
 		{
 			StuffHelper.InitTransformSPs(serializedObject, out spPos, out spRot, out spScale);
 			gui = new GLWrapper();
-			transformDrawer = new TransformDrawer<GLWrapper, GLOption>(
-				gui, serializedObject.targetObject, spPos, spRot, spScale
-			);
+			transformDrawer = new TransformDrawer<GLWrapper, GLOption>(gui, serializedObject.targetObject)
+			{
+				spPos = spPos,
+				spRot = spRot,
+				spScale = spScale
+			};
 		}
 
 		//float value;

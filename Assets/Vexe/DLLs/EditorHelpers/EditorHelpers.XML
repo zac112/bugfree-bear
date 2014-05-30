@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>EditorHelpers</name>
+    </assembly>
+    <members>
+        <member name="T:Vexe.EditorHelpers.EditorHelper">
+            <summary>
+            A bunch of misc editor helper methods
+            </summary>
+        </member>
+        <member name="M:Vexe.EditorHelpers.EditorHelper.RepaintAllInspectors">
+            <summary>
+            Repaints all inspectors. This is what essentially ends up getting called in EditorWindow.Repaint
+            </summary>
+        </member>
+        <member name="M:Vexe.EditorHelpers.EditorHelper.GetFocusedWindow(System.String)">
+            <summary>
+            Focuses on the specified window, and returns a reference to it
+            </summary>
+        </member>
+        <member name="M:Vexe.EditorHelpers.EditorHelper.FocusOnWindow(System.String)">
+            <summary>
+            Focuses on the specified window. Ex "Hierarchy", "Inspector" - pretty much any window under the "Window" tab
+            </summary>
+        </member>
+        <member name="M:Vexe.EditorHelpers.EditorHelper.CreateScriptableObjectAsset``1(System.String)">
+            <summary>
+            Creates a ScriptableObject asset at the specified path. ".asset" is postfixed if it doesn't exist
+            </summary>
+        </member>
+        <member name="M:Vexe.EditorHelpers.EditorHelper.LoadAssetAt``1(System.String)">
+            <summary>
+            Loads and returns the asset type specified by the passed generic argument at the specified type
+            </summary>
+        </member>
+        <member name="M:Vexe.EditorHelpers.EditorHelper.LazyLoadScriptableAsset``1(``0@,System.String)">
+            <summary>
+            Lazy-Loads and returns the asset type specified by the passed generic argument at the specified type
+            That is, if 'value' was not null it gets returned, otherwise we assign it an asset of type T at 'path'
+            if 'value' is still null, we create an asset of type T at path and return it
+            </summary>
+        </member>
+        <member name="M:Vexe.EditorHelpers.EditorHelper.LazyLoadScriptableAsset``1(``0@,System.String,System.Boolean)">
+            <summary>
+            Lazy-Loads and returns the asset type specified by the passed generic argument at the specified type
+            That is, if 'value' was not null it gets returned, otherwise we assign it an asset of type T at 'path'
+            if 'value' is still null, we create an asset of type T at path and return it.
+            Pass in true to 'log' to get feedback if no asset of type T was found.
+            </summary>
+        </member>
+        <member name="M:Vexe.EditorHelpers.EditorHelper.PingObject(UnityEngine.Object)">
+            <summary>
+            Pings the specified object
+            </summary>
+        </member>
+        <member name="M:Vexe.EditorHelpers.EditorHelper.SelectObjects(UnityEngine.Object[])">
+            <summary>
+            Selects the specified objects
+            </summary>
+        </member>
+        <member name="M:Vexe.EditorHelpers.EditorHelper.SelectObject(UnityEngine.Object)">
+            <summary>
+            Selects the specified object
+            </summary>
+        </member>
+        <member name="M:Vexe.EditorHelpers.EditorHelper.InspectTarget(UnityEngine.GameObject)">
+            <summary>
+            Creates a new inspector window instance and locks it to inspect the specified target
+            </summary>
+        </member>
+        <member name="P:Vexe.EditorHelpers.EditorHelper.InspectorWindowType">
+            <summary>
+            Gets a Type object for the type 'InspectorWindow'
+            </summary>
+        </member>
+        <member name="P:Vexe.EditorHelpers.EditorHelper.CachedInspectorWindowType">
+            <summary>
+            Returns a cached value for the Type object of the type 'InspectorWindow'
+            </summary>
+        </member>
+        <member name="P:Vexe.EditorHelpers.EditorHelper.ScriptableAssetsPath">
+            <summary>
+            Returns the full path of the "ScriptableAssets" directory
+            </summary>
+        </member>
+        <member name="F:Vexe.EditorHelpers.GuiHelper.INDENT_WIDTH">
+            <summary>
+            A convenient indentation width
+            </summary>
+        </member>
+        <member name="M:Vexe.EditorHelpers.GuiHelper.Indent">
+            <summary>
+            Indents by INDENT_WIDTH amount
+            </summary>
+        </member>
+        <member name="M:Vexe.EditorHelpers.GuiHelper.Indent(System.Single)">
+            <summary>
+            Indents n times INDENT_WIDTH
+            </summary>
+        </member>
+        <member name="M:Vexe.EditorHelpers.GuiHelper.Splitter(System.Single)">
+            <summary>
+            A convenience method for drawing a seperator line between gui elements
+            </summary>
+        </member>
+        <member name="M:Vexe.EditorHelpers.GuiHelper.Splitter">
+            <summary>
+            A convenience method for drawing a seperator line between gui elements
+            </summary>
+        </member>
+        <member name="M:Vexe.EditorHelpers.GuiHelper.CombineRects(UnityEngine.Rect,UnityEngine.Rect)">
+            <summary>
+            Combines two rectangles, returns the result
+            </summary>
+        </member>
+        <member name="M:Vexe.EditorHelpers.GuiHelper.RegisterFieldForDrag(UnityEngine.Rect,UnityEngine.Object)">
+            <summary>
+            Registers fieldRect for drag operations. dragObject is what's being dragged out of that field.
+            </summary>
+        </member>
+    </members>
+</doc>

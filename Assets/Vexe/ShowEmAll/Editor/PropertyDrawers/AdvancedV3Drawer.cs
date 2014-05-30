@@ -18,7 +18,12 @@ namespace ShowEmAll.PropertyDrawers
 
 			base.Init(property, label);
 
-			vDrawer = new Vector3Drawer<GUIWrapper, GUIOption>(label.text, gui, target);
+			vDrawer = new Vector3Drawer<GUIWrapper, GUIOption>
+			{
+				label = label.text,
+				gui = gui,
+				target = target
+			};
 		}
 
 		protected override void Code()

@@ -19,7 +19,7 @@ namespace ShowEmAll
 		private static Settings instance;
 
 		[EnumMask, SerializeField]
-		private MembersDisplay displayOptions;
+		private MembersDisplay displayOptions = MembersDisplay.DisplayInsideBox | MembersDisplay.ShowSplitter;
 
 		public static MembersDisplay DisplayOptions { get { return Instance.displayOptions; } }
 		private static string _currentPath;

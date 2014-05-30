@@ -2,8 +2,8 @@
 using EditorGUIFramework;
 using System.Reflection;
 using System;
-using Object = UnityEngine.Object;
 using Vexe.RuntimeExtensions;
+using Object = UnityEngine.Object;
 
 namespace ShowEmAll.DrawMates
 {
@@ -11,40 +11,27 @@ namespace ShowEmAll.DrawMates
 		where TWrapper : BaseWrapper<TOption>
 		where TOption : LayoutOption, new()
 	{
-		private PropertyInfo info;
+		public PropertyInfo property { get; set; }
 
-		private Type PropertyType { get { return info.PropertyType; } }
+		private Type PropertyType { get { return property.PropertyType; } }
 
 		private object PropertyValue
 		{
-			get { return info.GetValue(target, null); }
-			set { info.GetSetMethod().Invoke(target, new object[] { value }); }
+			get { return property.GetValue(target, null); }
+			set { property.GetSetMethod().Invoke(target, new object[] { value }); }
 		}
 
-		public CSPropertyDrawer() { }
-
-		public CSPropertyDrawer(TWrapper gui, PropertyInfo info, Object target)
+		public CSPropertyDrawer(TWrapper gui, Object target)
 			: base(gui, target)
-		{
-			Set(info);
-		}
+		{ }
 
-		public void Set(PropertyInfo info)
-		{
-			this.info = info;
-		}
-
-		public void Draw(TWrapper gui, PropertyInfo info, Object target)
-		{
-			Set(gui, target);
-			Set(info);
-			Draw();
-		}
+		public CSPropertyDrawer()
+		{ }
 
 		public override void Draw()
 		{
 			var value = PropertyValue;
-			gui.GuessField(info.Name, value, PropertyType, newValue =>
+			gui.GuessField(property.Name, value, PropertyType, newValue =>
 			{
 				if (value != newValue)
 				{
@@ -52,7 +39,7 @@ namespace ShowEmAll.DrawMates
 					PropertyValue = newValue;
 				}
 			});
-			if (info.IsAutoProperty())
+			if (property.IsAutoProperty())
 				gui.HelpBox("Auto properties won't serialize", MessageType.Warning);
 		}
 	}

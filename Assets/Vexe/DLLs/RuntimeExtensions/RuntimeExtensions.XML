@@ -30,9 +30,36 @@
             Toggles the component's state
             </summary>
         </member>
+        <member name="M:Vexe.RuntimeExtensions.OtherExtensions.Memoize``1(System.Func{``0})">
+            <summary>
+            Memoizes the specified func - returns the memoized version
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeExtensions.OtherExtensions.Memoize``2(System.Func{``0,``1})">
+            <summary>
+            Memoizes the specified func - returns the memoized version
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeExtensions.OtherExtensions.Between``1(``0,``0,``0)">
+            <summary>
+            Returns true if this object's current value is between (greater or equal to) 'from' and (less than or equal to) 'to'
+            Credits: http://extensionmethod.net/csharp/type/between
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeExtensions.OtherExtensions.Clear(System.Text.StringBuilder)">
+            <summary>
+            Sets the builder's length to zero and returns it
+            </summary>
+        </member>
         <member name="M:Vexe.RuntimeExtensions.RendererExtensions.IsVisibleFrom(UnityEngine.Renderer,UnityEngine.Camera)">
             <summary>
             Credits: http://wiki.unity3d.com/index.php?title=IsVisibleFrom
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeExtensions.StringExtensions.ToProperCase(System.String)">
+            <summary>
+            "tHiS is a sTring TesT" -> "This Is A String Test"
+            Credits: http://extensionmethod.net/csharp/string/topropercase 
             </summary>
         </member>
         <member name="M:Vexe.RuntimeExtensions.StringExtensions.SplitCamelCase(System.String)">
@@ -72,6 +99,40 @@
             Returns true if this string is null or empty
             </summary>
         </member>
+        <member name="M:Vexe.RuntimeExtensions.TransformExtensions.Reset(UnityEngine.Transform)">
+            <summary>
+            Sets localPosition to Vector3.zero
+            localRotation to Quaternion.identity
+            and localScale to Vector3.one
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeExtensions.TransformExtensions.GetChild(UnityEngine.Transform,System.String,System.Boolean)">
+            <summary>
+            Gets the child transform whose name is specified by 'wanted'
+            The search is non-recursive by default unless true is passed to 'recursive'
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeExtensions.TransformExtensions.AddChild(UnityEngine.Transform,System.String,UnityEngine.HideFlags)">
+            <summary>
+            Adds and returns a child transform to this transform with the specified name and HideFlags
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeExtensions.TransformExtensions.GetOrAddChild(UnityEngine.Transform,System.String,System.Boolean,UnityEngine.HideFlags)">
+            <summary>
+            Gets or adds the child transform whose name is 'name'
+            Pass true to 'recursive' if you want the search to be recursive
+            Specify HideFlags if you want to add the child using those flags
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeExtensions.TypeExtensions.IsSubclassOfRawGeneric(System.Type,System.Type)">
+            <summary>
+            Alternative version of <see cref="M:System.Type.IsSubclassOf(System.Type)"/> that supports raw generic types (generic types without
+            any type parameters).
+            </summary>
+            <param name="baseType">The base type class for which the check is made.</param>
+            <param name="toCheck">To type to determine for whether it derives from <paramref name="baseType"/>.</param>
+            Credits to JaredPar: http://stackoverflow.com/questions/457676/check-if-a-class-is-derived-from-a-generic-class
+        </member>
         <member name="M:Vexe.RuntimeExtensions.TypeExtensions.GetFullName(System.Reflection.MethodInfo,System.String,System.Func{System.Type,System.String})">
             <summary>
             Returns the specified method's full name "methodName(argType1 arg1, argType2 arg2, etc)"
@@ -81,6 +142,17 @@
         <member name="M:Vexe.RuntimeExtensions.TypeExtensions.GetParamsNames(System.Reflection.MethodInfo,System.Func{System.Type,System.String})">
             <summary>
             Returns a string representing the passed method parameters names. Ex "int num, float damage, Transform target"
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeExtensions.UEObjectExtensions.Destroy(UnityEngine.Object)">
+            <summary>
+            Calls Destroy on this object if we're in playmode, otherwise (edit-time) DestroyImmediate
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeExtensions.UEObjectExtensions.Refresh(UnityEngine.Object)">
+            <summary>
+            Attempts to double-toggle the state of this object
+            Doesn't do anything if this object isn't a GameObject or a Component that supports the change of state
             </summary>
         </member>
     </members>

@@ -1,10 +1,5 @@
-﻿using UnityEngine;
-using UnityEditor;
-using EditorGUIFramework;
+﻿using EditorGUIFramework;
 using System;
-using System.Reflection;
-using Vexe.RuntimeExtensions;
-using Object = UnityEngine.Object;
 
 namespace ShowEmAll.DrawMates
 {
@@ -12,59 +7,25 @@ namespace ShowEmAll.DrawMates
 		where TWrapper : BaseWrapper<TOption>
 		where TOption : LayoutOption, new()
 	{
-		private Enum cachedValue;
-		private bool hasChanged = true;
-		private Type enumType;
-		private string[] enumNames;
-		private int[] enumValues;
-		private FieldInfo info;
-		private string text;
+		public string Text { get; set; }
+		public Action<Enum> SetValue { get; set; }
+		public Func<Enum> GetValue { get; set; }
 
-		public void Set(FieldInfo info, string text)
-		{
-			this.text = text;
-			this.info = info;
-			enumType = Value.GetType();
-			enumNames = Enum.GetNames(enumType);
-			enumValues = Enum.GetValues(enumType) as int[];
-		}
-
-		public void Draw(TWrapper gui, Object target, FieldInfo info, string text)
-		{
-			Set(gui, target);
-			Set(info, text);
-			Draw();
-		}
+		public EnumMaskDrawer(TWrapper gui)
+			: base(gui, null)
+		{ }
 
 		public override void Draw()
 		{
-			gui.EnumMaskFieldThatWorks(Convert.ToInt32(Value), enumValues, enumNames, text, newMask =>
+			var currentValue = GetValue();
+			gui.EnumMaskFieldThatWorks(currentValue, Text, newMask =>
 			{
-				var newValue = Enum.ToObject(enumType, newMask) as Enum;
-				Value = newValue;
+				var newValue = Enum.ToObject(currentValue.GetType(), newMask) as Enum;
+				if (!Equals(newValue, currentValue))
+				{
+					undo.RecordSetVariable(() => currentValue, e => SetValue(e), newValue);
+				}
 			});
-		}
-
-		private Enum Value
-		{
-			get
-			{
-				if (hasChanged)
-				{
-					cachedValue = info.GetValue<Enum>(target);
-					hasChanged = false;
-				}
-				return cachedValue;
-			}
-			set
-			{
-				if (cachedValue != value)
-				{
-					Undo.RecordObject(target, "Mask changed");
-					info.SetValue(target, value);
-					hasChanged = true;
-				}
-			}
 		}
 	}
 }

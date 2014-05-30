@@ -18,7 +18,7 @@ namespace ShowEmAll.DrawMates
 		where TWrapper : BaseWrapper<TOption>
 		where TOption : LayoutOption, new()
 	{
-		private MethodEntry mEntry;
+		private MethodEntry mEntry = new MethodEntry();
 		private bool DEBUG;
 		private const string NA = @"N\A";
 
@@ -27,32 +27,22 @@ namespace ShowEmAll.DrawMates
 			get { return base.key + mEntry.Info.GetFullName(); }
 		}
 
-		private Type[] paramTypes { get { return minfo.GetParameters().Select(p => p.ParameterType).ToArray(); } }
-		private bf bindings { get { return TypeExtensions.ALL_BINDING; } }
-		private MethodInfo minfo { get { return mEntry.Info; } set { mEntry.Info = value; } }
+		private Type[] paramTypes { get { return method.GetParameters().Select(p => p.ParameterType).ToArray(); } }
+		public bf bindings { get; set; }
+		public MethodInfo method { get { return mEntry.Info; } set { mEntry.Info = value; } }
 
-		public MethodDrawer(MethodInfo minfo, BindingFlags bindings)
-		{
-			mEntry = new MethodEntry(minfo, bindings);
-		}
+		public MethodDrawer(TWrapper gui, Object target)
+			: base(gui, target)
+		{ }
 
-		public void Set(MethodInfo minfo)
-		{
-			this.minfo = minfo;
-		}
-
-		public void Draw(TWrapper gui, MethodInfo minfo, Object target)
-		{
-			Set(gui, target);
-			Set(minfo);
-			Draw();
-		}
+		public MethodDrawer()
+		{ }
 
 		public override void Draw()
 		{
 			gui.HorizontalBlock(() =>
 			{
-				string fullName = minfo.GetFullName();
+				string fullName = method.GetFullName();
 				bool isParamless = paramTypes.IsEmpty();
 				if (isParamless)
 				{
@@ -75,11 +65,11 @@ namespace ShowEmAll.DrawMates
 				{
 					if (isParamless)
 					{
-						minfo.Invoke(target, null);
+						method.Invoke(target, null);
 					}
 					else
 					{
-						minfo.Invoke(target, mEntry.ArgumentValues);
+						method.Invoke(target, mEntry.ArgumentValues);
 					}
 				});
 			});
@@ -316,7 +306,7 @@ namespace ShowEmAll.DrawMates
 			}
 			else
 			{
-				var extensionMethods = target.GetExtensionMethods(
+				var extensionMethods = target.GetType().GetExtensionMethods(
 					@asm: typeof(TypeExtensions).Assembly,
 					@higherType: typeof(Object),
 					@returnType: returnType,
