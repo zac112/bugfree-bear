@@ -397,17 +397,17 @@
             Deserializes an object of type T from the string 'data'
             </summary>
         </member>
-        <member name="T:Vexe.RuntimeHelpers.Types.Lazy`1">
+        <member name="T:Vexe.RuntimeHelpers.Classes.Lazy`1">
             <summary>
             A lazy memoized object
             </summary>
         </member>
-        <member name="P:Vexe.RuntimeHelpers.Types.Lazy`1.GetValue">
+        <member name="P:Vexe.RuntimeHelpers.Classes.Lazy`1.GetValue">
             <summary>
             [S|G]ets the value getter
             </summary>
         </member>
-        <member name="P:Vexe.RuntimeHelpers.Types.Lazy`1.Value">
+        <member name="P:Vexe.RuntimeHelpers.Classes.Lazy`1.Value">
             <summary>
             Returns the value - computed only the first time
             </summary>
