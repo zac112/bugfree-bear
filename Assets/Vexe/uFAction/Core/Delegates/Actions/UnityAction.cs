@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Reflection;
 using Object = UnityEngine.Object;
+using System.Linq;
+using Vexe.RuntimeExtensions;
 
 namespace uFAction
 {
@@ -99,6 +101,11 @@ namespace uFAction
 		{
 			Invoke();
 		}
+
+		protected override void InternalInvokeWithEditorArgs(Delegate handler, object[] args)
+		{
+			throw new NotImplementedException();
+		}
 	}
 
 	/// <summary>
@@ -152,6 +159,11 @@ namespace uFAction
 			var del = GetDelegate();
 			if (del != null)
 				del(arg);
+		}
+
+		protected override void InternalInvokeWithEditorArgs(Delegate handler, object[] args)
+		{
+			((Action<TArg>)handler).Invoke((TArg)args[0]);
 		}
 	}
 
@@ -207,6 +219,11 @@ namespace uFAction
 			if (del != null)
 				del(arg1, arg2);
 		}
+
+		protected override void InternalInvokeWithEditorArgs(Delegate handler, object[] args)
+		{
+			((Action<TArg1, TArg2>)handler).Invoke((TArg1)args[0], (TArg2)args[1]);
+		}
 	}
 
 	/// <summary>
@@ -260,6 +277,11 @@ namespace uFAction
 			var del = GetDelegate();
 			if (del != null)
 				del(arg1, arg2, arg3);
+		}
+
+		protected override void InternalInvokeWithEditorArgs(Delegate handler, object[] args)
+		{
+			((Action<TArg1, TArg2, TArg3>)handler).Invoke((TArg1)args[0], (TArg2)args[1], (TArg3)args[2]);
 		}
 	}
 }

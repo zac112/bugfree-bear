@@ -22,3 +22,6 @@ public class ComponentAction : UnityAction<Component> { }
 
 [Serializable]
 public class Vector3Action : UnityAction<Vector3> { }
+
+[Serializable]
+public class StringAction : UnityAction<string> { }

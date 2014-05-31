@@ -1,5 +1,8 @@
 ﻿using System;
 using UnityEngine;
+using System.Linq;
+using Vexe.RuntimeExtensions;
+using Object = UnityEngine.Object;
 
 namespace uFAction
 {
@@ -105,17 +108,22 @@ namespace uFAction
 			if (_delegate != null) _delegate = null;
 
 			var tEntries = TargetEntries;
-			for (int i = 0; i < tEntries.Length; i++) {
+			for (int i = 0; i < tEntries.Length; i++)
+			{
 				var entry = tEntries[i];
 				var target = entry.Target;
 				if (target == null) continue;
-				foreach (var methodEntry in entry.MethodEntries) {
+				foreach (var methodEntry in entry.MethodEntries)
+				{
 					var info = methodEntry.Info;
 					if (info == null) continue;
-					try {
+					try
+					{
 						_delegate = DirectAdd(Delegate.CreateDelegate(typeof(TDelegate), target, info) as TDelegate);
+						cachedInvocationList = (_delegate as Delegate).GetInvocationList();
 					}
-					catch (Exception e) {
+					catch (Exception e)
+					{
 						Debug.LogError(string.Format("Couldn't re-bind method `{0}` from `{1}` to the invocation list. Reason: {2}",
 							info.Name,
 							target,
@@ -133,5 +141,61 @@ namespace uFAction
 		protected abstract TDelegate InternalRemove(TDelegate handler);
 		protected override string InvalidHandlerMessage { get { return base.InvalidHandlerMessage + "Also make sure that the target object is a UnityEngine.Object"; } }
 		#endregion
+
+		Delegate[] cachedInvocationList;
+		public override void InvokeWithEditorArgs()
+		{
+			for (int i = 0; i < cachedInvocationList.Length; i++)
+			{
+				var handler = cachedInvocationList[i];
+				InternalInvokeWithEditorArgs(handler, getArgs(handler));
+			}
+		}
+
+		public void InvokeWithEditorArgsNotMemoized()
+		{
+			base.InvokeWithEditorArgs();
+		}
+
+		protected abstract void InternalInvokeWithEditorArgs(Delegate handler, object[] args);
+
+		private Func<Delegate, object[]> GetMemoizedArguments()
+		{
+			return new Func<Delegate, object[]>(handler =>
+			{
+				return TargetEntries.Where(t => t.Target == (Object)handler.Target)
+									.SelectMany(t => t.MethodEntries)
+									.FirstOrDefault(m => m.Info.AreMethodsEqualForDeclaringType(handler.Method))
+									.argsEntries.Select(a => a.value)
+									.ToArray();
+				//for (int i = 0; i < TargetEntries.Length; i++)
+				//{
+				//	var t = TargetEntries[i];
+				//	if (t.Target != handler.Target) continue;
+				//	for (int j = 0; j < t.MethodEntries.Count; j++)
+				//	{
+				//		var m = t.MethodEntries[j];
+				//		//if (m.Info != handler.Method) continue;
+				//		if (!m.Info.AreMethodsEqualForDeclaringType(handler.Method)) continue;
+				//		return m.argsEntries.Select(a => a.value).ToArray();
+				//	}
+				//}
+				//throw new Exception("Couldn't memoize handler " + handler);
+			}).Memoize();
+		}
+
+		Func<Delegate, object[]> getArgs
+		{
+			get
+			{
+				if (!cacheHasBeenUpdated)
+				{
+					cacheHasBeenUpdated = true;
+					_getArgs = GetMemoizedArguments();
+				}
+				return _getArgs;
+			}
+		}
+		Func<Delegate, object[]> _getArgs;
 	}
 }

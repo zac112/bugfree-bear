@@ -62,9 +62,7 @@ public class Tuple<T1, T2>
 
 	public static bool operator ==(Tuple<T1, T2> a, Tuple<T1, T2> b)
 	{
-		return
-		a.item1.Equals(b.item1) &&
-		a.item2.Equals(b.item2);
+		return a.item1.Equals(b.item1) && a.item2.Equals(b.item2);
 	}
 
 	public static bool operator !=(Tuple<T1, T2> a, Tuple<T1, T2> b)

@@ -522,8 +522,11 @@ namespace uFAction.Editors
 						{
 							gui.Label((i + 1) + "- (" + ReflectionHelper.TypeNameGauntlet(retType) + "): ");
 
-							gui.EnabledBlock(!arg.isUsingSource, () =>
-								 DoArgDirect(arg, retType));
+							gui.ChangeBlock(() =>
+								gui.EnabledBlock(!arg.isUsingSource, () =>
+									 DoArgDirect(arg, retType)),
+								MarkCacheUpdate
+							);
 
 							Foldout(arg.isUsingSource, newValue =>
 								arg.isUsingSource = newValue);
@@ -537,6 +540,12 @@ namespace uFAction.Editors
 				});
 			});
 		}
+
+		private void MarkCacheUpdate()
+		{
+			delegateObject.SetValue("cacheHasBeenUpdated", false);
+		}
+
 		private void DoArgDirect(ArgEntry arg, Type type)
 		{
 			var direct = arg.directValue;
@@ -637,7 +646,10 @@ namespace uFAction.Editors
 				);
 
 				// Field name popup
-				DoArgFieldPopup(arg, argReturnType);
+				gui.ChangeBlock(() =>
+					DoArgFieldPopup(arg, argReturnType),
+					MarkCacheUpdate
+				);
 			});
 		}
 		private void DoArgFieldPopup(ArgEntry arg, Type returnType)

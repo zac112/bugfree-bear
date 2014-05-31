@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using Object = UnityEngine.Object;
 
 namespace uFAction
@@ -46,7 +47,7 @@ namespace uFAction
 			return handler.Target as Object;
 		}
 
-		protected override System.Reflection.MethodInfo GetHandlerMethod(Func<TReturn> handler)
+		protected override MethodInfo GetHandlerMethod(Func<TReturn> handler)
 		{
 			return handler.Method;
 		}
@@ -69,6 +70,16 @@ namespace uFAction
 			var func = new UnityFunc<TReturn>();
 			func += handler;
 			return func;
+		}
+
+		public override void InvokeWithEditorArgs()
+		{
+			Invoke();
+		}
+
+		protected override void InternalInvokeWithEditorArgs(Delegate handler, object[] args)
+		{
+			throw new NotImplementedException();
 		}
 	}
 
@@ -131,6 +142,11 @@ namespace uFAction
 			del.Remove(handler);
 			return del;
 		}
+
+		protected override void InternalInvokeWithEditorArgs(Delegate handler, object[] args)
+		{
+			((Func<TArg, TReturn>)handler).Invoke((TArg)args[0]);
+		}
 	}
 
 	/// <summary>
@@ -174,7 +190,7 @@ namespace uFAction
 			return handler.Target as Object;
 		}
 
-		protected override System.Reflection.MethodInfo GetHandlerMethod(Func<TArg1, TArg2, TReturn> handler)
+		protected override MethodInfo GetHandlerMethod(Func<TArg1, TArg2, TReturn> handler)
 		{
 			return handler.Method;
 		}
@@ -190,6 +206,11 @@ namespace uFAction
 		{
 			del.Remove(handler);
 			return del;
+		}
+
+		protected override void InternalInvokeWithEditorArgs(Delegate handler, object[] args)
+		{
+			((Func<TArg1, TArg2, TReturn>)handler).Invoke((TArg1)args[0], (TArg2)args[1]);
 		}
 	}
 
@@ -250,6 +271,11 @@ namespace uFAction
 		{
 			del.Remove(handler);
 			return del;
+		}
+
+		protected override void InternalInvokeWithEditorArgs(Delegate handler, object[] args)
+		{
+			((Func<TArg1, TArg2, TArg3, TReturn>)handler).Invoke((TArg1)args[0], (TArg2)args[1], (TArg3)args[2]);
 		}
 	}
 }

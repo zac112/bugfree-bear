@@ -2,11 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 using EditorGUIFramework.Helpers;
+using System;
+using Vexe.RuntimeExtensions;
 
 namespace EditorGUIFramework
 {
-	public abstract class GUIControlBlock : GUIControl, IPositionableBlock
+	public abstract class GUIControlBlock : GUIControl, IPositionableBlock, IChangableGUIControl
 	{
+		private Action onChange;
+		public Action OnChange
+		{
+			get { return onChange; }
+			set
+			{
+				var changables = entries.Select(e => e.control)
+										.Where(c => c is IChangableGUIControl)
+										.Cast<IChangableGUIControl>();
+
+				foreach (var c in changables)
+					c.OnChange += value;
+
+				onChange = value;
+			}
+		}
+
 		protected List<GUIControlEntry> entries = new List<GUIControlEntry>();
 		protected Rectangle start;
 

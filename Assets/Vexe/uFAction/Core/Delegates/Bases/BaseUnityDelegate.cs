@@ -29,6 +29,9 @@ namespace uFAction
 
 		[SerializeField]
 		protected bool hasBeenModified;
+
+		[SerializeField]
+		protected bool cacheHasBeenUpdated;
 #endif
 		#endregion
 
@@ -94,7 +97,7 @@ namespace uFAction
 #endif
 		#endregion
 
-		// IInvokableFromEditorDelegate implementation
+		// IInvokableFromEditor implementation
 		#region
 		/// <summary>
 		/// Invokes the delgate using the args set from the editor

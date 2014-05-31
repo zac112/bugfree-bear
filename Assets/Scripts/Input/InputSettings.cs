@@ -1,49 +1,61 @@
+using System;
+using ShowEmAll;
 using UnityEngine;
-using System.Collections;
 
-[System.Serializable]
-public class InputSettings : ScriptableObject {
-
-	[SerializeField]
+[Serializable]
+public class InputSettings : ScriptableObject
+{
+	[SerializeField, FriendlyEnum]
 	private KeyCode moveLeft;
-	public KeyCode Left {
-		get{ return moveLeft; }
-		set{ moveLeft = value; }
-	}
 
-	[SerializeField]
+	[SerializeField, FriendlyEnum]
 	private KeyCode moveRight;
-	public KeyCode Right{
-		get{ return moveRight; }
-		set{ moveRight = value; }
-	}
 
-	[SerializeField]
+	[SerializeField, FriendlyEnum]
 	private KeyCode moveUp;
-	public KeyCode Up{
-		get{ return moveUp; }
-		set{ moveUp = value; }
-	}
 
-	[SerializeField]
+	[SerializeField, FriendlyEnum]
 	private KeyCode moveDown;
-	public KeyCode Down{
-		get{ return moveDown; }
-		set{ moveDown = value; }
-	}
 
-	[SerializeField]
+	[SerializeField, FriendlyEnum]
 	private KeyCode run;
-	public KeyCode Run{
-		get{ return run; }
-		set{ run = value; }
-	}
 
-	[SerializeField]
+	[SerializeField, FriendlyEnum]
 	private KeyCode interact;
-	public KeyCode Interact{
-		get{ return interact; }
-		set{ interact = value; }
+
+	public KeyCode Left
+	{
+		get { return moveLeft; }
+		set { moveLeft = value; }
 	}
 
+	public KeyCode Right
+	{
+		get { return moveRight; }
+		set { moveRight = value; }
+	}
+
+	public KeyCode Up
+	{
+		get { return moveUp; }
+		set { moveUp = value; }
+	}
+
+	public KeyCode Down
+	{
+		get { return moveDown; }
+		set { moveDown = value; }
+	}
+
+	public KeyCode Run
+	{
+		get { return run; }
+		set { run = value; }
+	}
+
+	public KeyCode Interact
+	{
+		get { return interact; }
+		set { interact = value; }
+	}
 }
