@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System;
 
-public class InputHandler : MonoBehaviour {
-
+public class InputHandler : MonoBehaviour
+{
 	[SerializeField]
 	private InputSettings settings;
 
@@ -11,110 +12,112 @@ public class InputHandler : MonoBehaviour {
 	/// <summary>
 	/// Occurs when any key is pressed.
 	/// </summary>
-	public static event System.Action OnAnyKeyDown;
+	public static event Action OnAnyKeyDown;
+
 	/// <summary>
 	/// Occurs when on the key for moving up is pressed. Is called from Update.
 	/// </summary>
-	public static event System.Action OnMoveUp;
+	public static event Action OnMoveUp;
+
 	/// <summary>
 	/// Occurs when on the key for moving down is pressed. Is called from Update.
 	/// </summary>
-	public static event System.Action OnMoveDown;
+	public static event Action OnMoveDown;
+
 	/// <summary>
 	/// Occurs when on the key for moving left is pressed. Is called from Update.
 	/// </summary>
-	public static event System.Action OnMoveLeft;
+	public static event Action OnMoveLeft;
+
 	/// <summary>
 	/// Occurs when on the key for moving right is pressed. Is called from Update.
 	/// </summary>
-	public static event System.Action OnMoveRight;
+	public static event Action OnMoveRight;
+
 	/// <summary>
 	/// Occurs when on the key for running is pressed.
 	/// </summary>
-	public static event System.Action OnStartRunning;
+	public static event Action OnStartRunning;
+
 	/// <summary>
 	/// Occurs when on the key for running is released.
 	/// </summary>
-	public static event System.Action OnStopRunning;
+	public static event Action OnStopRunning;
+
 	/// <summary>
-	/// Occurs when on the key for running is released.
+	/// Occurs when on the key for interacting is down
 	/// </summary>
-	public static event System.Action OnInteract;
+	public static event Action OnInteract;
 
-	void OnEnable(){
-		OnMoveUp += EmptyMethod;
-		OnMoveDown += EmptyMethod;
-		OnMoveLeft += EmptyMethod;
-		OnMoveRight += EmptyMethod;
-		OnStartRunning += EmptyMethod;
-		OnStopRunning += EmptyMethod;
-		OnInteract += EmptyMethod;
-		OnAnyKeyDown += EmptyMethod;
-
+	void OnEnable()
+	{
 #if UNITY_EDITOR
-		if(Resources.FindObjectsOfTypeAll<InputHandler>().Length > 1)
+		if (Resources.FindObjectsOfTypeAll<InputHandler>().Length > 1)
 			Debug.LogWarning("There is more than one InputHandler in the scene!");
 #endif
 	}
 
-	void Update(){
-		if(Input.anyKey){
+	void Update()
+	{
+		if (Input.anyKey)
+		{
 			OnAnyKeyDown();
 
-			if(Input.GetKey(settings.Down)){
+			if (Input.GetKey(settings.Down))
+			{
 				inputVector.y -= 1;
-				OnMoveDown();
+				SafeInvoke(OnMoveDown);
 				inputVector.y += 1;
 			}
 
-			if(Input.GetKey(settings.Up)){
+			if (Input.GetKey(settings.Up))
+			{
 				inputVector.y += 1;
-				OnMoveUp();
+				SafeInvoke(OnMoveUp);
 				inputVector.y -= 1;
 			}
 
-			if(Input.GetKey(settings.Left)){
+			if (Input.GetKey(settings.Left))
+			{
 				inputVector.x -= 1;
-				OnMoveLeft();
+				SafeInvoke(OnMoveLeft);
 				inputVector.x += 1;
 			}
 
-			if(Input.GetKey(settings.Right)){
+			if (Input.GetKey(settings.Right))
+			{
 				inputVector.x += 1;
-				OnMoveRight();
+				SafeInvoke(OnMoveRight);
 				inputVector.x -= 1;
 			}
 
-			if(Input.GetKeyDown(settings.Run)){
-				OnStartRunning();
+			if (Input.GetKeyDown(settings.Run))
+			{
+				SafeInvoke(OnStartRunning);
 			}
 
-			if(Input.GetKeyUp(settings.Run)){
-				OnStopRunning();
+			if (Input.GetKeyUp(settings.Run))
+			{
+				SafeInvoke(OnStopRunning);
 			}
 
-			if(Input.GetKeyDown(settings.Interact)){
-				OnInteract();
+			if (Input.GetKeyDown(settings.Interact))
+			{
+				SafeInvoke(OnInteract);
 			}
 			inputVector = Vector2.zero;
 		}
 	}
 
-	void EmptyMethod(){}
 
-	public static Vector2 GetInputVector ()
+	public static Vector2 GetInputVector()
 	{
 		return inputVector;
 	}
 
-	void OnDisable(){
-		OnMoveUp -= EmptyMethod;
-		OnMoveDown -= EmptyMethod;
-		OnMoveLeft -= EmptyMethod;
-		OnMoveRight -= EmptyMethod;
-		OnStartRunning -= EmptyMethod;
-		OnStopRunning -= EmptyMethod;
-		OnInteract -= EmptyMethod;
-		OnAnyKeyDown -= EmptyMethod;
+	private static void SafeInvoke(Action del)
+	{
+		if (del != null)
+			del();
 	}
 }

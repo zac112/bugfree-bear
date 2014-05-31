@@ -64,6 +64,11 @@
             Selects the specified object
             </summary>
         </member>
+        <member name="M:Vexe.EditorHelpers.EditorHelper.InspectTarget(UnityEngine.GameObject)">
+            <summary>
+            Creates a new inspector window instance and locks it to inspect the specified target
+            </summary>
+        </member>
         <member name="P:Vexe.EditorHelpers.EditorHelper.InspectorWindowType">
             <summary>
             Gets a Type object for the type 'InspectorWindow'

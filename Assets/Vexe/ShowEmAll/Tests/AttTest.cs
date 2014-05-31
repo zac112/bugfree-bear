@@ -14,7 +14,7 @@ public enum TestEnum
 	three = 3
 }
 
-public class AttTest : StereoBehaviour
+public class AttTest : BetterBehaviour
 {
 	public UnityDateTime dt = new UnityDateTime();
 	public ScaledCurve curve;

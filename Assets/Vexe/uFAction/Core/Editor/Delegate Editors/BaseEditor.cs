@@ -192,7 +192,7 @@ namespace uFAction.Editors
 			if (!Settings.sShowExtensionMethods)
 				return Enumerable.Empty<MethodInfo>();
 
-			return from.GetExtensionMethods(asms, higherType, returnType, paramTypes, modifiers, exactBinding);
+			return from.GetType().GetExtensionMethods(asms, higherType, returnType, paramTypes, modifiers, exactBinding);
 		}
 
 		protected void ApplyGOEntries()
@@ -306,7 +306,8 @@ namespace uFAction.Editors
 		{
 			this.delegateObject = delegateObject;
 			Set(title, canSetArgsFromEditor, forceExpand);
-			Set(gui, spDelegate.serializedObject.targetObject);
+			this.gui = gui;
+			this.target = spDelegate.serializedObject.targetObject;
 			IntegrateDataToEditor();
 		}
 
@@ -521,8 +522,11 @@ namespace uFAction.Editors
 						{
 							gui.Label((i + 1) + "- (" + ReflectionHelper.TypeNameGauntlet(retType) + "): ");
 
-							gui.EnabledBlock(!arg.isUsingSource, () =>
-								 DoArgDirect(arg, retType));
+							gui.ChangeBlock(() =>
+								gui.EnabledBlock(!arg.isUsingSource, () =>
+									 DoArgDirect(arg, retType)),
+								MarkCacheUpdate
+							);
 
 							Foldout(arg.isUsingSource, newValue =>
 								arg.isUsingSource = newValue);
@@ -536,6 +540,12 @@ namespace uFAction.Editors
 				});
 			});
 		}
+
+		private void MarkCacheUpdate()
+		{
+			delegateObject.SetValue("cacheHasBeenUpdated", false);
+		}
+
 		private void DoArgDirect(ArgEntry arg, Type type)
 		{
 			var direct = arg.directValue;
@@ -636,7 +646,10 @@ namespace uFAction.Editors
 				);
 
 				// Field name popup
-				DoArgFieldPopup(arg, argReturnType);
+				gui.ChangeBlock(() =>
+					DoArgFieldPopup(arg, argReturnType),
+					MarkCacheUpdate
+				);
 			});
 		}
 		private void DoArgFieldPopup(ArgEntry arg, Type returnType)

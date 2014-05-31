@@ -1,15 +1,27 @@
 ﻿using UnityEngine;
+using System;
+using Vexe.RuntimeExtensions;
 
-public abstract class Mover : MonoBehaviour {
-
+public abstract class Mover : MonoBehaviour
+{
 	[SerializeField]
 	private float speed = 2f;
-	public float Speed {
-		get {return speed;}
-		set {speed = value;}
+
+	protected Transform cachedTransform;
+
+	void Awake()
+	{
+		cachedTransform = transform;
 	}
 
-	public virtual void Move (Vector2 direction){
-		transform.position = Vector2.MoveTowards(transform.position,direction,Speed/100);
+	public float Speed
+	{
+		get { return speed; }
+		set { speed = value; }
+	}
+
+	public virtual void Move(Vector2 direction)
+	{
+		cachedTransform.position = Vector2.MoveTowards(cachedTransform.position, direction, Speed / 100);
 	}
 }

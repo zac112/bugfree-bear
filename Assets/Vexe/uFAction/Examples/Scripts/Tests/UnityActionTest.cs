@@ -26,9 +26,19 @@ public class UnityActionTest : MonoBehaviour
 		print("StaticParamlessMethod");
 	}
 
-	public void Vector3Method(Vector3 v)
+	public void Vector3Method1(Vector3 v)
 	{
-		print("Vector3Method: " + v);
+		//print("Vector3Method: " + v);
+	}
+
+	public void Vector3Method2(Vector3 v)
+	{
+		//print("Vector3Method2: " + v);
+	}
+
+	public void Vector3Method3(Vector3 v)
+	{
+		//print("Vector3Method3: " + v);
 	}
 
 	void OnGUI()
@@ -44,16 +54,16 @@ public class UnityActionTest : MonoBehaviour
 			paramlessTest = true;
 
 		if (GUILayout.Button("Add public test method"))
-			onParamTest.Add(Vector3Method);
+			onParamTest.Add(Vector3Method1);
 
 		if (GUILayout.Button("Remove public test method"))
-			onParamTest.Remove(Vector3Method);
+			onParamTest.Remove(Vector3Method1);
 
 		if (GUILayout.Button("Set public test method"))
-			onParamTest.Set(Vector3Method);
+			onParamTest.Set(Vector3Method1);
 
 		if (GUILayout.Button("is public test method contained?"))
-			print(onParamTest.Contains(Vector3Method));
+			print(onParamTest.Contains(Vector3Method1));
 
 		if (GUILayout.Button("Clear delegate"))
 			onParamTest.Clear();

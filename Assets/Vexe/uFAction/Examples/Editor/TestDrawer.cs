@@ -9,9 +9,8 @@ using UnityEngine;
 namespace Assets.Vexe.uFAction.Scripts.Examples.Editor
 {
 	[CustomPropertyDrawer(typeof(DrawMeInACustomWayPlease))]
-	public class TestDrawer : PropertyDrawer
+	public class TestDrawer : BetterPropertyDrawer<DrawMeInACustomWayPlease>
 	{
-		private GUIWrapper gui = new GUIWrapper();
 		private string[] options = { "Option1", "Option2", "Option3" };
 		private int selectionIndex;
 		private SerializedProperty someProperty;
@@ -23,17 +22,7 @@ namespace Assets.Vexe.uFAction.Scripts.Examples.Editor
 		private float floatValue;
 		private bool toggle;
 
-		public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
-		{
-			return gui.Layout(() => Code(property));
-		}
-
-		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
-		{
-			gui.Draw(position, () => Code(property));
-		}
-
-		private void Code(SerializedProperty property)
+		protected override void Code()
 		{
 			gui.BoundsField(boundsValue, newBounds => boundsValue = newBounds);
 			gui.RectField(rectValue, newRect => rectValue = newRect);

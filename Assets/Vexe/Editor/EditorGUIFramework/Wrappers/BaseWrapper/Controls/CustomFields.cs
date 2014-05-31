@@ -4,6 +4,8 @@ using Option = EditorGUIFramework.GUIOption;
 using UnityEditor;
 using System;
 using Vexe.EditorHelpers;
+using Vexe.EditorExtensions;
+using Vexe.RuntimeHelpers;
 
 namespace EditorGUIFramework
 {
@@ -15,18 +17,27 @@ namespace EditorGUIFramework
 		/// like DraggablePropertyObjectField, and DragObjectField (they support dropping by default)
 		/// or manually register your field for drop support via RegisterFieldForDrop, or even use DragAndDropObjectField.
 		/// </summary>
-		public void DraggableLabelField(string label, string field, Object value, GUIStyle style = null, MouseCursor cursor = MouseCursor.Link)
+		public void DraggableLabelField(string label, string field, Object value, float labelWidth, GUIStyle style, MouseCursor cursor)
 		{
+			Label(label, labelWidth == 0 ? null : new TOption { Width = labelWidth - 3.5f });
 			Label(field, style ?? GUI.skin.textField);
 			GetLastRect(lastRect => GuiHelper.RegisterFieldForDrag(lastRect, value));
 		}
-		public void DraggableLabelField(string label, Object value)
+		public void DraggableLabelField(string label, string field, Object value, float labelWidth, GUIStyle style)
 		{
-			DraggableLabelField(label, value == null ? "null" : value.name, value);
+			DraggableLabelField(label, field, value, labelWidth, style, MouseCursor.Link);
 		}
-		public void DraggableLabelField(Object value)
+		public void DraggableLabelField(string label, string field, Object value, float labelWidth)
 		{
-			DraggableLabelField("", value);
+			DraggableLabelField(label, field, value, labelWidth, null);
+		}
+		public void DraggableLabelField(string label, Object value, float labelWidth)
+		{
+			DraggableLabelField(label, value == null ? "null" : value.name, value, labelWidth);
+		}
+		public void DraggableLabelField(Object value, float labelWidth = 0)
+		{
+			DraggableLabelField("", value, labelWidth);
 		}
 		public void DragDropArea<T>(
 			string label, int labelSize, GUIStyle style,
@@ -91,5 +102,79 @@ namespace EditorGUIFramework
 				Space(postSpace);
 			});
 		}
+
+		/// <summary>
+		/// A mutable object field that mutates between being a DraggableLabeledObjectField and a text field for a serialized property.
+		/// </summary>
+		public void MutablePropertyObjectField(
+			SerializedProperty sp,
+			SerializedProperty spIsObjectField,
+			Object undoObject,
+			string label,
+			Object dragObject,
+			string textFieldValue,
+			Action<string> setTextField,
+			Action onToggle,
+			float labelWidth,
+			Predicate predicate = null
+			)
+		{
+			predicate = predicate ?? DefaultMutableObjectFieldTogglePredicate;
+			bool isObjectField = spIsObjectField.boolValue;
+			ChangeBlock(() =>
+			{
+				if (isObjectField)
+				{
+					DraggableLabelField(label, dragObject, labelWidth);
+				}
+				else
+				{
+					Undo.RecordObject(undoObject, "Renamed " + textFieldValue);
+					LabelWidthBlock(labelWidth, () =>
+					{
+						TextField(label, textFieldValue, setTextField);
+					});
+				}
+
+				GetLastRect(lastRect =>
+				{
+					if (lastRect.Contains(Event.current.mousePosition))
+					{
+						if (predicate())
+						{
+							if (onToggle != null) onToggle();
+							spIsObjectField.boolValue = !isObjectField;
+						}
+					}
+				});
+			},
+			() => sp.serializedObject.ApplyModifiedProperties());
+		}
+
+		public void MutablePropertyObjectField(
+			SerializedProperty sp,
+			SerializedProperty spIsObjectField,
+			string label,
+			Action onToggle,
+			float labelWidth)
+		{
+			bool isNull = sp.objectReferenceValue == null;
+			Action<string> setter;
+			if (isNull) setter = s => { }; // or simply null, but then we have to check if the setter is not null, before we invoke it
+			else setter = n => sp.objectReferenceValue.name = n;
+			MutablePropertyObjectField(sp, spIsObjectField, sp.gameObject(), label, sp.gameObject(), isNull ? "" : sp.objectReferenceValue.name, setter, onToggle, labelWidth);
+		}
+
+		/// <summary>
+		/// Default predicate for toggling mutable object fields (Ctrl + MiddleMouse Down)
+		/// </summary>
+		private static readonly Predicate DefaultMutableObjectFieldTogglePredicate = () =>
+		{
+			if (Event.current.control)
+			{
+				return EventsHelper.MouseEvents.IsMMB_MouseDown();
+			}
+			return false;
+		};
 	}
 }

@@ -14,7 +14,7 @@ namespace EditorGUIFramework
 	{
 		public const MiniButtonStyle DefaultMiniStyle = MiniButtonStyle.Mid;
 		public const MiniButtonStyle DefaultModStyle = MiniButtonStyle.ModMid;
-		public static TOption MiniOption = new TOption { Width = DEFAULT_MINI_WIDTH, Height = DEFAULT_MINI_HEIGHT };
+		public static TOption DefaultMiniOption = new TOption { Width = DEFAULT_MINI_WIDTH, Height = DEFAULT_MINI_HEIGHT };
 		private static GUIStyle DefaultButtonStyle { get { return GUI.skin.button; } }
 
 		public void Button(string text)
@@ -70,7 +70,7 @@ namespace EditorGUIFramework
 		}
 		public void MiniButton(string text, MiniButtonStyle style, Action code)
 		{
-			MiniButton(text, style, MiniOption, code);
+			MiniButton(text, style, DefaultMiniOption, code);
 		}
 		public void MiniButton(string text, MiniButtonStyle style, TOption option, Action code)
 		{
@@ -78,7 +78,7 @@ namespace EditorGUIFramework
 		}
 		public void MiniButton(string text, string tooltip, MiniButtonStyle style, Action code)
 		{
-			MiniButton(text, tooltip, style, MiniOption, code);
+			MiniButton(text, tooltip, style, DefaultMiniOption, code);
 		}
 		public void MiniButton(string text, string tooltip, MiniButtonStyle style, TOption option, Action code)
 		{
@@ -86,7 +86,7 @@ namespace EditorGUIFramework
 		}
 		public void MiniButton(GUIContent content, MiniButtonStyle style, Action code)
 		{
-			MiniButton(content, style, MiniOption, code);
+			MiniButton(content, style, DefaultMiniOption, code);
 		}
 		public void MiniButton(GUIContent content, MiniButtonStyle style, TOption option, Action code)
 		{
@@ -201,9 +201,17 @@ namespace EditorGUIFramework
 		{
 			CheckButton(value, setToggle, whatToToggle, DefaultMiniStyle);
 		}
+		public void CheckButton(sp foldout, string whatToToggle)
+		{
+			CheckButton(foldout.boolValue, b => foldout.boolValue = b, whatToToggle);
+		}
 		public void CheckButton(bool value, Action<bool> setToggle, string whatToToggle, MiniButtonStyle style)
 		{
 			ToggleButton(value, setToggle, "✔", "", whatToToggle, style);
+		}
+		public void CheckButton(sp foldout, string whatToToggle, MiniButtonStyle style)
+		{
+			CheckButton(foldout.boolValue, b => foldout.boolValue = b, whatToToggle, style);
 		}
 
 		public void RefreshButton(TOption option, Action code)
@@ -212,7 +220,7 @@ namespace EditorGUIFramework
 		}
 		public void RefreshButton(Action code)
 		{
-			RefreshButton(MiniOption, code);
+			RefreshButton(DefaultMiniOption, code);
 		}
 		public void SelectionButton(string whatToSelect, TOption option, Action code)
 		{
@@ -220,11 +228,28 @@ namespace EditorGUIFramework
 		}
 		public void SelectionButton(string whatToSelect, Action code)
 		{
-			SelectionButton(whatToSelect, MiniOption, code);
+			SelectionButton(whatToSelect, DefaultMiniOption, code);
 		}
 		public void SelectionButton(Action code)
 		{
 			SelectionButton("", code);
+		}
+
+		public void InspectButton(GameObject go, MiniButtonStyle style, TOption option)
+		{
+			MiniButton("⏎", "Inspect", style, option, () => EditorHelper.InspectTarget(go));
+		}
+		public void InspectButton(GameObject go, MiniButtonStyle style)
+		{
+			InspectButton(go, style, DefaultMiniOption);
+		}
+		public void InspectButton(GameObject go, TOption option)
+		{
+			InspectButton(go, DefaultMiniStyle, option);
+		}
+		public void InspectButton(GameObject go)
+		{
+			InspectButton(go, DefaultMiniStyle, DefaultMiniOption);
 		}
 	}
 }
