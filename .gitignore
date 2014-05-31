@@ -1,7 +1,7 @@
 $PROJDIR/Temp/
 $PROJDIR/Library/
 $PROJDIR/Obj/
-
+ 
 *.DS_store
 UnityVS*
 
@@ -9,6 +9,7 @@ UnityVS*
 Temp/
 Temp.meta
 /Library
+/Obj
+/Build
 
 !.gitignore
-
