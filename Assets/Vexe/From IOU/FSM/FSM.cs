@@ -4,6 +4,8 @@ using System.Linq;
 using Vexe.RuntimeExtensions;
 using System;
 using ShowEmAll;
+using Vexe.RuntimeHelpers;
+using Vexe.RuntimeHelpers.Helpers;
 
 /// <summary>
 /// Notes:
@@ -83,6 +85,82 @@ public class FSM : BetterBehaviour
 	public void TransitionHasBeenMade(FSMTransition transition)
 	{
 		CurrentState = transition.ToState;
+	}
+
+	/// <summary>
+	/// Creates a new state with the specified name. Returns the created state.
+	/// </summary>
+	public FSMState CreateNewState(string stateName)
+	{
+		var newState = GOHelper.CreateGoWithMb<FSMState>(stateName, transform);
+		states.Add(newState);
+		if (states.Count == 1) // if it's the first state to add, then definitely it's the start state
+		{
+			StartState = newState;
+			CurrentState = newState;
+		}
+		return newState;
+	}
+
+	/// <summary>
+	/// Creates a new transition with the specified name inside the specified 'from' state
+	/// Returns the created transition
+	/// </summary>
+	public FSMTransition CreateNewTransition(string transitionName, FSMState from)
+	{
+		var newTransition = GOHelper.CreateGoWithMb<FSMTransition>(transitionName, from.transform);
+		newTransition.OnTransition.Add(TransitionHasBeenMade);
+		from.Transitions.Add(newTransition);
+		return newTransition;
+	}
+
+	/// <summary>
+	/// Removes the state at the specified index (removes the state's reference and destroys its gameObject)
+	/// Throws an IndexOutOfRangeException if the index wasn't in the states list bounds
+	/// (less than 0 or greater than or equal to its length)
+	/// </summary>
+	public void RemoveState(int atIndex)
+	{
+		if (!states.InBounds(atIndex))
+			throw new IndexOutOfRangeException("atIndex");
+		states[atIndex].gameObject.Destroy();
+		states.RemoveAt(atIndex);
+	}
+
+	/// <summary>
+	/// Removes the specified state. Will resolve to RemoveState(stateIndex)
+	/// So if the state doesn't exist, an IndexOutOfRangeException is thrown
+	/// </summary>
+	public void RemoveState(FSMState state)
+	{
+		RemoveState(states.IndexOf(state));
+	}
+
+	/// <summary>
+	/// Removes the transition specified by the passed index from the specified state
+	/// (removes the transition's reference and destroys its gameObject)
+	/// Throws an ArgumentNullException if 'from' was null
+	/// Throws an IndexOutOfRangeException if 'atIndex' wasn't in the bounds of the state's Transitions list
+	/// </summary>
+	public void RemoveTransition(FSMState from, int atIndex)
+	{
+		AssertionHelper.AssertArgumentNotNull(from, "from");
+		AssertionHelper.AssertInBounds(from.Transitions, atIndex, "atIndex");
+
+		var transitions = from.Transitions;
+		transitions[atIndex].gameObject.Destroy();
+		transitions.RemoveAt(atIndex);
+	}
+
+	/// <summary>
+	/// Removes the specified transition from the specified state
+	/// Will resolve to RemoveTransition(from, transitionIndex)
+	/// So if the transition wasn't found (its index is -1) an IndexOutOfRangeException is thrown
+	/// </summary>
+	public void RemoveTransition(FSMState from, FSMTransition transition)
+	{
+		AssertionHelper.AssertArgumentNotNull(from, "from");
+		RemoveTransition(from, from.Transitions.IndexOf(transition));
 	}
 
 	public void ResetFSM()

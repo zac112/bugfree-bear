@@ -58,6 +58,8 @@ public class FSMEditor : BetterBehaviourEditor
 			InitStyles();
 		}
 
+		EventsHelper.OnUndoRedoPerformed(Repaint);
+
 		serializedObject.Update();
 
 		gui.Space(3f);
@@ -112,7 +114,7 @@ public class FSMEditor : BetterBehaviourEditor
 						if (sure)
 						{
 							foreach (sp s in spStates)
-								DestroyImmediate(s.gameObject());//Undo.DestroyObjectImmediate(s.gameObject());
+								DestroyImmediate(s.gameObject());
 							spStates.ClearArray();
 						}
 					})
@@ -134,16 +136,9 @@ public class FSMEditor : BetterBehaviourEditor
 					gui.EnabledBlock(!string.IsNullOrEmpty(spFsmStateName.stringValue), () =>
 						gui.AddButton("state", MiniButtonStyle.Right, () =>
 						{
-							var state = GOHelper.CreateGoWithMb<FSMState>(spFsmStateName.stringValue, fsm.transform);
-							Undo.RegisterCreatedObjectUndo(state.gameObject, "Created new state");
-							spStates.Add(state);
-							serializedObject.ApplyModifiedProperties();
-							if (spStates.arraySize == 1) // if it's the first state to add, then definitely it's the start state
-							{
-								fsm.StartState = state;
-								fsm.CurrentState = state;
-								serializedObject.Update();
-							}
+							var newState = fsm.CreateNewState(spFsmStateName.stringValue);
+							Undo.RegisterCreatedObjectUndo(newState.gameObject, "Created new state");
+							serializedObject.Update();
 							spFoldoutMain.SetBoolIfNot(true);
 						})
 					);
@@ -190,8 +185,7 @@ public class FSMEditor : BetterBehaviourEditor
 				// State field and Util buttons
 				DoState(i, spState, soState, spStateEditorData, spTransitions, spFoldoutState, () =>
 				{
-					DestroyImmediate(states[i].gameObject);
-					states.RemoveAt(i);
+					fsm.RemoveState(i);
 					serializedObject.Update();
 					hasRemovedState = true;
 				});
@@ -282,12 +276,9 @@ public class FSMEditor : BetterBehaviourEditor
 					@enableClear: spTransitions.arraySize > 0,
 					@add: () =>
 					{
-						var transition = GOHelper.CreateGoWithMb<FSMTransition>(spNewTransitionName.stringValue, spState.monoBehaviour().transform);
-						transition.OnTransition.Add(fsm.TransitionHasBeenMade);
-						Undo.RegisterCreatedObjectUndo(transition.gameObject, "Created new transition");
-						spTransitions.Add(transition);
-						spFoldoutState.SetBoolIfNot(true);
-						soState.ApplyModifiedProperties();
+						var newTransition = fsm.CreateNewTransition(spNewTransitionName.stringValue, spState.GetValue<FSMState>());
+						soState.Update();
+						Undo.RegisterCreatedObjectUndo(newTransition.gameObject, "Created new transition");
 					},
 					@enableAdd: !string.IsNullOrEmpty(spNewTransitionName.stringValue),
 					@spFoldoutNewTransition: spStateEditorData.FindPropertyRelative("fold_newTransition"),
@@ -316,10 +307,7 @@ public class FSMEditor : BetterBehaviourEditor
 
 			DoTransition(j, spTransition, () =>
 			{
-				var transitions = fromState.Transitions;
-				DestroyImmediate(transitions[j].gameObject);
-				transitions.RemoveAt(j);
-				soState.Update();
+				fsm.RemoveTransition(fromState, j);
 				hasRemovedTransition = true;
 			}, fromState);
 
