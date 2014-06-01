@@ -158,6 +158,8 @@ namespace ShowEmAll
 		}
 		public override void OnInspectorGUI()
 		{
+			base.OnInspectorGUI();
+
 			StuffHelper.SerializedObjectBlock(serializedObject, () =>
 			{
 				DoMembers(DoFieldsFoldout, fields, fieldInfo =>
