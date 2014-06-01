@@ -4,6 +4,22 @@
         <name>RuntimeHelpers</name>
     </assembly>
     <members>
+        <member name="M:Vexe.RuntimeHelpers.Helpers.AssertionHelper.AssertNotNull(System.Object,System.String)">
+            <summary>
+            Throws a NullReferenceException if obj was null
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeHelpers.Helpers.AssertionHelper.AssertArgumentNotNull(System.Object,System.String)">
+            <summary>
+            Throws an ArgumentNullException if arg was null
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeHelpers.Helpers.AssertionHelper.AssertInBounds``1(System.Collections.Generic.IList{``0},System.Int32,System.String)">
+            <summary>
+            Throws an IndexOutOfRangeException if the specified index was out of the specified list's bounds
+            (less than 0 or greater than or equal to its length)
+            </summary>
+        </member>
         <member name="T:Vexe.RuntimeHelpers.Classes.GUI.ColorDuo">
             <summary>
             Represents a Color Duo - used by the editor to easily alternate between colors
