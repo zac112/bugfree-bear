@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using Vexe.EditorHelpers;
 using Vexe.EditorExtensions;
+using Vexe.RuntimeExtensions;
 using EditorGUIFramework;
 using Vexe.RuntimeHelpers;
 using ShowEmAll;
@@ -28,8 +29,6 @@ public class FSMEditor : BetterBehaviourEditor
 	private sp spFoldoutMain;
 	private FSM fsm;
 	private List<FSMState> states;
-	private FSMState currentIteratedState;
-	private SerializedObject currentIteratedSoState;
 	private bool hasRemovedTransition;
 	private bool hasRemovedState;
 
@@ -178,25 +177,24 @@ public class FSMEditor : BetterBehaviourEditor
 				}
 
 				hasRemovedState = false;
-				currentIteratedState = states[i];
 
-				var spStateEditorData = spState.FindPropertyRelativeInMB("mEditorData", out currentIteratedSoState);
-				var spTransitions = currentIteratedSoState.FindProperty("transitions");
+				SerializedObject soState;
+				var spStateEditorData = spState.FindPropertyRelativeInMB("mEditorData", out soState);
+				var spTransitions = soState.FindProperty("transitions");
 				var spFoldoutState = spStateEditorData.FindPropertyRelative("fold_state");
 
 				if (i != 0) gui.Splitter();
 
-				currentIteratedSoState.Update();
+				soState.Update();
 
 				// State field and Util buttons
-				DoState(i, spState, spStateEditorData, spTransitions, spFoldoutState, () =>
-					{
-						DestroyImmediate(states[i].gameObject);
-						states.RemoveAt(i);
-						serializedObject.Update();
-						hasRemovedState = true;
-					}
-				);
+				DoState(i, spState, soState, spStateEditorData, spTransitions, spFoldoutState, () =>
+				{
+					DestroyImmediate(states[i].gameObject);
+					states.RemoveAt(i);
+					serializedObject.Update();
+					hasRemovedState = true;
+				});
 
 				if (!hasRemovedState)
 					iLoop++;
@@ -206,7 +204,7 @@ public class FSMEditor : BetterBehaviourEditor
 		gui.Space(5f);
 	}
 
-	private void DoState(int i, sp spState, sp spStateEditorData, sp spTransitions, sp spFoldoutState, Action removeState)
+	private void DoState(int i, sp spState, SerializedObject soState, sp spStateEditorData, sp spTransitions, sp spFoldoutState, Action removeState)
 	{
 		var nextColor = GuiHelper.GreenStyleDuo.NextColor;
 		gui.HorizontalBlock(states[i] == fsm.CurrentState ? GuiHelper.GreenStyleDuo.CurrentStyle : GUIStyle.none, () =>
@@ -262,7 +260,7 @@ public class FSMEditor : BetterBehaviourEditor
 		if (hasRemovedState)
 			return;
 
-		currentIteratedSoState.ApplyModifiedProperties(); // if we don't do this, then newly added transitions won't appear
+		soState.ApplyModifiedProperties(); // if we don't do this, then newly added transitions won't appear
 
 		if (spFoldoutState.boolValue)
 		{
@@ -270,7 +268,7 @@ public class FSMEditor : BetterBehaviourEditor
 			{
 				var spNewTransitionName = spStateEditorData.FindPropertyRelative("newTransitionName");
 				DoTransitionsHeader(
-					@apply: () => currentIteratedSoState.ApplyModifiedProperties(),
+					@apply: () => soState.ApplyModifiedProperties(),
 					@clear: () =>
 					{
 						bool sure = EditorUtility.DisplayDialog("Confirm action", "Are you sure you want to clear all transitions? (Can't be undone!)", "Yes", "No");
@@ -285,22 +283,23 @@ public class FSMEditor : BetterBehaviourEditor
 					@add: () =>
 					{
 						var transition = GOHelper.CreateGoWithMb<FSMTransition>(spNewTransitionName.stringValue, spState.monoBehaviour().transform);
+						transition.OnTransition.Add(fsm.TransitionHasBeenMade);
 						Undo.RegisterCreatedObjectUndo(transition.gameObject, "Created new transition");
 						spTransitions.Add(transition);
 						spFoldoutState.SetBoolIfNot(true);
-						currentIteratedSoState.ApplyModifiedProperties();
+						soState.ApplyModifiedProperties();
 					},
 					@enableAdd: !string.IsNullOrEmpty(spNewTransitionName.stringValue),
 					@spFoldoutNewTransition: spStateEditorData.FindPropertyRelative("fold_newTransition"),
 					@spNewTransitionName: spNewTransitionName
 				);
 
-				DoTransitions(spTransitions);
+				DoTransitions(spTransitions, states[i], soState);
 			});
 		}
 	}
 
-	private void DoTransitions(sp spTransitions)
+	private void DoTransitions(sp spTransitions, FSMState fromState, SerializedObject soState)
 	{
 		GuiHelper.BlueColorDuo.Reset();
 		for (int jLoop = 0; jLoop < spTransitions.arraySize; )
@@ -317,19 +316,19 @@ public class FSMEditor : BetterBehaviourEditor
 
 			DoTransition(j, spTransition, () =>
 			{
-				var transitions = (currentIteratedSoState.targetObject as FSMState).Transitions;
+				var transitions = fromState.Transitions;
 				DestroyImmediate(transitions[j].gameObject);
 				transitions.RemoveAt(j);
-				currentIteratedSoState.Update();
+				soState.Update();
 				hasRemovedTransition = true;
-			});
+			}, fromState);
 
 			if (!hasRemovedTransition)
 				jLoop++;
 		}
 	}
 
-	private void DoTransition(int j, sp spTransition, Action removeTransition)
+	private void DoTransition(int j, sp spTransition, Action removeTransition, FSMState fromState)
 	{
 		SerializedObject soTransition;
 		var spTransitionEditorData = spTransition.FindPropertyRelativeInMB("mEditorData", out soTransition);
@@ -375,11 +374,11 @@ public class FSMEditor : BetterBehaviourEditor
 		// "To state" fold
 		if (spFoldoutTransition.boolValue)
 		{
-			DoToState(j, soTransition, spTransitionEditorData);
+			DoToState(j, soTransition, fromState);
 		}
 	}
 
-	private void DoToState(int j, SerializedObject soTransition, sp spTransitionEditorData)
+	private void DoToState(int j, SerializedObject soTransition, FSMState currentIteratedState)
 	{
 		gui.HorizontalBlock(() =>
 		{
@@ -406,7 +405,7 @@ public class FSMEditor : BetterBehaviourEditor
 
 			gui.SelectionButton("state", () =>
 				SelectionWindow.Show<FSMState>(
-					() => fsm.States.ToArray(),
+					() => fsm.States.Disinclude(currentIteratedState).ToArray(),
 					spToState.GetValue<FSMState>,
 					s => { spToState.objectReferenceValue = s; soTransition.ApplyModifiedProperties(); serializedObject.ApplyModifiedProperties(); },
 					s => s.name,

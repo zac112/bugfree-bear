@@ -76,6 +76,15 @@ public class FSM : BetterBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Notifies the FSM that the specified transition has made a transition.
+	/// Sets the current fsm state to the transition's toState
+	/// </summary>
+	public void TransitionHasBeenMade(FSMTransition transition)
+	{
+		CurrentState = transition.ToState;
+	}
+
 	public void ResetFSM()
 	{
 		CurrentState = startState;
