@@ -90,6 +90,20 @@ namespace ShowEmAll
 
 			var mb = TypedTarget;
 
+			if (mb == null)
+			{
+				Debug.LogError(string.Concat(new string[] {
+					"Casting target object to BetterBehaviour failed! Something's wrong. ", 
+					"Maybe you switched back and inherited MonoBehaviour instead of BetterBehaviour ",
+					"and you still had your gameObject selected? ",
+					"If that's the case then the BetterBehaviourEditor is still there in memory ",
+					"and so this could be resolved by reselcting your gameObject. ",
+					"Destroying this BetterBehaviourEditor instance anyway..."
+				}));
+				DestroyImmediate(this);
+				return;
+			}
+
 			fields = (from f in mb.GetFields(AllBindings)
 					  let isHidden = f.IsDefined(typeof(HideInInspector))
 					  where !isHidden && (f.IsPublic || f.IsDefined(typeof(SerializeField)))
