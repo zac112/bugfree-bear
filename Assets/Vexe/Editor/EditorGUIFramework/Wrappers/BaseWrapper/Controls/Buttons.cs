@@ -72,6 +72,11 @@ namespace EditorGUIFramework
 		{
 			MiniButton(text, style, DefaultMiniOption, code);
 		}
+		public void MiniButton(string text, TOption option, Action code)
+		{
+			MiniButton(text, DefaultMiniStyle, option, code);
+		}
+
 		public void MiniButton(string text, MiniButtonStyle style, TOption option, Action code)
 		{
 			MiniButton(text, "", style, option, code);
