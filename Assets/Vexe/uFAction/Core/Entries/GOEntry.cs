@@ -28,7 +28,9 @@ namespace uFAction
 		{
 			get
 			{
-				return IsNa ? _targetEntries.Select(e => e.Target).ToArray() : go.GetAllComponentsIncludingSelf();
+				return IsNa ?
+					_targetEntries.Select(e => e.Target).ToArray() :
+					go.GetAllComponentsIncludingSelf();
 			}
 		}
 		public bool IsNa { get { return _go == GOHelper.EmptyGO; } }
@@ -42,7 +44,8 @@ namespace uFAction
 			: this()
 		{ _go = go; }
 
-		public GOEntry(GameObject go, string id) : this(go)
+		public GOEntry(GameObject go, string id)
+			: this(go)
 		{
 			this.id = id;
 		}
@@ -51,7 +54,8 @@ namespace uFAction
 			: this(target.gameObject)
 		{ _targetEntries.Add(target); }
 
-		public GOEntry(TargetEntry target, string id) : this(target)
+		public GOEntry(TargetEntry target, string id)
+			: this(target)
 		{
 			this.id = id;
 		}

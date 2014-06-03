@@ -6,7 +6,6 @@ using Vexe.RuntimeExtensions;
 using System;
 using spType = UnityEditor.SerializedPropertyType;
 using Vexe.EditorExtensions;
-using Vexe.RuntimeExtensions;
 
 namespace ShowEmAll.PropertyDrawers
 {
