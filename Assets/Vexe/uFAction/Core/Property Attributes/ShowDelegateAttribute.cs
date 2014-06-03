@@ -24,17 +24,17 @@ namespace uFAction
 		/// </summary>
 		public readonly bool canSetArgsFromEditor;
 
-		public ShowDelegate(string title, bool canSetArgsFromEditor, bool forceExpand)
+		/// <summary>
+		/// If true, the delegate can't be modified from the editor (can't remove/add/set handlers)
+		/// </summary>
+		//public readonly bool readonlyDelegate;
+
+		public ShowDelegate(string title, bool canSetArgsFromEditor = true, bool forceExpand = false)//, bool readonlyDelegate = false)
 		{
 			this.title = title;
 			this.canSetArgsFromEditor = canSetArgsFromEditor;
 			this.forceExpand = forceExpand;
+			//this.readonlyDelegate = readonlyDelegate;
 		}
-
-		public ShowDelegate(string title, bool canSetArgsFromEditor) :
-			this(title, canSetArgsFromEditor, false) { }
-
-		public ShowDelegate(string title) :
-			this(title, true) { }
 	}
 }
