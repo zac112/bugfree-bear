@@ -11,7 +11,21 @@ namespace ShowEmAll.DrawMates
 		where TWrapper : BaseWrapper<TOption>
 		where TOption : LayoutOption, new()
 	{
-		public PropertyInfo property { get; set; }
+		private string displayText;
+
+		private PropertyInfo mProperty;
+		private bool isAutoProp;
+
+		public PropertyInfo property
+		{
+			get { return mProperty; }
+			set
+			{
+				mProperty = value;
+				displayText = value.Name.SplitPascalCase();
+				isAutoProp = value.IsAutoProperty();
+			}
+		}
 
 		private Type PropertyType { get { return property.PropertyType; } }
 
@@ -31,7 +45,7 @@ namespace ShowEmAll.DrawMates
 		public override void Draw()
 		{
 			var value = PropertyValue;
-			gui.GuessField(property.Name, value, PropertyType, newValue =>
+			gui.GuessField(displayText, value, PropertyType, newValue =>
 			{
 				if (value != newValue)
 				{
@@ -39,7 +53,7 @@ namespace ShowEmAll.DrawMates
 					PropertyValue = newValue;
 				}
 			});
-			if (property.IsAutoProperty())
+			if (isAutoProp)
 				gui.HelpBox("Auto properties won't serialize", MessageType.Warning);
 		}
 	}
