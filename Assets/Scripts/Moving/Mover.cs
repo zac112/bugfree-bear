@@ -1,27 +1,23 @@
 ﻿using UnityEngine;
-using System;
-using Vexe.RuntimeExtensions;
+using ShowEmAll;
 
-public abstract class Mover : MonoBehaviour
+public abstract class Mover : BetterBehaviour
 {
-	[SerializeField]
-	private float speed = 2f;
+	[SerializeField, HideInInspector]
+	private float movementSpeed = 2f;
 
-	protected Transform cachedTransform;
+	private Transform mTransform;
 
-	void Awake()
-	{
-		cachedTransform = transform;
-	}
+	protected Transform cachedTransform { get { if (mTransform == null) mTransform = transform; return mTransform; } }
+	protected float dt { get { return Time.deltaTime; } }
 
-	public float Speed
-	{
-		get { return speed; }
-		set { speed = value; }
-	}
+	[ShowProperty]
+	public float MovementSpeed { get { return movementSpeed; } set { movementSpeed = value; } }
+
+	public float SmoothedMovement { get { return MovementSpeed * dt; } }
 
 	public virtual void Move(Vector2 direction)
 	{
-		cachedTransform.position = Vector2.MoveTowards(cachedTransform.position, direction, Speed / 100);
+		cachedTransform.position = Vector2.MoveTowards(cachedTransform.position, direction, MovementSpeed / 100);
 	}
 }

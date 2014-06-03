@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 public class Seeker : MonoBehaviour
 {
-	public GameObject endPos;
+	public Transform targetPos;
 	public Mover mover;
 	public List<Vector2> path = new List<Vector2>();
 
 	void FixedUpdate()
 	{
-		Nav.map.FindPath(transform, endPos.transform, path);
+		Nav.map.FindPath(transform, targetPos, path);
 
 		Vector2 to;
 		if (path.Count == 0)
@@ -20,7 +20,7 @@ public class Seeker : MonoBehaviour
 
 		if (path.Count <= 1)
 		{
-			to = endPos.transform.position;
+			to = targetPos.position;
 		}
 		else
 		{
