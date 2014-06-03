@@ -134,7 +134,6 @@ namespace ShowEmAll
 			return value;
 		}
 
-
 		public const string TRANSFORM_LOCAL_POSITION = "m_LocalPosition";
 		public const string TRANSFORM_LOCAL_ROTATION = "m_LocalRotation";
 		public const string TRANSFORM_LOCAL_SCALE = "m_LocalScale";

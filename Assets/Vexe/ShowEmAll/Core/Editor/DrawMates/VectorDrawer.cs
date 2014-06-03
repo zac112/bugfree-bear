@@ -140,8 +140,8 @@ namespace ShowEmAll.DrawMates
 		public void Set(sp spVector2)
 		{
 			field = () =>
-				gui.ApplyAfterChange(() =>
-					gui.PropertyField(spVector2, label), spVector2.serializedObject);
+				gui.ApplyAfterChange(spVector2.serializedObject, () =>
+					gui.PropertyField(spVector2, label));
 
 			getValue = () => spVector2.vector2Value;
 
@@ -220,8 +220,8 @@ namespace ShowEmAll.DrawMates
 		public void Set(sp spVector3)
 		{
 			field = () =>
-				gui.ApplyAfterChange(() =>
-					gui.PropertyField(spVector3, label), spVector3.serializedObject);
+				gui.ApplyAfterChange(spVector3.serializedObject, () =>
+					gui.PropertyField(spVector3, label));
 
 			getValue = () => spVector3.vector3Value;
 

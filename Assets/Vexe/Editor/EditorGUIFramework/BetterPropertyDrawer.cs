@@ -40,7 +40,7 @@ namespace EditorGUIFramework
 
 		protected void ApplyAfterChange(Action change)
 		{
-			gui.ApplyAfterChange(change, serializedObject);
+			gui.ApplyAfterChange(serializedObject, change);
 		}
 
 		protected abstract void Code();

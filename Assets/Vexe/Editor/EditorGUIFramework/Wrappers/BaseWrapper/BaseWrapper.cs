@@ -62,9 +62,9 @@ namespace EditorGUIFramework
 				ColorBlock(color.Value, code);
 			else code();
 		}
-		public void ApplyAfterChange(Action change, SerializedObject obj)
+		public void ApplyAfterChange(SerializedObject obj, Action code)
 		{
-			ChangeBlock(change, () => obj.ApplyModifiedProperties());
+			ChangeBlock(code, () => obj.ApplyModifiedProperties());
 		}
 		public abstract void HorizontalBlock(GUIStyle style, Action block);
 		public abstract void VerticalBlock(GUIStyle style, Action block);
