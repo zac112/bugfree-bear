@@ -16,3 +16,5 @@ Temp.meta
 
 *.mdb
 *.mdb.meta
+
+*BetterPrefs.asset*
