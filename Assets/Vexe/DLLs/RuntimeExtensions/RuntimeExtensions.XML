@@ -30,6 +30,11 @@
             Toggles the component's state
             </summary>
         </member>
+        <member name="M:Vexe.RuntimeExtensions.GameObjectExtensions.Clear(UnityEngine.GameObject)">
+            <summary>
+            Destroys all components this gameObject
+            </summary>
+        </member>
         <member name="M:Vexe.RuntimeExtensions.GenericEnumerableExtensions.Disinclude``1(System.Collections.Generic.List{``0},``0)">
             <summary>
             Returns a new version of the list that doesn't include the specified value
