@@ -4,17 +4,23 @@
         <name>RuntimeHelpers</name>
     </assembly>
     <members>
-        <member name="M:Vexe.RuntimeHelpers.Helpers.AssertionHelper.AssertNotNull(System.Object,System.String)">
+        <member name="M:Vexe.RuntimeHelpers.AssertionHelper.AssertNotNullAfterAssignment``1(``0@,System.Func{``0},System.String)">
+            <summary>
+            If the value is null, it gets assigned to the specified getter
+            If it's still null afterwards, a NullReferenceException is thrown with the specified msg
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeHelpers.AssertionHelper.AssertNotNull(System.Object,System.String)">
             <summary>
             Throws a NullReferenceException if obj was null
             </summary>
         </member>
-        <member name="M:Vexe.RuntimeHelpers.Helpers.AssertionHelper.AssertArgumentNotNull(System.Object,System.String)">
+        <member name="M:Vexe.RuntimeHelpers.AssertionHelper.AssertArgumentNotNull(System.Object,System.String)">
             <summary>
             Throws an ArgumentNullException if arg was null
             </summary>
         </member>
-        <member name="M:Vexe.RuntimeHelpers.Helpers.AssertionHelper.AssertInBounds``1(System.Collections.Generic.IList{``0},System.Int32,System.String)">
+        <member name="M:Vexe.RuntimeHelpers.AssertionHelper.AssertInBounds``1(System.Collections.Generic.IList{``0},System.Int32,System.String)">
             <summary>
             Throws an IndexOutOfRangeException if the specified index was out of the specified list's bounds
             (less than 0 or greater than or equal to its length)
