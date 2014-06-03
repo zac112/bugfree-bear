@@ -16,6 +16,18 @@ public enum TestEnum
 
 public class AttTest : BetterBehaviour
 {
+	[Inline]
+	public BoxCollider col;
+
+	[Inline]
+	public Transform tran;
+
+	[Inline]
+	public GameObject go;
+
+	[Inline]
+	public AudioSource aud;
+
 	public UnityDateTime dt = new UnityDateTime();
 	public ScaledCurve curve;
 

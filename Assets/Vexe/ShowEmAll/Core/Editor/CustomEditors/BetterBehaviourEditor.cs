@@ -25,6 +25,7 @@ namespace ShowEmAll
 		private IListDrawer<GLWrapper, GLOption> listDrawer;
 		private Dictionary<PropertyInfo, CSPropertyDrawer<GLWrapper, GLOption>> propertyDrawers;
 		private Dictionary<MethodInfo, MethodDrawer<GLWrapper, GLOption>> methodDrawers;
+		private Dictionary<sp, InlineDrawer> inlineDrawers;
 		private Dictionary<string, sp> spDic = new Dictionary<string, sp>();
 
 		// Foldouts / keys
@@ -87,6 +88,7 @@ namespace ShowEmAll
 			listDrawer = new IListDrawer<GLWrapper, GLOption>(gui, target);
 			propertyDrawers = new Dictionary<PropertyInfo, CSPropertyDrawer<GLWrapper, GLOption>>();
 			methodDrawers = new Dictionary<MethodInfo, MethodDrawer<GLWrapper, GLOption>>();
+			inlineDrawers = new Dictionary<sp, InlineDrawer>();
 
 			var mb = TypedTarget;
 
@@ -112,6 +114,12 @@ namespace ShowEmAll
 
 			spDic = fields.ToDictionary(f => f.Name,
 										f => serializedObject.FindProperty(f.Name));
+
+			foreach (var f in fields)
+			{
+				if (f.IsDefined(typeof(InlineAttribute)))
+					inlineDrawers[spDic[f.Name]] = new InlineDrawer(gui, target);
+			}
 
 			properties = mb.GetProperties(AllBindings)
 					.Where(p => p.IsDefined(typeof(ShowProperty)))
@@ -191,7 +199,18 @@ namespace ShowEmAll
 					}
 					else
 					{
-						gui.PropertyField(spDic[fieldInfo.Name], fieldInfo.Name.SplitPascalCase());
+						var property = spDic[fieldInfo.Name];
+						if (fieldInfo.IsDefined(typeof(InlineAttribute)))
+						{
+							var d = inlineDrawers[property];
+							d.property = property;
+							d.label = property.name.SplitPascalCase();
+							d.Draw();
+						}
+						else
+						{
+							gui.PropertyField(property, fieldInfo.Name.SplitPascalCase());
+						}
 					}
 				});
 
