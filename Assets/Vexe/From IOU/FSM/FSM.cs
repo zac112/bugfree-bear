@@ -5,7 +5,6 @@ using Vexe.RuntimeExtensions;
 using System;
 using ShowEmAll;
 using Vexe.RuntimeHelpers;
-using Vexe.RuntimeHelpers.Helpers;
 
 /// <summary>
 /// Notes:
@@ -161,6 +160,36 @@ public class FSM : BetterBehaviour
 	{
 		AssertionHelper.AssertArgumentNotNull(from, "from");
 		RemoveTransition(from, from.Transitions.IndexOf(transition));
+	}
+
+	void OnMouseUp()
+	{
+		SendMsgToCurrentState("OnMouseUp");
+	}
+
+	void OnMouseEnter()
+	{
+		SendMsgToCurrentState("OnMouseEnter");
+	}
+
+	void OnMouseDown()
+	{
+		SendMsgToCurrentState("OnMouseDown");
+	}
+
+	void OnMouseOver()
+	{
+		SendMsgToCurrentState("OnMouseOver");
+	}
+
+	void OnMouseExit()
+	{
+		SendMsgToCurrentState("OnMouseExit");
+	}
+
+	void SendMsgToCurrentState(string msg)
+	{
+		CurrentState.SendMessage(msg, SendMessageOptions.DontRequireReceiver);
 	}
 
 	public void ResetFSM()
