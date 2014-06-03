@@ -3,6 +3,8 @@ using UnityEngine;
 using uFAction;
 using ShowEmAll;
 
+#pragma warning disable 0414
+
 public class FSMTransition : BetterBehaviour
 {
 	[SerializeField, Readonly]

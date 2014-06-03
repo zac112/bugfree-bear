@@ -5,6 +5,8 @@ using Vexe.RuntimeHelpers;
 using UnityEditor;
 using System.IO;
 
+#pragma warning disable 0414
+
 namespace ShowEmAll
 {
 	[Serializable]

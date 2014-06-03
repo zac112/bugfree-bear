@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System;
 using ShowEmAll;
 
+#pragma warning disable 0414
+
 public class FSMState : BetterBehaviour
 {
 	[SerializeField, Readonly]
