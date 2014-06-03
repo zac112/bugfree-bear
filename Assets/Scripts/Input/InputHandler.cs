@@ -51,6 +51,7 @@ public class InputHandler : MonoBehaviour
 
 	void OnEnable()
 	{
+
 #if UNITY_EDITOR
 		if (Resources.FindObjectsOfTypeAll<InputHandler>().Length > 1)
 			Debug.LogWarning("There is more than one InputHandler in the scene!");
@@ -61,7 +62,7 @@ public class InputHandler : MonoBehaviour
 	{
 		if (Input.anyKey)
 		{
-			OnAnyKeyDown();
+			SafeInvoke(OnAnyKeyDown);
 
 			if (Input.GetKey(settings.Down))
 			{
