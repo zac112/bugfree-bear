@@ -1,26 +1,32 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using ShowEmAll;
+using UnityEngine;
+using Vexe.RuntimeExtensions;
 
-public class PlayerInteractionHandler : MonoBehaviour {
-
+public class PlayerInteractionHandler : MonoBehaviour
+{
 	GameObject target;
 
-	void Interact(){
+	void Interact()
+	{
 		IInteractable[] interactables = gameObject.GetInterfaces<IInteractable>();
-		print (gameObject.GetInterface<IInteractable>());
+		print(gameObject.GetInterface<IInteractable>());
 		interactables[0].Interact(target);
 	}
 
-	void OnTriggerEnter2D(Collider2D other){
-		if(other.gameObject.tag == "Player"){
+	void OnTriggerEnter2D(Collider2D other)
+	{
+		if (other.gameObject.tag == "Player")
+		{
 			InputHandler.OnInteract += Interact;
 			target = other.gameObject;
 		}
 	}
-	
-	void OnTriggerExit2D(Collider2D other){
-		
-		if(other.gameObject.tag == "Player"){
+
+	void OnTriggerExit2D(Collider2D other)
+	{
+
+		if (other.gameObject.tag == "Player")
+		{
 			InputHandler.OnInteract -= Interact;
 			target = null;
 		}

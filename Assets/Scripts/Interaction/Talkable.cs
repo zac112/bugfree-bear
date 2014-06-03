@@ -1,15 +1,14 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class Talkable : MonoBehaviour, IInteractable {
-
-	public void Interact (GameObject target)
+public class Talkable : MonoBehaviour, IInteractable
+{
+	public void Interact(GameObject target)
 	{
 		Debug.Log("interactive");
 	}
 
-	public string GiveActionName ()
+	public string GiveActionName()
 	{
-		return "Talk to "+gameObject.name;
+		return "Talk to " + gameObject.name;
 	}
 }

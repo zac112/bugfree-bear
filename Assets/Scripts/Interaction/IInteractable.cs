@@ -1,9 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public interface IInteractable {
-	
+public interface IInteractable
+{
 	void Interact(GameObject target);
-	
 	string GiveActionName();
 }
