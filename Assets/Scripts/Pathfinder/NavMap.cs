@@ -76,16 +76,24 @@ public class NavMap
 		return result;
 	}
 
-	public void FindPath(Transform startPosition, Transform endPosition, List<Vector2> resultList)
+	public void FindPath(Vector2 startPos, Vector2 endPos, List<Vector2> resultList)
 	{
+		FindPath((Coordinate)startPos, (Coordinate)endPos, resultList);
+	}
 
-		Coordinate start = Coordinate.GetCoordinate(startPosition, offset);
-		Coordinate end = Coordinate.GetCoordinate(endPosition, offset);
+	public void FindPath(Transform startTrans, Transform endTrans, List<Vector2> resultList)
+	{
+		Coordinate start = Coordinate.GetCoordinate(startTrans, offset);
+		Coordinate end = Coordinate.GetCoordinate(endTrans, offset);
+		FindPath(start, end, resultList);
+	}
 
-		if (start == end)
-		{ //already there..
+	private void FindPath(Coordinate startCoord, Coordinate endCoord, List<Vector2> resultList)
+	{
+		if (startCoord == endCoord) //already there..
+		{
 			resultList.Clear();
-			resultList.Add(end.GetAsMapPosition(offset));
+			resultList.Add(endCoord.GetAsMapPosition(offset));
 		}
 
 #if UNITY_EDITOR && DEBUGLOGS
@@ -103,10 +111,10 @@ public class NavMap
 		//dictionary from coordinate to the previous coordinate in the path
 		Dictionary<Coordinate, Coordinate> closedSet = new Dictionary<Coordinate, Coordinate>();
 
-		openSet.First = start;
-		openSet.First.CalculateDistanceTo(end);
-		path.Add(start);
-		closedSet.Add(start, Coordinate.Null);
+		openSet.First = startCoord;
+		openSet.First.CalculateDistanceTo(endCoord);
+		path.Add(startCoord);
+		closedSet.Add(startCoord, Coordinate.Null);
 
 		int counter = 0;
 		while (!openSet.IsEmpty())
@@ -122,14 +130,14 @@ public class NavMap
 			List<Coordinate> unvisitedNeighbors = GetAvailableNeighbors(path.GetLast(), closedSet);
 			for (int i = 0; i < unvisitedNeighbors.Count; i++)
 			{
-				unvisitedNeighbors[i].CalculateDistanceTo(end);
+				unvisitedNeighbors[i].CalculateDistanceTo(endCoord);
 				unvisitedNeighbors[i].Previous = current;
 				openSet.First = unvisitedNeighbors[i];
-				if (end.Equals(unvisitedNeighbors[i]))
+				if (endCoord.Equals(unvisitedNeighbors[i]))
 				{
 					//found path
 					closedSet.Add(unvisitedNeighbors[i], current);
-					ResolveShortestPath(closedSet, start, end, resultList);
+					ResolveShortestPath(closedSet, startCoord, endCoord, resultList);
 					return;
 				}
 			}
@@ -323,6 +331,11 @@ public class NavMap
 		public static implicit operator Vector2(Coordinate other)
 		{
 			return new Vector2(other.x, other.y);
+		}
+
+		public static implicit operator Coordinate(Vector2 other)
+		{
+			return Coordinate.GetCoordinate(other);
 		}
 
 		public override string ToString()
