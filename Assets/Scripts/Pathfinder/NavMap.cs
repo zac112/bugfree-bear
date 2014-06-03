@@ -281,8 +281,14 @@ public class NavMap
 		{
 			if (ReferenceEquals(this, obj))
 				return true;
-			var c = obj as Coordinate;
-			return c != null && this == c;
+
+			bool result = (obj != null);
+			result &= obj is Coordinate;
+			if(result){
+				Coordinate c = (Coordinate)obj;
+				result = (c.x == x && c.y == y);
+			}
+			return result;
 		}
 
 		public override int GetHashCode()
