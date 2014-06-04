@@ -17,11 +17,7 @@ public class PlayerMover : Mover
 
 	void Update()
 	{
-		//Move();
-		var forward = transform.TransformDirection(Vector3.forward);
-		var input = Input.GetAxis("Vertical");
-		transform.position += forward * input * Time.deltaTime;
-		transform.Rotate(0, Input.GetAxis("Horizontal") * 45 * Time.deltaTime, 0);
+		Move();
 	}
 
 	public override void Move(Vector2 direction)
