@@ -4,6 +4,11 @@ public class PlayerMover : Mover
 {
 	void Start()
 	{
+		EnableMovement ();
+	}
+
+	public void EnableMovement ()
+	{
 		InputHandler.OnMoveDown += Move;
 		InputHandler.OnMoveUp += Move;
 		InputHandler.OnMoveRight += Move;
@@ -15,21 +20,21 @@ public class PlayerMover : Mover
 		Move(InputHandler.GetInputVector());
 	}
 
-	void Update()
-	{
-		Move();
-	}
-
 	public override void Move(Vector2 direction)
 	{
 		cachedTransform.position += ((Vector3)direction).normalized * SmoothedMovement;
 	}
 
-	void OnDisable()
+	public void DisableMovement ()
 	{
 		InputHandler.OnMoveDown -= Move;
 		InputHandler.OnMoveUp -= Move;
 		InputHandler.OnMoveRight -= Move;
 		InputHandler.OnMoveLeft -= Move;
+	}
+
+	void OnDisable()
+	{
+		DisableMovement ();
 	}
 }
