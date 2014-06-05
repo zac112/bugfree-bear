@@ -251,7 +251,7 @@ namespace ShowEmAll
 							gui.NumericLabel(i + 1);
 						}
 						else gui.Space(10f);
-						drawer.Invoke();
+						gui.VerticalBlock(drawer.Invoke);
 					});
 
 					if (showSplitter && i < count - 1)
