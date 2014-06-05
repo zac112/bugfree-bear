@@ -115,6 +115,7 @@ public class FSM : BetterBehaviour
 		var newTransition = GOHelper.CreateGoWithMb<FSMTransition>(transitionName, from.transform);
 		newTransition.OnTransition.Add(TransitionHasBeenMade);
 		from.Transitions.Add(newTransition);
+		newTransition.transform.hideFlags = HideFlags.HideInInspector;
 		return newTransition;
 	}
 
