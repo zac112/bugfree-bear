@@ -382,7 +382,7 @@ public class FSMEditor : BetterBehaviourEditor
 
 			GuiHelper.PingField(spToState.objectReferenceValue, !isNull);
 
-			if (spDebug.boolValue && fsm.CurrentState == currentIteratedState)
+			if (fsm.CurrentState == currentIteratedState)
 			{
 				gui.EnabledBlock(EditorApplication.isPlaying && !isNull, () =>
 					gui.MiniButton("t", "Make transition", MiniButtonStyle.Left,
