@@ -4,6 +4,7 @@ using System.Reflection;
 using System;
 using Vexe.RuntimeExtensions;
 using Object = UnityEngine.Object;
+using Vexe.EditorHelpers;
 
 namespace ShowEmAll.DrawMates
 {
@@ -29,10 +30,30 @@ namespace ShowEmAll.DrawMates
 
 		private Type PropertyType { get { return property.PropertyType; } }
 
-		private object PropertyValue
+		private bool TryGetPropertyValue(out object value)
 		{
-			get { return property.GetValue(target, null); }
-			set { property.GetSetMethod().Invoke(target, new object[] { value }); }
+			try
+			{
+				value = property.GetGetMethod().Invoke(target, null);
+				return true;
+			}
+			catch (Exception e)
+			{
+				value = null;
+				return false;
+			}
+		}
+
+		private void SetPropertyValue(object value)
+		{
+			try
+			{
+				property.GetSetMethod().Invoke(target, new object[] { value });
+			}
+			catch (Exception e)
+			{
+				gui.HelpBox("Property setter threw an exception: " + e.Message, MessageType.Error);
+			}
 		}
 
 		public CSPropertyDrawer(TWrapper gui, Object target)
@@ -44,13 +65,24 @@ namespace ShowEmAll.DrawMates
 
 		public override void Draw()
 		{
-			var value = PropertyValue;
+			object value;
+			if (!TryGetPropertyValue(out value))
+			{
+				gui.HorizontalBlock(() =>
+				{
+					gui.Label(displayText);
+					gui.ColorBlock(GuiHelper.RedColorDuo.FirstColor, () =>
+						gui.TextFieldLabel("Property getter threw an exception")
+					);
+				});
+				return;
+			}
 			gui.GuessField(displayText, value, PropertyType, newValue =>
 			{
 				if (value != newValue)
 				{
 					Undo.RecordObject(target, "Property set");
-					PropertyValue = newValue;
+					SetPropertyValue(newValue);
 				}
 			});
 			if (isAutoProp)
