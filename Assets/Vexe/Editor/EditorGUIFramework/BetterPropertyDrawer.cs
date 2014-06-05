@@ -29,6 +29,7 @@ namespace EditorGUIFramework
 
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
+			this.property = property;
 			gui.Draw(position, Code);
 		}
 
