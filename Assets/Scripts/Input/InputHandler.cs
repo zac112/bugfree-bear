@@ -49,6 +49,14 @@ public class InputHandler : MonoBehaviour
 	/// </summary>
 	public static event Action OnInteract;
 
+	/// <summary>
+	/// The 2d input vector. 
+	/// right:	 1,  0
+	/// left:	-1,  0
+	/// up:		 0,  1
+	/// down:	 0, -1
+	/// </summary>
+	public static Vector2 InputVector { get { return inputVector; } }
 
 	/// <summary>
 	/// Subscribes the specified handler to all hte player's movements
@@ -129,15 +137,11 @@ public class InputHandler : MonoBehaviour
 			{
 				SafeInvoke(OnInteract);
 			}
+
 			inputVector = Vector2.zero;
 		}
 	}
 
-
-	public static Vector2 GetInputVector()
-	{
-		return inputVector;
-	}
 
 	private static void SafeInvoke(Action del)
 	{

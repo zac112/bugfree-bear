@@ -10,7 +10,7 @@ public class PlayerMover : Mover
 
 	public void Move()
 	{
-		Move(InputHandler.GetInputVector());
+		Move(InputHandler.InputVector);
 	}
 
 	public override void Move(Vector2 direction)
