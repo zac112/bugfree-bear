@@ -6,7 +6,7 @@ using EditorGUIFramework;
 
 namespace ShowEmAll.PropertyDrawers
 {
-	[CustomPropertyDrawer(typeof(AdvancedV3))]
+	[CustomPropertyDrawer(typeof(AdvancedV3Attribute))]
 	public class AdvancedV3Drawer : BetterPropertyDrawer<AdvancedV3Drawer>
 	{
 		private Vector3Drawer<GUIWrapper, GUIOption> vDrawer;

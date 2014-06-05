@@ -6,7 +6,7 @@ using EditorGUIFramework;
 
 namespace ShowEmAll.PropertyDrawers
 {
-	[CustomPropertyDrawer(typeof(AdvancedV2))]
+	[CustomPropertyDrawer(typeof(AdvancedV2Attribute))]
 	public class AdvancedV2Drawer : BetterPropertyDrawer<AdvancedV2Drawer>
 	{
 		private Vector2Drawer<GUIWrapper, GUIOption> vDrawer;
