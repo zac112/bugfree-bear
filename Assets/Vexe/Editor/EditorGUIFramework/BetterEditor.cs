@@ -32,5 +32,10 @@ namespace EditorGUIFramework
 		{
 			return (TValueType)GetFieldValue(name);
 		}
+
+		public void log(object msg)
+		{
+			Debug.Log(msg);
+		}
 	}
 }
