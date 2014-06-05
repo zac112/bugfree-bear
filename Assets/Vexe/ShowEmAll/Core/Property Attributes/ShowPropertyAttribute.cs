@@ -4,7 +4,7 @@ using UnityEngine;
 namespace ShowEmAll
 {
 	[AttributeUsage(AttributeTargets.Property)]
-	public class ShowProperty : Attribute
+	public class ShowPropertyAttribute : Attribute
 	{
 
 	}
