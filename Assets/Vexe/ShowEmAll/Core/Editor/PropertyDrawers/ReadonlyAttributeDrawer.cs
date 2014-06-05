@@ -11,7 +11,6 @@ namespace ShowEmAll.PropertyDrawers
 	{
 		protected override void Code()
 		{
-			property.serializedObject.Update();
 			var value = property.GetValue();
 			bool isNull = value == null;
 			gui.HorizontalBlock(() =>
