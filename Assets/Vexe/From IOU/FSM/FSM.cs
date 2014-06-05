@@ -97,6 +97,7 @@ public class FSM : BetterBehaviour
 	public FSMState CreateNewState(string stateName)
 	{
 		var newState = GOHelper.CreateGoWithMb<FSMState>(stateName, transform);
+		newState.transform.hideFlags = HideFlags.HideInInspector;
 		states.Add(newState);
 		if (states.Count == 1) // if it's the first state to add, then definitely it's the start state
 		{
