@@ -3,7 +3,7 @@ using System;
 
 namespace ShowEmAll
 {
-	[AttributeUsage(AttributeTargets.Class)]
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 	public class DefineCategoryAttribute : Attribute
 	{
 		public readonly string name;

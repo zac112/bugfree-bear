@@ -18,21 +18,12 @@ namespace ShowEmAll
 	[CustomEditor(typeof(BetterBehaviour), true)]
 	public class BetterBehaviourEditor : BetterEditor<BetterBehaviour>
 	{
-		private const bf Public = bf.Public | bf.Instance;
-		private const bf AllBindings = Public | bf.NonPublic;
-		private FieldInfo[] fields;
-		private PropertyInfo[] properties;
-		private MethodInfo[] methods;
-		private Dictionary<string, sp> spDic = new Dictionary<string, sp>();
+		public const bf Public = bf.Public | bf.Instance;
+		public const bf AllBindings = Public | bf.NonPublic;
 
 		private string key { get { return RTHelper.GetTargetID(target); } }
 
-		// 1- get all public fields, or fields mocked with [SerializeField]
-		// 1.5- get all properties that have a custom property attribute defined
-		// 2- draw each found field (via PropertyField)
-		// 3- draw the properties fetched in 1.5
-
-		List<MembersCategory> membersCategories = new List<MembersCategory>();
+		List<MembersCategory> membersCategories;
 
 		protected virtual void OnEnable()
 		{
@@ -50,106 +41,54 @@ namespace ShowEmAll
 				return;
 			}
 
-			//foreach (var f in mb.GetFields(AllBindings))
-			//{
-			//	bool b = IsSerializableField(f);
-			//}
-
-			// - get fields, props and methods
-			// - concat them and get the ones that have a Category attribute on them
-			// - create categories for these specified ones
-			// - throw what's left of the fields, props and methods to the default categories
-
-			//var members = fields.Concat<MemberInfo>(properties).Concat(methods);
-
-			//var userCategories = members.Select(m => new { m, cat = m.GetCustomAttributes(typeof(CategoryAttribute), false)[0] as CategoryAttribute })
-			//							.Where(x => x.cat != null)
-			//							.GroupBy(x => x.cat.name)
-			//							.OrderBy(x => x.First().cat.order);
-
-
-
-
-			// get what categories are defined on the target type
-			// foreach of those categories:
-			//		get all the members that have the CategoryMember with the same cat name
-			//		pass those members to the category creator to assosiate each member with a drawer
-			// sort the categories based on their displayOrder
-			// foreach category
-			//		sort the members based on their category member display order
-			// and then finally
-
-
-			var fieldsCat = new MembersCategory(key, gui) { Name = "Fields", Order = 0 };
+			membersCategories = new List<MembersCategory>();
+			var targetType = target.GetType();
+			var targetAtts = targetType.GetCustomAttributes<DefineCategoryAttribute>(@inherit: true);
+			var allMembers = targetType.GetMembers(AllBindings);
+			var nonCategorizedMembers = allMembers.ToList();
+			var mapper = new DMCMapper(serializedObject, gui)
 			{
-				fields = TypedTarget.GetFields(AllBindings)
-								    .Where(f => RefializactionHelper.IsSerializableField(f))
-								    .ToArray();
+				IsVisibleField = field => field != null && SerializationLogic.IsSerializableField(field),
+				IsVisibleProperty = property => property != null && property.IsDefined<ShowPropertyAttribute>(),
+				IsVisibleMethod = method => method != null && method.IsDefined<ShowMethodAttribute>(),
+				MethodBindings = AllBindings
+			};
 
-				spDic = fields.ToDictionary(f => f.Name,
-											f => serializedObject.FindProperty(f.Name));
+			foreach (var catAtt in targetAtts)
+			{
+				string catName = catAtt.name;
+				var catMembers = from member in allMembers
+								 let cats = member.GetCustomAttributes<CategoryMemberAttribute>()
+								 where !cats.IsNullOrEmpty()
+								 let catMem = cats[0]
+								 where catMem.name == catName
+								 orderby catMem.displayOrder
+								 select member;
 
-				foreach (var f in fields)
+				// catMembers are categorized, thus must be removed from nonCategorizedMembers
+				nonCategorizedMembers.BatchRemove(catMembers);
+
+				var newCategory = new MembersCategory(key, gui)
 				{
-					BaseDrawer<GLWrapper, GLOption> drawer = null;
-					if (f.IsDefined(typeof(InlineAttribute)))
-					{
-						var inlineDrawer = new InlineDrawer(gui, target);
-						inlineDrawer.property = spDic[f.Name];
-						inlineDrawer.label = f.Name.SplitPascalCase();
-						drawer = inlineDrawer;
-					}
-					else if (f.FieldType.IsIList())
-					{
-						var listDrawer = new IListDrawer<GLWrapper, GLOption>(gui, target);
-						listDrawer.advancedCollection = f.IsDefined<AdvancedCollectionAttribute>();
-						listDrawer.readonlyCollection = f.IsDefined<ReadonlyAttribute>();
-						listDrawer.fieldInfo = f;
-						drawer = listDrawer;
-					}
-					else
-					{
-						drawer = new DefaultDrawer<GLWrapper, GLOption>(
-							spDic[f.Name], f.Name.SplitPascalCase(), gui);
-					}
-					fieldsCat[f] = drawer.Draw;
-				}
+					Name = catName,
+					Order = catAtt.displayOrder,
+				};
+
+				mapper.MapMembersToCategory(catMembers, newCategory);
+				membersCategories.Add(newCategory);
 			}
 
-			var propertiesCat = new MembersCategory(key, gui) { Name = "Properties", Order = 1 };
+			// Default categories
 			{
-				properties = TypedTarget.GetProperties(AllBindings)
-										.Where(p => p.IsDefined<ShowProperty>())
-										.ToArray();
-
-				foreach (var p in properties)
-				{
-					var propDrawer = new CSPropertyDrawer<GLWrapper, GLOption>(gui, target)
-					{
-						property = p
-					};
-					propertiesCat[p] = propDrawer.Draw;
-				}
+				var fieldsCat = new MembersCategory(key, gui) { Name = "Fields", Order = 0 };
+				var propertiesCat = new MembersCategory(key, gui) { Name = "Properties", Order = 1 };
+				var methodsCat = new MembersCategory(key, gui) { Name = "Methods", Order = 2 };
+				mapper.MapMembersToCategories(nonCategorizedMembers, fieldsCat, propertiesCat, methodsCat);
+				membersCategories.AddMultiple(fieldsCat, propertiesCat, methodsCat);
 			}
 
-			var methodsCat = new MembersCategory(key, gui) { Name = "Methods", Order = 2 };
-			{
-				methods = TypedTarget.GetMethods(typeof(void), null, AllBindings, false)
-									 .Where(m => m.IsDefined<ShowMethodAttribute>())
-									 .ToArray();
-
-				foreach (var m in methods)
-				{
-					var methodDrawer = new MethodDrawer<GLWrapper, GLOption>(gui, target)
-					{
-						bindings = AllBindings,
-						method = m,
-					};
-					methodsCat[m] = methodDrawer.Draw;
-				}
-			}
-
-			membersCategories.AddMultiple(fieldsCat, propertiesCat, methodsCat);
+			// Finally, sort the cats based on their Order
+			membersCategories.Sort();
 		}
 
 		public override void OnInspectorGUI()
@@ -170,26 +109,119 @@ namespace ShowEmAll
 		}
 	}
 
-	internal class MembersCategory
+	internal class DMCMapper // not Devil May Cry... but Drawer-Member-Category
+	{
+		private SerializedObject serializedObject;
+		private GLWrapper gui;
+
+		public Predicate<FieldInfo> IsVisibleField { get; set; }
+		public Predicate<PropertyInfo> IsVisibleProperty { get; set; }
+		public Predicate<MethodInfo> IsVisibleMethod { get; set; }
+		public BindingFlags MethodBindings { get; set; }
+
+		private Object target { get { return serializedObject.targetObject; } }
+
+		public DMCMapper(SerializedObject serializedObject, GLWrapper gui)
+		{
+			this.serializedObject = serializedObject;
+			this.gui = gui;
+		}
+
+		public void MapMembersToCategories(IEnumerable<MemberInfo> members,
+			MembersCategory fieldsCat, MembersCategory propertiesCat, MembersCategory methodsCat)
+		{
+			foreach (var member in members)
+			{
+				var field = member as FieldInfo;
+				if (IsVisibleField(field))
+					fieldsCat[field] = MapField(field);
+				else
+				{
+					var property = member as PropertyInfo;
+					if (IsVisibleProperty(property))
+						propertiesCat[property] = MapProperty(property);
+					else
+					{
+						var method = member as MethodInfo;
+						if (IsVisibleMethod(method))
+							methodsCat[method] = MapMethod(method);
+					}
+				}
+			}
+		}
+
+		public void MapMembersToCategory(IEnumerable<MemberInfo> members, MembersCategory category)
+		{
+			MapMembersToCategories(members, category, category, category);
+		}
+
+		public Action MapMethod(MethodInfo method)
+		{
+			var methodDrawer = new MethodDrawer<GLWrapper, GLOption>(gui, target)
+			{
+				bindings = MethodBindings,
+				method = method,
+			};
+			return methodDrawer.Draw;
+		}
+
+		public Action MapProperty(PropertyInfo property)
+		{
+			var propDrawer = new CSPropertyDrawer<GLWrapper, GLOption>(gui, target)
+			{
+				property = property
+			};
+			return propDrawer.Draw;
+		}
+
+		public Action MapField(FieldInfo field)
+		{
+			BaseDrawer<GLWrapper, GLOption> drawer = null;
+			var spField = serializedObject.FindProperty(field.Name);
+			if (field.IsDefined<InlineAttribute>())
+			{
+				var inlineDrawer = new InlineDrawer(gui, target);
+				inlineDrawer.property = spField;
+				inlineDrawer.label = field.Name.SplitPascalCase();
+				drawer = inlineDrawer;
+			}
+			else if (field.FieldType.IsIList())
+			{
+				var listDrawer = new IListDrawer<GLWrapper, GLOption>(gui, target);
+				listDrawer.advancedCollection = field.IsDefined<AdvancedCollectionAttribute>();
+				listDrawer.readonlyCollection = field.IsDefined<ReadonlyAttribute>();
+				listDrawer.fieldInfo = field;
+				drawer = listDrawer;
+			}
+			else
+			{
+				drawer = new DefaultDrawer<GLWrapper, GLOption>(
+					spField, field.Name.SplitPascalCase(), gui);
+			}
+			return drawer.Draw;
+		}
+	}
+
+	internal class MembersCategory : IComparable<MembersCategory>
 	{
 		private readonly string key;
 		private readonly GLWrapper gui;
-		private readonly Dictionary<MemberInfo, Action> dict;
+		private readonly Dictionary<MemberInfo, Action> mapping; // TODO: Does it really have to be a dict?
 
 		public string Name { get; set; }
 		public float Order { get; set; }
 
 		public Action this[MemberInfo member]
 		{
-			get { return dict[member]; }
-			set { dict[member] = value; }
+			get { return mapping[member]; }
+			set { mapping[member] = value; }
 		}
 
 		public MembersCategory(string key, GLWrapper gui)
 		{
 			this.key = key;
 			this.gui = gui;
-			dict = new Dictionary<MemberInfo, Action>();
+			mapping = new Dictionary<MemberInfo, Action>();
 		}
 
 		// Keys & Foldouts
@@ -228,7 +260,7 @@ namespace ShowEmAll
 
 		public void Draw()
 		{
-			int count = dict.Count;
+			int count = mapping.Count;
 			if (count == 0 || !DoHeader()) return;
 
 			bool insideBox = (Settings.DisplayOptions & Settings.MembersDisplay.DisplayInsideBox) > 0;
@@ -240,9 +272,8 @@ namespace ShowEmAll
 			{
 				gui.Space(5f);
 				int i = 0;
-				foreach (var kvp in dict)
+				foreach (var kvp in mapping)
 				{
-					var member = kvp.Key;
 					var drawer = kvp.Value;
 					gui.HorizontalBlock(() =>
 					{
@@ -261,9 +292,14 @@ namespace ShowEmAll
 				}
 			});
 		}
+
+		public int CompareTo(MembersCategory other)
+		{
+			return Order.CompareTo(other.Order);
+		}
 	}
 
-	internal static class RefializactionHelper
+	internal static class SerializationLogic
 	{
 		public static bool IsSerializableCollection(Type type)
 		{
