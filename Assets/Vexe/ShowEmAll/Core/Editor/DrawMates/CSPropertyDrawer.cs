@@ -37,7 +37,7 @@ namespace ShowEmAll.DrawMates
 				value = property.GetGetMethod().Invoke(target, null);
 				return true;
 			}
-			catch (Exception e)
+			catch
 			{
 				value = null;
 				return false;
