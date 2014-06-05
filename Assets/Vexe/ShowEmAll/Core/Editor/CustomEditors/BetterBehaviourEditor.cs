@@ -101,7 +101,7 @@ namespace ShowEmAll
 					}
 					else if (f.FieldType.IsIList())
 					{
-						var listDrawer = new IListDrawer<GLWrapper, GLOption>();
+						var listDrawer = new IListDrawer<GLWrapper, GLOption>(gui, target);
 						listDrawer.advancedCollection = f.IsDefined<AdvancedCollectionAttribute>();
 						listDrawer.readonlyCollection = f.IsDefined<ReadonlyAttribute>();
 						listDrawer.fieldInfo = f;
