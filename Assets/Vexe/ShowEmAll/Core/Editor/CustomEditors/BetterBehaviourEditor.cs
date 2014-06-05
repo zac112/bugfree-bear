@@ -11,6 +11,7 @@ using sp = UnityEditor.SerializedProperty;
 using System;
 using Vexe.RuntimeHelpers;
 using Vexe.EditorExtensions;
+using Object = UnityEngine.Object;
 
 namespace ShowEmAll
 {
@@ -22,77 +23,20 @@ namespace ShowEmAll
 		private FieldInfo[] fields;
 		private PropertyInfo[] properties;
 		private MethodInfo[] methods;
-		private IListDrawer<GLWrapper, GLOption> listDrawer;
-		private Dictionary<PropertyInfo, CSPropertyDrawer<GLWrapper, GLOption>> propertyDrawers;
-		private Dictionary<MethodInfo, MethodDrawer<GLWrapper, GLOption>> methodDrawers;
-		private Dictionary<sp, InlineDrawer> inlineDrawers;
 		private Dictionary<string, sp> spDic = new Dictionary<string, sp>();
 
-		// Foldouts / keys
-		#region
 		private string key { get { return RTHelper.GetTargetID(target); } }
-		private string fieldsKey { get { return key + "Fields"; } }
-		private bool fieldsFoldout
-		{
-			get { return StuffHelper.GetFoldoutValue(fieldsKey); }
-			set { StuffHelper.SetFoldoutValue(fieldsKey, value); }
-		}
-		private string propertiesKey { get { return key + "Properties"; } }
-		private bool propertiesFoldout
-		{
-			get { return StuffHelper.GetFoldoutValue(propertiesKey); }
-			set { StuffHelper.SetFoldoutValue(propertiesKey, value); }
-		}
-		private string methodsKey { get { return key + "Methods"; } }
-		private bool methodsFoldout
-		{
-			get { return StuffHelper.GetFoldoutValue(methodsKey); }
-			set { StuffHelper.SetFoldoutValue(methodsKey, value); }
-		}
-
-		private bool DoFoldout(string label, Func<bool> get, Action<bool> set)
-		{
-			bool current = get();
-			gui.HorizontalBlock(GUI.skin.box, () =>
-			{
-				gui.Space(10f);
-				gui.Foldout(label, current, new GLOption { ExpandWidth = true }, newValue =>
-				{
-					if (newValue != current)
-						set(newValue);
-				});
-			});
-			return get();
-		}
-		private bool DoFieldsFoldout()
-		{
-			return DoFoldout("Fields", () => fieldsFoldout, newValue => fieldsFoldout = newValue);
-		}
-		private bool DoPropertiesFoldout()
-		{
-			return DoFoldout("Properties", () => propertiesFoldout, newValue => propertiesFoldout = newValue);
-		}
-		private bool DoMethodsFoldout()
-		{
-			return DoFoldout("Methods", () => methodsFoldout, newValue => methodsFoldout = newValue);
-		}
-		#endregion
 
 		// 1- get all public fields, or fields mocked with [SerializeField]
 		// 1.5- get all properties that have a custom property attribute defined
 		// 2- draw each found field (via PropertyField)
 		// 3- draw the properties fetched in 1.5
 
+		List<MembersCategory> membersCategories = new List<MembersCategory>();
+
 		protected virtual void OnEnable()
 		{
-			listDrawer = new IListDrawer<GLWrapper, GLOption>(gui, target);
-			propertyDrawers = new Dictionary<PropertyInfo, CSPropertyDrawer<GLWrapper, GLOption>>();
-			methodDrawers = new Dictionary<MethodInfo, MethodDrawer<GLWrapper, GLOption>>();
-			inlineDrawers = new Dictionary<sp, InlineDrawer>();
-
-			var mb = TypedTarget;
-
-			if (mb == null)
+			if (TypedTarget == null)
 			{
 				Debug.LogError(string.Concat(new string[] {
 					"Casting target object to BetterBehaviour failed! Something's wrong. ", 
@@ -106,51 +50,186 @@ namespace ShowEmAll
 				return;
 			}
 
-			fields = (from f in mb.GetFields(AllBindings)
-					  let isHidden = f.IsDefined(typeof(HideInInspector))
-					  where !isHidden && (f.IsPublic || f.IsDefined(typeof(SerializeField)))
-					  select f)
-					 .ToArray();
+			//foreach (var f in mb.GetFields(AllBindings))
+			//{
+			//	bool b = IsSerializableField(f);
+			//}
 
-			spDic = fields.ToDictionary(f => f.Name,
-										f => serializedObject.FindProperty(f.Name));
+			// - get fields, props and methods
+			// - concat them and get the ones that have a Category attribute on them
+			// - create categories for these specified ones
+			// - throw what's left of the fields, props and methods to the default categories
 
-			foreach (var f in fields)
+			//var members = fields.Concat<MemberInfo>(properties).Concat(methods);
+
+			//var userCategories = members.Select(m => new { m, cat = m.GetCustomAttributes(typeof(CategoryAttribute), false)[0] as CategoryAttribute })
+			//							.Where(x => x.cat != null)
+			//							.GroupBy(x => x.cat.name)
+			//							.OrderBy(x => x.First().cat.order);
+
+
+
+
+			// get what categories are defined on the target type
+			// foreach of those categories:
+			//		get all the members that have the CategoryMember with the same cat name
+			//		pass those members to the category creator to assosiate each member with a drawer
+			// sort the categories based on their displayOrder
+			// foreach category
+			//		sort the members based on their category member display order
+			// and then finally
+
+
+			var fieldsCat = new MembersCategory(key, gui) { Name = "Fields", Order = 0 };
 			{
-				if (f.IsDefined(typeof(InlineAttribute)))
-					inlineDrawers[spDic[f.Name]] = new InlineDrawer(gui, target);
-			}
+				fields = TypedTarget.GetFields(AllBindings)
+								    .Where(f => RefializactionHelper.IsSerializableField(f))
+								    .ToArray();
 
-			properties = mb.GetProperties(AllBindings)
-					.Where(p => p.IsDefined(typeof(ShowProperty)))
-					.ToArray();
+				spDic = fields.ToDictionary(f => f.Name,
+											f => serializedObject.FindProperty(f.Name));
 
-			foreach (var p in properties)
-			{
-				propertyDrawers[p] = new CSPropertyDrawer<GLWrapper, GLOption>(gui, target)
+				foreach (var f in fields)
 				{
-					property = p
-				};
+					BaseDrawer<GLWrapper, GLOption> drawer = null;
+					if (f.IsDefined(typeof(InlineAttribute)))
+					{
+						var inlineDrawer = new InlineDrawer(gui, target);
+						inlineDrawer.property = spDic[f.Name];
+						inlineDrawer.label = f.Name.SplitPascalCase();
+						drawer = inlineDrawer;
+					}
+					else if (f.FieldType.IsIList())
+					{
+						var listDrawer = new IListDrawer<GLWrapper, GLOption>();
+						listDrawer.advancedCollection = f.IsDefined<AdvancedCollectionAttribute>();
+						listDrawer.readonlyCollection = f.IsDefined<ReadonlyAttribute>();
+						listDrawer.fieldInfo = f;
+						drawer = listDrawer;
+					}
+					else
+					{
+						drawer = new DefaultDrawer<GLWrapper, GLOption>(
+							spDic[f.Name], f.Name.SplitPascalCase(), gui);
+					}
+					fieldsCat[f] = drawer.Draw;
+				}
 			}
 
-			methods = mb.GetMethods(typeof(void), null, AllBindings, false)
-					.Where(m => m.IsDefined(typeof(ShowMethodAttribute)))
-					.ToArray();
-
-			foreach (var m in methods)
+			var propertiesCat = new MembersCategory(key, gui) { Name = "Properties", Order = 1 };
 			{
-				methodDrawers[m] = new MethodDrawer<GLWrapper, GLOption>(gui, target)
+				properties = TypedTarget.GetProperties(AllBindings)
+										.Where(p => p.IsDefined<ShowProperty>())
+										.ToArray();
+
+				foreach (var p in properties)
 				{
-					bindings = AllBindings,
-					method = m,
-				};
+					var propDrawer = new CSPropertyDrawer<GLWrapper, GLOption>(gui, target)
+					{
+						property = p
+					};
+					propertiesCat[p] = propDrawer.Draw;
+				}
 			}
+
+			var methodsCat = new MembersCategory(key, gui) { Name = "Methods", Order = 2 };
+			{
+				methods = TypedTarget.GetMethods(typeof(void), null, AllBindings, false)
+									 .Where(m => m.IsDefined<ShowMethodAttribute>())
+									 .ToArray();
+
+				foreach (var m in methods)
+				{
+					var methodDrawer = new MethodDrawer<GLWrapper, GLOption>(gui, target)
+					{
+						bindings = AllBindings,
+						method = m,
+					};
+					methodsCat[m] = methodDrawer.Draw;
+				}
+			}
+
+			membersCategories.AddMultiple(fieldsCat, propertiesCat, methodsCat);
 		}
 
-		void DoMembers<T>(Func<bool> foldout, T[] members, Action<T> perform) where T : MemberInfo
+		public override void OnInspectorGUI()
 		{
-			int len = members.Length;
-			if (len == 0 || !foldout()) return;
+			DoScriptHeaderField();
+
+			StuffHelper.SerializedObjectBlock(serializedObject, () =>
+			{
+				foreach (var category in membersCategories)
+					category.Draw();
+			});
+		}
+
+		private void DoScriptHeaderField()
+		{
+			var script = serializedObject.FindProperty("m_Script");
+			gui.ObjectField("Script", script.objectReferenceValue, value => script.objectReferenceValue = value);
+		}
+	}
+
+	internal class MembersCategory
+	{
+		private readonly string key;
+		private readonly GLWrapper gui;
+		private readonly Dictionary<MemberInfo, Action> dict;
+
+		public string Name { get; set; }
+		public float Order { get; set; }
+
+		public Action this[MemberInfo member]
+		{
+			get { return dict[member]; }
+			set { dict[member] = value; }
+		}
+
+		public MembersCategory(string key, GLWrapper gui)
+		{
+			this.key = key;
+			this.gui = gui;
+			dict = new Dictionary<MemberInfo, Action>();
+		}
+
+		// Keys & Foldouts
+		#region
+		private string GetSubKey()
+		{
+			return key + Name;
+		}
+		private void SetFoldout(bool value)
+		{
+			StuffHelper.SetFoldoutValue(GetSubKey(), value);
+		}
+		private bool GetFoldout()
+		{
+			return StuffHelper.GetFoldoutValue(GetSubKey());
+		}
+		private bool DoHeader(string label, Func<bool> get, Action<bool> set)
+		{
+			bool current = get();
+			gui.HorizontalBlock(GUI.skin.box, () =>
+			{
+				gui.Space(10f);
+				gui.Foldout(label, current, new GLOption { ExpandWidth = true }, newValue =>
+				{
+					if (newValue != current)
+						set(newValue);
+				});
+			});
+			return get();
+		}
+		private bool DoHeader()
+		{
+			return DoHeader(Name, () => GetFoldout(), SetFoldout);
+		}
+		#endregion
+
+		public void Draw()
+		{
+			int count = dict.Count;
+			if (count == 0 || !DoHeader()) return;
 
 			bool insideBox = (Settings.DisplayOptions & Settings.MembersDisplay.DisplayInsideBox) > 0;
 			bool showNumbers = (Settings.DisplayOptions & Settings.MembersDisplay.ShowNumbers) > 0;
@@ -160,10 +239,11 @@ namespace ShowEmAll
 			gui.IndentedBlock(insideBox ? GUI.skin.textArea : GUIStyle.none, .25f, () =>
 			{
 				gui.Space(5f);
-				for (int iLoop = 0; iLoop < len; iLoop++)
+				int i = 0;
+				foreach (var kvp in dict)
 				{
-					int i = iLoop;
-					var m = members[i];
+					var member = kvp.Key;
+					var drawer = kvp.Value;
 					gui.HorizontalBlock(() =>
 					{
 						if (showNumbers)
@@ -171,65 +251,63 @@ namespace ShowEmAll
 							gui.NumericLabel(i + 1);
 						}
 						else gui.Space(10f);
-						perform(m);
+						drawer.Invoke();
 					});
-					if (showSplitter && i < len - 1)
+
+					if (showSplitter && i < count - 1)
 						gui.Splitter();
 					else gui.Space(2f);
+					i++;
 				}
 			});
 		}
-		public override void OnInspectorGUI()
+	}
+
+	internal static class RefializactionHelper
+	{
+		public static bool IsSerializableCollection(Type type)
 		{
-			DoScriptHeaderField();
-
-			StuffHelper.SerializedObjectBlock(serializedObject, () =>
+			if (type.IsArray && type.GetArrayRank() == 1)
 			{
-				DoMembers(DoFieldsFoldout, fields, fieldInfo =>
-				{
-					if (fieldInfo.FieldType.IsIList())
-					{
-						gui.VerticalBlock(() =>
-						{
-							listDrawer.advancedCollection = fieldInfo.IsDefined(typeof(AdvancedCollectionAttribute));
-							listDrawer.readonlyCollection = fieldInfo.IsDefined(typeof(ReadonlyAttribute));
-							listDrawer.fieldInfo = fieldInfo;
-							listDrawer.Draw();
-						});
-					}
-					else
-					{
-						var property = spDic[fieldInfo.Name];
-						if (fieldInfo.IsDefined(typeof(InlineAttribute)))
-						{
-							var d = inlineDrawers[property];
-							d.property = property;
-							d.label = property.name.SplitPascalCase();
-							d.Draw();
-						}
-						else
-						{
-							gui.PropertyField(property, fieldInfo.Name.SplitPascalCase());
-						}
-					}
-				});
-
-				DoMembers(DoPropertiesFoldout, properties, pinfo =>
-				{
-					gui.VerticalBlock(() => propertyDrawers[pinfo].Draw());
-				});
-
-				DoMembers(DoMethodsFoldout, methods, minfo =>
-				{
-					gui.VerticalBlock(() => methodDrawers[minfo].Draw());
-				});
-			});
+				Type elementType = type.GetElementType();
+				return !elementType.IsArray && IsSerializableType(elementType);
+			}
+			return type.GetGenericTypeDefinition() == typeof(List<>) && IsSerializableType(type.GetGenericArguments()[0]);
 		}
 
-		private void DoScriptHeaderField()
+		public static bool IsSerializableType(Type type)
 		{
-			var script = serializedObject.FindProperty("m_Script");
-			gui.ObjectField("Script", script.objectReferenceValue, value => script.objectReferenceValue = value);
+			return !typeof(Delegate).IsAssignableFrom(type) &&
+					type.IsEnum ||
+					IsSimpleType(type) ||
+					IsStruct(type) ||
+					typeof(Object).IsAssignableFrom(type);
+		}
+
+		public static bool IsStruct(Type type)
+		{
+			return type.IsValueType && !type.IsEnum && !type.IsPrimitive;
+		}
+
+		public static bool IsSerializableField(FieldInfo field)
+		{
+			bool isConst = field.IsLiteral && !field.IsInitOnly;
+			Type fType = field.FieldType;
+
+			return !isConst &&
+				   !field.IsStatic &&
+				   (field.IsPublic || field.IsDefined<SerializeField>() && !field.IsDefined<HideInInspector>()) &&
+				   (IsSerializableType(fType) || IsCollection(fType) && IsSerializableCollection(fType));
+		}
+
+		public static bool IsCollection(Type type)
+		{
+			return type.IsArray || type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>);
+		}
+
+		private static bool IsSimpleType(Type type)
+		{
+			return type.IsPrimitive || type == typeof(string);
 		}
 	}
 }
