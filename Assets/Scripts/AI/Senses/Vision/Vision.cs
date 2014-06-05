@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System;
-using Vexe.RuntimeHelpers;
 using ShowEmAll;
 
 public class Vision : Sense
@@ -13,32 +12,31 @@ public class Vision : Sense
 	public float quality = 1f;
 	public float fovAngle = 90f;
 	public float fovMaxDistance = 15;
-	public LayerMask cullingMask;
-	public MeshRenderer fovMeshRenderer;
-	public MeshFilter fovMeshFilter;
+	public LayerMask layerMask = -1;
+
+	[SerializeField, RequireFromThis]
+	private MeshRenderer fovMeshRenderer;
+
+	[SerializeField, RequireFromThis]
+	private MeshFilter fovMeshFilter;
 
 	private List<RaycastHit> hits = new List<RaycastHit>();
 	private List<Vector3> renderLocations = new List<Vector3>();
 	private float timer;
-	private Action<RaycastHit, List<RaycastHit>> onHit = delegate { };
+	private Action<RaycastHit, List<RaycastHit>> onSeen = delegate { };
 	private FOVRenderer fov;
 	private bool clearedFov;
 	private Transform cachedTransform;
 
+	public Action<RaycastHit, List<RaycastHit>> OnSeen
+	{
+		get { return onSeen; }
+		set { onSeen = value; }
+	}
+
 	protected override void Initialize()
 	{
 		cachedTransform = transform;
-	}
-
-	private void OnEnable()
-	{
-		AssertionHelper.AssertNotNullAfterAssignment(ref fovMeshFilter, GetComponent<MeshFilter>, "fovMeshFilter");
-		AssertionHelper.AssertNotNullAfterAssignment(ref fovMeshRenderer, GetComponent<MeshRenderer>, "fovMeshRenderer");
-	}
-
-	public void AddVisionSubscriber(Action<RaycastHit, List<RaycastHit>> action)
-	{
-		onHit += action;
 	}
 
 	[ShowMethod]
@@ -87,14 +85,14 @@ public class Vision : Sense
 			Vector3 dir = Quaternion.AngleAxis(currentAngle, -cachedTransform.forward) * cachedTransform.up;
 			RaycastHit hit;
 
-			if (!Physics.Raycast(cachedTransform.position, dir, out hit, fovMaxDistance, cullingMask))
+			if (!Physics.Raycast(cachedTransform.position, dir, out hit, fovMaxDistance, layerMask))
 			{
 				renderLocations.Add(cachedTransform.position + (dir * fovMaxDistance));
 			}
 			else
 			{
 				renderLocations.Add(hit.point);
-				onHit(hit, hits);
+				onSeen(hit, hits);
 				hits.Add(hit);
 			}
 

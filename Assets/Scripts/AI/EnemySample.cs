@@ -1,8 +1,7 @@
 using UnityEngine;
 using System.Linq;
 using ShowEmAll;
-using Vexe.RuntimeHelpers;
-using Vexe.RuntimeExtensions;
+using System.Collections.Generic;
 
 public class EnemySample : BetterBehaviour
 {
@@ -10,10 +9,13 @@ public class EnemySample : BetterBehaviour
 	public Color idle = Color.green;
 	public Color suspicious = Color.yellow;
 
-	[SerializeField]
+	[SerializeField, RequireFromChildren("Senses/Vision")]
 	private Vision eyes;
 
-	[SerializeField]
+	[SerializeField, RequireFromChildren("Senses/Hearing")]
+	private Hearing ears;
+
+	[SerializeField, RequireFromChildren("Senses/Touch")]
 	private Touch touch;
 
 	private bool mPlayerInSight;
@@ -30,29 +32,43 @@ public class EnemySample : BetterBehaviour
 
 	private void OnEnable()
 	{
-		AssertionHelper.AssertNotNullAfterAssignment(ref eyes, GetComponentInChildren<Vision>, "eyes");
-		AssertionHelper.AssertNotNullAfterAssignment(ref touch, GetComponentInChildren<Touch>, "touch");
+		// Sub to eyes
+		eyes.OnSeen += OnSeen;
+
+		// Sub to touch
+		touch.OnTouch.Add(OnTouch);
+
+		// Sub to ears
+		ears.OnHeard += OnHeard;
 	}
 
-	private void Start()
+	private void OnDisable()
 	{
-		eyes.AddVisionSubscriber((current, all) =>
-		{
-			// TODO: Find a better way than using tags
-			if (current.collider.tag == Tags.player)
-			{
-				playerInSight = true;
-			}
-			else if (playerInSight)
-			{
-				playerInSight = all.Select(hit => hit.collider.tag).Contains("Player");
-			}
-		});
-
-		touch.OnTouch.Add(OnTriggerEnter);
+		eyes.OnSeen -= OnSeen;
+		touch.OnTouch.Remove(OnTouch);
+		ears.OnHeard -= OnHeard;
 	}
 
-	public void OnTriggerEnter(Collider other)
+	private void OnSeen(RaycastHit current, List<RaycastHit> all)
+	{
+		// TODO: Find a better way than using tags
+		if (current.collider.tag == Tags.player)
+		{
+			playerInSight = true;
+		}
+		else if (playerInSight)
+		{
+			playerInSight = all.Select(hit => hit.collider.tag).Contains("Player");
+		}
+	}
+
+	private void OnHeard(ISoundEmitter source, GameObject noiseMaker)
+	{
+		if (noiseMaker.tag == Tags.player)
+			Debug.Log("Heard player moving");
+	}
+
+	public void OnTouch(Collider other)
 	{
 		if (other.tag == Tags.player)
 			Debug.Log("Touching player");
