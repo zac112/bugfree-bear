@@ -49,6 +49,29 @@ public class InputHandler : MonoBehaviour
 	/// </summary>
 	public static event Action OnInteract;
 
+
+	/// <summary>
+	/// Subscribes the specified handler to all hte player's movements
+	/// </summary>
+	public static void SubscribeToMovement(Action handler)
+	{
+		OnMoveRight += handler;
+		OnMoveLeft += handler;
+		OnMoveUp += handler;
+		OnMoveDown += handler;
+	}
+
+	/// <summary>
+	/// Unsubscribes the specified handler from all the player's movements
+	/// </summary>
+	public static void UnsubscribeFromMovement(Action handler)
+	{
+		OnMoveRight -= handler;
+		OnMoveLeft -= handler;
+		OnMoveUp -= handler;
+		OnMoveDown -= handler;
+	}
+
 	void OnEnable()
 	{
 
