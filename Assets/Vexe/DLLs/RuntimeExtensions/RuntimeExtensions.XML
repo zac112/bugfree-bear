@@ -46,6 +46,11 @@
             If throwIfNotFound is true and the child is not found, an InvalidOperationException is thrown
             </summary>
         </member>
+        <member name="M:Vexe.RuntimeExtensions.GenericEnumerableExtensions.BatchRemove``1(System.Collections.Generic.IList{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Removes the specified items from this list
+            </summary>
+        </member>
         <member name="M:Vexe.RuntimeExtensions.GenericEnumerableExtensions.AddMultiple``1(System.Collections.Generic.IList{``0},``0[])">
             <summary>
             Adds a variable number of items to this list
