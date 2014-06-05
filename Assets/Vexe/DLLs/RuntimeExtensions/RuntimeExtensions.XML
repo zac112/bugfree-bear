@@ -35,6 +35,22 @@
             Destroys all components this gameObject
             </summary>
         </member>
+        <member name="M:Vexe.RuntimeExtensions.GameObjectExtensions.GetOrAddChildAtPath(UnityEngine.GameObject,System.String)">
+            <summary>
+            Gets or adds the child GameObject at the specified child path. ex: "Child1/Child2/Child3" where "Child1" is a child for this gameObject
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeExtensions.GameObjectExtensions.GetChildAtPath(UnityEngine.GameObject,System.String,System.Boolean)">
+            <summary>
+            Gets the child GameObject at the specified child path. ex: "Child1/Child2/Child3" where "Child1" is a child for this gameObject
+            If throwIfNotFound is true and the child is not found, an InvalidOperationException is thrown
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeExtensions.GenericEnumerableExtensions.AddMultiple``1(System.Collections.Generic.IList{``0},``0[])">
+            <summary>
+            Adds a variable number of items to this list
+            </summary>
+        </member>
         <member name="M:Vexe.RuntimeExtensions.GenericEnumerableExtensions.Disinclude``1(System.Collections.Generic.List{``0},``0)">
             <summary>
             Returns a new version of the list that doesn't include the specified value
@@ -132,6 +148,16 @@
             Gets or adds the child transform whose name is 'name'
             Pass true to 'recursive' if you want the search to be recursive
             Specify HideFlags if you want to add the child using those flags
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeExtensions.TypeExtensions.IsDefined``1(System.Reflection.MemberInfo)">
+            <summary>
+            Returns true if the attribute whose type is specified by the generic argument is defined on this member
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeExtensions.TypeExtensions.IsDefined``1(System.Type)">
+            <summary>
+            Returns true if the attribute whose type is specified by the generic argument is defined on this type
             </summary>
         </member>
         <member name="M:Vexe.RuntimeExtensions.TypeExtensions.IsSubclassOfRawGeneric(System.Type,System.Type)">
