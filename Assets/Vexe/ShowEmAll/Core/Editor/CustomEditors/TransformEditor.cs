@@ -18,6 +18,12 @@ namespace ShowEmAll
 
 		private void OnEnable()
 		{
+			if (serializedObject != null || !serializedObject.Equals(null))
+				Init();
+		}
+
+		private void Init()
+		{
 			StuffHelper.InitTransformSPs(serializedObject, out spPos, out spRot, out spScale);
 			gui = new GLWrapper();
 			transformDrawer = new TransformDrawer<GLWrapper, GLOption>(gui, serializedObject.targetObject)
@@ -30,9 +36,20 @@ namespace ShowEmAll
 
 		public override void OnInspectorGUI()
 		{
-			serializedObject.Update();
-			transformDrawer.Draw();
-			serializedObject.ApplyModifiedProperties();
+			if (serializedObject.Equals(null))
+			{
+				try
+				{
+					Init();
+				}
+				catch { }
+			}
+			else
+			{
+				serializedObject.Update();
+				transformDrawer.Draw();
+				serializedObject.ApplyModifiedProperties();
+			}
 		}
 	}
 }
