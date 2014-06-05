@@ -77,6 +77,11 @@ public class FSM : BetterBehaviour
 		}
 	}
 
+	private void Start()
+	{
+		EnableCurrentDisableRest();
+	}
+
 	/// <summary>
 	/// Notifies the FSM that the specified transition has made a transition.
 	/// Sets the current fsm state to the transition's toState
