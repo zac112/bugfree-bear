@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
+using ShowEmAll;
 
 public class PlayerMover : Mover
 {
+	[SerializeField, RequireFromChildren("Footsteps")]
+	private SoundEmitter footsteps;
 
 	private void OnEnable()
 	{
@@ -11,6 +14,7 @@ public class PlayerMover : Mover
 	public void Move()
 	{
 		Move(InputHandler.InputVector);
+		footsteps.Emit();
 	}
 
 	public override void Move(Vector2 direction)
