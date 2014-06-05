@@ -22,5 +22,10 @@ namespace ShowEmAll
 				return id;
 			}
 		}
+
+		public void log(object msg)
+		{
+			Debug.Log(msg);
+		}
 	}
 }
