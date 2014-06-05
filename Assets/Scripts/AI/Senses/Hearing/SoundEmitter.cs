@@ -8,25 +8,28 @@ using Vexe.RuntimeExtensions;
 /// so I'm not exactly sure what's rms, refValue, etc.
 /// I left them as readonly fields just to see how their values change.
 /// </summary>
+[DefineCategory("NotSure", @displayOrder: 2.5f)] // For two reasons: 1- I'm really not sure about those fields. 2- Test out categories.
 public class SoundEmitter : BetterBehaviour, ISoundEmitter
 {
-	public bool drawGizmos = true;
-	public Color gizmosColor;
+	private const string NotSure = "NotSure";
+
+	[CategoryMember(NotSure)]
+	public int numSamples = 1024;
+
+	[CategoryMember(NotSure)]
+	public float refValue = 0.1f;
+
+	[CategoryMember(NotSure), SerializeField, Readonly]
+	private float rmsValue;
+
+	[CategoryMember(NotSure), SerializeField, Readonly]
+	private float rmsPeak;
+
+	[CategoryMember(NotSure), SerializeField, Readonly]
+	private float dbValue;
 
 	[SerializeField, RequireFromThis(true)]
 	private AudioSource source;
-
-	public int numSamples = 1024;
-	public float refValue = 0.1f;
-
-	[SerializeField, Readonly] // I pretty much don't care about both these fields being serialized but just want them visible as readonly in the inspector. I might try some attributes hack
-	private float rmsValue;
-
-	[SerializeField, Readonly]
-	private float rmsPeak;
-
-	[SerializeField, Readonly]
-	private float dbValue;
 
 	[SerializeField, HideInInspector]
 	private float multiplier = 1f;
@@ -168,4 +171,10 @@ public class SoundEmitter : BetterBehaviour, ISoundEmitter
 			GizHelper.DrawWireSphere(from, maxStrength, Color.green);
 		}
 	}
+
+	[CategoryMember(DBug)]
+	public bool drawGizmos = true;
+
+	[CategoryMember(DBug)]
+	public Color gizmosColor;
 }

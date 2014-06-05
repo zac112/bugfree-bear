@@ -5,10 +5,6 @@ using System.Collections.Generic;
 
 public class EnemySample : BetterBehaviour
 {
-	public Color alert = Color.red;
-	public Color idle = Color.green;
-	public Color suspicious = Color.yellow;
-
 	[SerializeField, RequireFromChildren("Senses/Vision")]
 	private Vision eyes;
 
@@ -73,4 +69,10 @@ public class EnemySample : BetterBehaviour
 		if (other.tag == Tags.player)
 			Debug.Log("Touching player");
 	}
+
+	[CategoryMember(DBug)]
+	public Color
+		alert = Color.red,
+		idle = Color.green,
+		suspicious = Color.yellow;
 }

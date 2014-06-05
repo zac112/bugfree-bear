@@ -6,11 +6,6 @@ using Vexe.RuntimeExtensions;
 
 public class Hearing : Sense, ISoundReciever
 {
-	// TODO: Encapsulate in a "Debug" category
-	public bool drawGizmos;
-	public Color gizmoColor = Color.green;
-	public GameObject spottedPrefab;
-
 	[SerializeField, HideInInspector]
 	private float minHearingDistance = 1f;
 
@@ -117,4 +112,13 @@ public class Hearing : Sense, ISoundReciever
 			GizHelper.DrawLine(dbgSenderPos, transform.position, new Color(0, 0, 0, dbgPercentage));
 		}
 	}
+
+	[CategoryMember(DBug)]
+	public bool drawGizmos;
+
+	[CategoryMember(DBug)]
+	public Color gizmoColor = Color.green;
+
+	[CategoryMember(DBug)]
+	public GameObject spottedPrefab;
 }

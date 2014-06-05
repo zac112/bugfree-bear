@@ -5,9 +5,6 @@ using ShowEmAll;
 
 public class Vision : Sense
 {
-	public bool drawGizmos = true;
-	public Color gizmosColor;
-	public bool renderFov = true;
 	public float updateRate = 0.02f;
 	public float quality = 1f;
 	public float fovAngle = 90f;
@@ -170,4 +167,11 @@ public class Vision : Sense
 			mesh.RecalculateBounds();
 		}
 	}
+
+	[CategoryMember(DBug)]
+	public bool drawGizmos = true;
+	[CategoryMember(DBug)]
+	public bool renderFov = true;
+	[CategoryMember(DBug)]
+	public Color gizmosColor;
 }
