@@ -346,7 +346,8 @@ namespace EditorGUIFramework
 		public override void HelpBox(string message, MessageType type)
 		{
 			var content = new GUIContent(message, GuiHelper.GetHelpIcon(type), "");
-			float height = GuiHelper.HelpBox.CalcSize(content).y / 11f;
+			float height = GuiHelper.HelpBox.CalcSize(content).y;
+			//float height = GuiHelper.HelpBox.CalcSize(content).y / 11f;
 			//float height = GUI.skin.textField.CalcSize(content).y;
 
 			AddControl(new GUIHelpBox
