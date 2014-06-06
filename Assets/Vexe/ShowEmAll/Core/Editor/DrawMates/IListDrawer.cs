@@ -10,6 +10,7 @@ using Vexe.RuntimeExtensions;
 using Object = UnityEngine.Object;
 using System.Text;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace ShowEmAll.DrawMates
 {
@@ -23,7 +24,7 @@ namespace ShowEmAll.DrawMates
 
 		public bool readonlyCollection { get; set; }
 		public FieldInfo fieldInfo { get; set; }
-		public bool advancedCollection { get; set; }
+		public bool awesomeCollection { get; set; }
 		private AdvancedAreaData Data { get { return RTHelper.LazyValue(() => data, d => data = d); } }
 		private Type IListType { get { return fieldInfo.FieldType; } }
 		private Type ElementType { get { return IsArray ? IListType.GetElementType() : IListType.GetProperty("Item").PropertyType; } }
@@ -52,16 +53,16 @@ namespace ShowEmAll.DrawMates
 
 			gui.VerticalBlock(GUI.skin.box, () =>
 			{
-				list = GetList();
+				list = AllocateIfNull();
 
-				bool advanced = advancedCollection && !readonlyCollection;
+				bool isAwesome = awesomeCollection && !readonlyCollection;
 				DrawHeader(
 					@add: AddToList,
 					@enableAdd: !readonlyCollection,
-					@showAdvanedToggle: advanced
+					@showAdvanedToggle: isAwesome
 				);
 
-				if (advanced)
+				if (advancedMode)
 					DrawAdvancedArea();
 
 				gui.Splitter();
@@ -86,7 +87,7 @@ namespace ShowEmAll.DrawMates
 								if (list[i] != newValue)
 									SetListElementAtIndex(i, newValue);
 							},
-							@showMoveUpDown: advanced,
+							@showMoveUpDown: advancedMode & isAwesome,
 							@moveDown: () => list.MoveElementDownNonGen(i),
 							@moveUp: () => list.MoveElementUpNonGen(i),
 							@enableRemove: !readonlyCollection,
@@ -158,21 +159,25 @@ namespace ShowEmAll.DrawMates
 
 		private void DrawAddingArea()
 		{
-			Action<Object> add = AddToList;
 			var eType = ElementType;
 
 			gui.Space(-3f);
-			gui.DragDropArea(
+			gui.DragDropArea<Object>(
 				@label: "+",
 				@labelSize: 17,
 				@style: GUI.skin.textField,
 				@canSetVisualModeToCopy: dragObjects => dragObjects.All(o => eType.IsAssignableFrom(o.GetType())),
 				@cursor: MouseCursor.Link,
-				@onDrop: add,
+				@onDrop: AddToList,
 				@onMouseUp: () => SelectionWindow.Show<Object>(
 					@getValues: () => Object.FindObjectsOfType(eType),
 					@getTarget: () => null,
-					@setTarget: add,
+					@setTarget: target =>
+					{
+						AddToList(target);
+						if (IsArray)
+							ApplyList();
+					},
 					@getValueName: value => value.name,
 					@label: eType.Name + "s"),
 				@preSpace: 10f,
@@ -245,11 +250,22 @@ namespace ShowEmAll.DrawMates
 			return builder.ToString();
 		}
 
+		private void ApplyList(IList value)
+		{
+			IList to;
+			if (IsArray)
+			{
+				var array = Array.CreateInstance(ElementType, value.Count);
+				value.CopyTo(array, 0);
+				to = array;
+			}
+			else to = value;
+			fieldInfo.SetValue(target, to);
+		}
+
 		private void ApplyList()
 		{
-			fieldInfo.SetValue(target, IsArray ?
-				(list as ArrayList).ToArray(ElementType) :
-				list);
+			ApplyList(list);
 		}
 
 		private IList GetList()
@@ -257,6 +273,19 @@ namespace ShowEmAll.DrawMates
 			return IsArray ?
 				new ArrayList(fieldInfo.GetValue(target) as IList) :
 				fieldInfo.GetValue(target) as IList;
+		}
+
+		private IList AllocateIfNull()
+		{
+			var list = GetList();
+			if (list == null)
+			{
+				list = IsArray ?
+					Array.CreateInstance(ElementType, 0) as IList :
+					Activator.CreateInstance(typeof(List<>).MakeGenericType(ElementType)) as IList;
+				ApplyList(list);
+			}
+			return list;
 		}
 
 		private void RemoveListElement(object value)
