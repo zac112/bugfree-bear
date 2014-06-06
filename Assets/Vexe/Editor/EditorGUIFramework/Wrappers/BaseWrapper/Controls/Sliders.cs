@@ -44,6 +44,11 @@ namespace EditorGUIFramework
 			Slider("", value, leftValue, rightValue, option, setValue);
 		}
 
+		public void Slider(string label, float value, float leftValue, float rightValue, Action<float> setValue)
+		{
+			Slider(label, value, leftValue, rightValue, null, setValue);
+		}
+
 		public void Slider(string label, float value, float leftValue, float rightValue, TOption option, Action<float> setValue)
 		{
 			Slider(new GUIContent(label), value, leftValue, rightValue, option, setValue);
