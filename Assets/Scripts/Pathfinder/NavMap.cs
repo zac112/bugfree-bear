@@ -44,7 +44,7 @@ public class NavMap
 
 	private bool IsWalkable(int x, int y)
 	{
-		return navMap[x, y, 0];
+		return IsValidCoordinate(x,y) && navMap[x, y, 0];
 	}
 
 	private List<Coordinate> GetAvailableNeighbors(Coordinate position, Dictionary<Coordinate, Coordinate> closedSet)
@@ -96,16 +96,19 @@ public class NavMap
 			resultList.Add(endCoord.GetAsMapPosition(offset));
 		}
 
-#if UNITY_EDITOR && DEBUGLOGS
-		if(!IsWalkable(start)){
+
+		if(!IsWalkable(startCoord)){
+#if UNITY_EDITOR && DEBUGLOGS			
 			Debug.LogError("Invalid start position("+startPosition+")! Unable to find route.");
-			return null;
-		}
-		if(!IsWalkable(end)){
-			Debug.LogError("Invalid end position("+endPosition+")! Unable to find route.");
-			return null;
-		}
 #endif
+			return;
+		}
+		if(!IsWalkable(endCoord)){
+#if UNITY_EDITOR && DEBUGLOGS			
+			Debug.LogError("Invalid end position("+endPosition+")! Unable to find route.");
+#endif			
+			return;
+		}
 		List<Coordinate> path = new List<Coordinate>();
 		PriorityStack<Coordinate> openSet = new PriorityStack<Coordinate>();
 		//dictionary from coordinate to the previous coordinate in the path
