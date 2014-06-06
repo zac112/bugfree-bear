@@ -5,6 +5,9 @@ using UnityEngine;
 using Vexe.RuntimeHelpers.Classes.GUI;
 using ShowEmAll;
 
+#pragma warning disable 0649
+#pragma warning disable 0414
+
 [Flags]
 public enum TestEnum
 {
@@ -16,20 +19,25 @@ public enum TestEnum
 
 public class AttTest : BetterBehaviour
 {
-	[Inline]
-	public BoxCollider col;
+	//[Inline(order = 0), RequireFromThis(order = 1), Readonly(order = 2)]
+	//public BoxCollider col;
 
-	[Inline]
-	public Transform tran;
+	[SerializeField, Readonly]
+	private List<FSMTransition> transitions = new List<FSMTransition>();
+}
 
-	[Inline]
-	public GameObject go;
+class SDfsfd
+{
+	//[Inline]
+	//public Transform tran;
 
-	[Inline]
-	public AudioSource aud;
+	//[Inline]
+	//public GameObject go;
+
+	//[Inline]
+	//public AudioSource aud;
 
 	public UnityDateTime dt = new UnityDateTime();
-	public ScaledCurve curve;
 
 	public int[] ints;
 
@@ -50,16 +58,13 @@ public class AttTest : BetterBehaviour
 	[Draggable]
 	public AttTest drag;
 
-	[ShowTransform]
-	public Transform trans;
-
 	[EnumMask]
 	public TestEnum en;
 
 	[Readonly]
 	public Vector3 rVector;
 
-	[AdvancedCollectionAttribute]
+	[AwesomeCollectionAttribute]
 	public List<Transform> list;
 
 	[ShowProperty]
@@ -71,12 +76,12 @@ public class AttTest : BetterBehaviour
 	[ShowMethod]
 	public void TestMethod()
 	{
-		print("testing");
+		Debug.Log("testing");
 	}
 
 	[ShowMethod]
 	public void TestMethod(int x, float y, Transform t)
 	{
-		print("x: " + x + " y: " + y + " t: " + t.name);
+		Debug.Log("x: " + x + " y: " + y + " t: " + t.name);
 	}
 }
