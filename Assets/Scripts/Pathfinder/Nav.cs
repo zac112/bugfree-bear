@@ -7,8 +7,8 @@ public class Nav : MonoBehaviour
 
 	void Awake()
 	{
-		int maxX = 0;
-		int maxY = 0;
+		int maxX = int.MinValue;
+		int maxY = int.MinValue;
 		int minX = int.MaxValue;
 		int minY = int.MaxValue;
 
