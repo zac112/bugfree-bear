@@ -139,9 +139,8 @@ namespace ShowEmAll.DrawMates
 				{
 					bool contains = list.Contains(d.valueToCheck);
 					gui.ColorBlock(contains ? GuiHelper.GreenColorDuo.FirstColor : GuiHelper.RedColorDuo.FirstColor, () =>
-					{
-						gui.GuessField("Contains value?", d.valueToCheck, ElementType, newValue => d.valueToCheck = newValue);
-					});
+						gui.GuessField("Contains value?", d.valueToCheck, ElementType, newValue => d.valueToCheck = newValue)
+					);
 				});
 				gui.HorizontalBlock(() =>
 				{
@@ -172,9 +171,9 @@ namespace ShowEmAll.DrawMates
 				@onMouseUp: () => SelectionWindow.Show<Object>(
 					@getValues: () => Object.FindObjectsOfType(eType),
 					@getTarget: () => null,
-					@setTarget: target =>
+					@setTarget: item =>
 					{
-						AddToList(target);
+						AddToList(item);
 						if (IsArray)
 							ApplyList();
 					},
@@ -270,22 +269,25 @@ namespace ShowEmAll.DrawMates
 
 		private IList GetList()
 		{
-			return IsArray ?
-				new ArrayList(fieldInfo.GetValue(target) as IList) :
-				fieldInfo.GetValue(target) as IList;
+			var value = fieldInfo.GetValue<IList>(target);
+			if (IsArray)
+			{
+				return value == null ? null : new ArrayList(value);
+			}
+			return value;
 		}
 
 		private IList AllocateIfNull()
 		{
-			var list = GetList();
-			if (list == null)
+			var value = GetList();
+			if (value == null)
 			{
-				list = IsArray ?
-					Array.CreateInstance(ElementType, 0) as IList :
+				value = IsArray ?
+					Array.CreateInstance(ElementType, 0) :
 					Activator.CreateInstance(typeof(List<>).MakeGenericType(ElementType)) as IList;
-				ApplyList(list);
+				ApplyList(value);
 			}
-			return list;
+			return value;
 		}
 
 		private void RemoveListElement(object value)
