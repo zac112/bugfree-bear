@@ -44,7 +44,7 @@ namespace ShowEmAll
 			membersCategories = new List<MembersCategory>();
 			var targetType = target.GetType();
 			var targetAtts = targetType.GetCustomAttributes<DefineCategoryAttribute>(@inherit: true);
-			var allMembers = targetType.GetMembers(AllBindings);
+			var allMembers = targetType.GetMembersBeneath<BetterBehaviour>();
 			var nonCategorizedMembers = allMembers.ToList();
 			var mapper = new DMCMapper(serializedObject, gui)
 			{
@@ -57,13 +57,17 @@ namespace ShowEmAll
 			foreach (var catAtt in targetAtts)
 			{
 				string catName = catAtt.name;
-				var catMembers = from member in allMembers
-								 let cats = member.GetCustomAttributes<CategoryMemberAttribute>()
-								 where !cats.IsNullOrEmpty()
-								 let catMem = cats[0]
-								 where catMem.name == catName
-								 orderby catMem.displayOrder
-								 select member;
+				var catMembers = (from member in allMembers
+								  let cats = member.GetCustomAttributes<CategoryMemberAttribute>()
+								  where !cats.IsNullOrEmpty()
+								  let catMem = cats[0]
+								  where catMem.name == catName
+								  orderby catMem.displayOrder
+								  select member)
+								 .ToArray();
+
+				if (catMembers.IsEmpty())
+					continue;
 
 				// catMembers are categorized, thus must be removed from nonCategorizedMembers
 				nonCategorizedMembers.BatchRemove(catMembers);
@@ -313,11 +317,15 @@ namespace ShowEmAll
 
 		public static bool IsSerializableType(Type type)
 		{
-			return !typeof(Delegate).IsAssignableFrom(type) &&
+			if (!typeof(Delegate).IsAssignableFrom(type) &&
 					type.IsEnum ||
 					IsSimpleType(type) ||
-					IsStruct(type) ||
-					typeof(Object).IsAssignableFrom(type);
+					typeof(Object).IsAssignableFrom(type)
+				)
+				return true;
+
+			bool isSerializable = type.IsDefined<SerializableAttribute>();
+			return isSerializable && (IsStruct(type) || type.IsClass);
 		}
 
 		public static bool IsStruct(Type type)
