@@ -44,5 +44,10 @@ namespace ShowEmAll.DrawMates
 			get { return StuffHelper.GetFoldoutValue(key); }
 			set { StuffHelper.SetFoldoutValue(key, value); }
 		}
+
+		protected void log(object msg)
+		{
+			Debug.Log(msg);
+		}
 	}
 }
