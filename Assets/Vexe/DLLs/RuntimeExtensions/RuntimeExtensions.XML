@@ -155,6 +155,23 @@
             Specify HideFlags if you want to add the child using those flags
             </summary>
         </member>
+        <member name="M:Vexe.RuntimeExtensions.TypeExtensions.GetMembersBeneath``1(System.Type,System.Reflection.BindingFlags)">
+            <summary>
+            Returns all members declared in T and all of its derivatives
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeExtensions.TypeExtensions.GetMembersBeneath``1(System.Type)">
+            <summary>
+            Returns all members declared in T and all of its derivatives
+            Uses the following BindingFlags: Instance | NonPublic | Public
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeExtensions.TypeExtensions.IsA``1(System.Type)">
+            <summary>
+            Returns true if the type exists within the hierarchy chain of the specified generic type
+            (is equal to it or a subclass of it)
+            </summary>
+        </member>
         <member name="M:Vexe.RuntimeExtensions.TypeExtensions.IsDefined``1(System.Reflection.MemberInfo)">
             <summary>
             Returns true if the attribute whose type is specified by the generic argument is defined on this member
