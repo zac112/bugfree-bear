@@ -3,7 +3,7 @@ using System;
 
 namespace ShowEmAll
 {
-	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Method, AllowMultiple = false)]
+	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property | AttributeTargets.Method, AllowMultiple = false)]
 	public class CategoryMemberAttribute : PropertyAttribute
 	{
 		public readonly string name;
