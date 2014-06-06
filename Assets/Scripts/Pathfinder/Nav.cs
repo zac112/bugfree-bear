@@ -16,13 +16,13 @@ public class Nav : MonoBehaviour
 		foreach (Tile t in tileList)
 		{
 			if (t.transform.position.x > maxX)
-				maxX = (int)t.transform.position.x;
+				maxX = (int)Mathf.Round(t.transform.position.x);
 			if (t.transform.position.y > maxY)
-				maxY = (int)t.transform.position.y;
+				maxY = (int)Mathf.Round(t.transform.position.y);
 			if (t.transform.position.x < minX)
-				minX = (int)t.transform.position.x;
+				minX = (int)Mathf.Round(t.transform.position.x);
 			if (t.transform.position.y < minY)
-				minY = (int)t.transform.position.y;
+				minY = (int)Mathf.Round(t.transform.position.y);
 
 		}
 
