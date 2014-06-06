@@ -12,5 +12,8 @@ namespace ShowEmAll.Tests
 
 		[ShowProperty]
 		public string StrValue { get { return strValue; } set { strValue = value; } }
+
+		[ShowProperty]
+		public string ReadonlyStrValue { get { return strValue; } }
 	}
 }
