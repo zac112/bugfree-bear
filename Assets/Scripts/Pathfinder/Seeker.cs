@@ -11,7 +11,7 @@ public class Seeker : MonoBehaviour
 	{
 		Nav.map.FindPath(transform, targetPos, path);
 
-		Vector2 to;
+		//Vector2 to;
 		if (path.Count == 0)
 		{
 			//Debug.Log("path not found!");
@@ -20,12 +20,11 @@ public class Seeker : MonoBehaviour
 
 		if (path.Count <= 1)
 		{
-			to = targetPos.position;
+			mover.Move(targetPos.position);
 		}
 		else
 		{
-			to = (path[0]);
+			mover.Move(path[0]);
 		}
-		mover.Move(to);
 	}
 }

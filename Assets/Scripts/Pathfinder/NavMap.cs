@@ -7,18 +7,19 @@ using System;
 public class NavMap
 {
 	private bool[, ,] navMap;
-	private int[] offset;
+	private float[] offset;
 
-	public NavMap(int width, int height, int offsetX, int offsetY)
+	public NavMap(int width, int height, float offsetX, float offsetY)
 	{
-		offset = new int[] { offsetX, offsetY };
-		navMap = new bool[width - offset[0], height - offset[1], 1];
+		offset = new float[] { offsetX, offsetY };
+		navMap = new bool[width - (int)Mathf.Round (offset[0]), height - (int)Mathf.Round(offset[1]), 1];
 	}
 
 	public void Register(Transform position, bool walkable)
 	{
 		Coordinate c = Coordinate.GetCoordinate(position, offset);
 		Register(c.x, c.y, walkable);
+		Coordinate.ClearPool();
 	}
 
 	public void Register(int x, int y, bool walkable)
@@ -171,7 +172,7 @@ public class NavMap
 		resultList.Clear();
 		if (closedSet.Count <= 1)
 		{
-			resultList.Add(end);
+			resultList.Add(end.GetAsMapPosition(offset));
 			Coordinate.ClearPool();
 			return;
 		}
@@ -231,14 +232,14 @@ public class NavMap
 			return GetCoordinate((int)v[0], (int)v[1]);
 		}
 
-		public static Coordinate GetCoordinate(Transform t, int[] offset)
+		public static Coordinate GetCoordinate(Transform t, float[] offset)
 		{
 			return GetCoordinate(
-				Mathf.RoundToInt(t.position.x) - offset[0],
-				Mathf.RoundToInt(t.position.y) - offset[1]);
+				Mathf.RoundToInt(t.position.x - offset[0]),
+				Mathf.RoundToInt(t.position.y - offset[1]));
 		}
 
-		public Vector2 GetAsMapPosition(int[] offset)
+		public Vector2 GetAsMapPosition(float[] offset)
 		{
 			return new Vector2(x + offset[0], y + offset[1]);
 		}
