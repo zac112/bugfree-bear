@@ -140,8 +140,8 @@ public class GridCreator : EditorWindow
 			for (int j = 0; j < nCols; j++)
 			{
 				// Calculate coords
-				float x = (width * j) + spacing;
-				float y = (height * i) + spacing;
+				float x = (width + spacing / 100f) * j;
+				float y = (height + spacing / 100f) * i;
 				Vector3 at = parent.position + new Vector3(x, y, 0);
 
 				// Create sprite
