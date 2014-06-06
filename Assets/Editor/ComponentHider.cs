@@ -12,7 +12,7 @@ public class ComponentHider : EditorWindow
 		GetWindow<ComponentHider> ();
 	}
 
-	[MenuItem("ComponentHider/HideTransform _T")]
+	[MenuItem("ComponentHider/HideTransform #&T")]
 	public static void HideTransform(){
 		Transform t = Selection.activeGameObject.transform;
 		if(t.hideFlags == HideFlags.HideInInspector)
