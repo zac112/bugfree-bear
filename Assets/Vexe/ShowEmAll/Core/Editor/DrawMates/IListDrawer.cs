@@ -277,9 +277,10 @@ namespace ShowEmAll.DrawMates
 
 		private IList AllocateIfNull()
 		{
-			var list = GetList();
-			if (list == null)
-			{
+			IList list;
+			try{
+				list = GetList();
+			}catch(ArgumentNullException e){
 				list = IsArray ?
 					Array.CreateInstance(ElementType, 0) as IList :
 					Activator.CreateInstance(typeof(List<>).MakeGenericType(ElementType)) as IList;
