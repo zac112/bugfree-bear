@@ -5,6 +5,7 @@ using sp = UnityEditor.SerializedProperty;
 using EditorGUIFramework;
 using ShowEmAll.DrawMates;
 using uFAction.Editors;
+using Vexe.RuntimeExtensions;
 
 namespace uFAction
 {
@@ -21,11 +22,12 @@ namespace uFAction
 		protected override void Init(sp property, GUIContent label)
 		{
 			base.Init(property, label);
+			string title = TypedValue.title;
 			drawer = new DelegateDrawer<GUIWrapper, GUIOption>(gui)
 			{
 				spDelegate = property,
 				delegateObject = fieldInfo.GetValue(target),
-				title = TypedValue.title,
+				title = title.IsNullOrEmpty() ? fieldInfo.Name.SplitPascalCase() : title,
 				canSetArgsFromEditor = TypedValue.canSetArgsFromEditor,
 				forceExpand = TypedValue.forceExpand
 			};

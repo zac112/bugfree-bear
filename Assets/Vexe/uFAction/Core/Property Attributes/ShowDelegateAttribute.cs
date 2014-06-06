@@ -10,7 +10,10 @@ namespace uFAction
 	public class ShowDelegate : PropertyAttribute
 	{
 		/// <summary>
-		/// The title of the delegate that will appear in the editor
+		/// The title of the delegate that will appear in the editor It's optional.
+		/// If you don't pass a title the delegate field name will be used instead
+		/// after converting it to Pascal casing and splitting it.
+		/// ex: if your delegate field was 'onPlayerSpotted' the title will be 'On Player Spotted'
 		/// </summary>
 		public readonly string title;
 
@@ -29,7 +32,7 @@ namespace uFAction
 		/// </summary>
 		//public readonly bool readonlyDelegate;
 
-		public ShowDelegate(string title, bool canSetArgsFromEditor = true, bool forceExpand = false)//, bool readonlyDelegate = false)
+		public ShowDelegate(string title = "", bool canSetArgsFromEditor = true, bool forceExpand = false)//, bool readonlyDelegate = false)
 		{
 			this.title = title;
 			this.canSetArgsFromEditor = canSetArgsFromEditor;
