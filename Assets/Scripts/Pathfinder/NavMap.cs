@@ -94,7 +94,9 @@ public class NavMap
 		if (startCoord == endCoord) //already there..
 		{
 			resultList.Clear();
-			resultList.Add(endCoord.GetAsMapPosition(offset));
+			resultList.Add(Coordinate.Null.GetAsMapPosition(offset));
+			Coordinate.ClearPool();
+			return;
 		}
 
 
