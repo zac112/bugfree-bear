@@ -2,13 +2,10 @@
 
 public class Tile : MonoBehaviour
 {
-	void Start()
-	{
-		Nav.map.Register(transform, IsWalkable());
-	}
+	public bool isWalkable;
 
-	public bool IsWalkable()
+	private void Start()
 	{
-		return transform.parent.name == "Walkable tiles";
+		Nav.map.Register(transform, isWalkable);
 	}
 }
