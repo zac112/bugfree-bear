@@ -113,9 +113,9 @@ namespace EditorGUIFramework
 			setCurrentIndex(EditorGUILayout.Popup(selectedIndex, displayedOptions, style, option));
 		}
 
-		public override void PropertyField(SerializedProperty sp, GUIContent content, GLOption option)
+		public override void PropertyField(SerializedProperty sp, GUIContent content, bool includeChildren, GLOption option)
 		{
-			EditorGUILayout.PropertyField(sp, content, option);
+			EditorGUILayout.PropertyField(sp, content, includeChildren, option);
 		}
 
 		public override void RectField(GUIContent content, Rect value, GLOption option, Action<Rect> setValue)

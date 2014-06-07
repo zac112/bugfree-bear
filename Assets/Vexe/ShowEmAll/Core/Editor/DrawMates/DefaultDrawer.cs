@@ -29,7 +29,7 @@ namespace ShowEmAll.DrawMates
 
 		public override void Draw()
 		{
-			gui.PropertyField(Property, DisplayText);
+			gui.PropertyField(Property, true);
 		}
 	}
 }

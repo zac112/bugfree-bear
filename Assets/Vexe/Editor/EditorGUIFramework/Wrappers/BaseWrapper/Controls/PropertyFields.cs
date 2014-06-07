@@ -40,6 +40,16 @@ namespace EditorGUIFramework
 			PropertyField(sp, content, null);
 		}
 
-		public abstract void PropertyField(sp sp, GUIContent content, TOption option);
+		public void PropertyField(sp sp, GUIContent content, TOption option)
+		{
+			PropertyField(sp, content, false, option);
+		}
+
+		public void PropertyField(sp property, bool includeChildren)
+		{
+			PropertyField(property, null, includeChildren, null);
+		}
+
+		public abstract void PropertyField(sp property, GUIContent content, bool includeChildren, TOption option);
 	}
 }

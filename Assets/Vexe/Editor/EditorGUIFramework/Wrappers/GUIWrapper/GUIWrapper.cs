@@ -270,9 +270,9 @@ namespace EditorGUIFramework
 			}, option);
 		}
 
-		public override void PropertyField(SerializedProperty sp, GUIContent content, Option option)
+		public override void PropertyField(SerializedProperty sp, GUIContent content, bool includeChildren, Option option)
 		{
-			AddControl(new GUIPropertyField { sp = sp, Content = content }, option);
+			AddControl(new GUIPropertyField { Property = sp, Content = content, IncludeChildren = includeChildren }, option);
 		}
 
 		public override void RectField(GUIContent content, Rect value, Option option, Action<Rect> setValue)
