@@ -33,11 +33,6 @@ public class GridCreator : EditorWindow
 	private int nCols;
 
 	/// <summary>
-	/// The spacing between tiles
-	/// </summary>
-	private float spacing;
-
-	/// <summary>
 	/// Whether or not to randomize walkability
 	/// </summary>
 	private bool isRandomlyWalkable;
@@ -94,7 +89,6 @@ public class GridCreator : EditorWindow
 		gui.ObjectField("Parent", parent, value => parent = value);
 		gui.IntField("nRows", nRows, value => nRows = value);
 		gui.IntField("nCols", nCols, value => nCols = value);
-		gui.FloatField("Spacing", spacing, value => spacing = value);
 		gui.ColorField("Walkable Color", walkableColor, c => walkableColor = c);
 		gui.ColorField("Unwalkable Color", unwalkableColor, c => unwalkableColor = c);
 		gui.Toggle("Random Walkability", isRandomlyWalkable, value => isRandomlyWalkable = value);
@@ -132,17 +126,13 @@ public class GridCreator : EditorWindow
 			parent = new GameObject(sprite.name).transform;
 
 		Vector3 size = sprite.bounds.size;
-		float width = size.x;
-		float height = size.y;
 
 		for (int i = 0; i < nRows; i++)
 		{
 			for (int j = 0; j < nCols; j++)
 			{
 				// Calculate coords
-				float x = (width + spacing / 100f) * j;
-				float y = (height + spacing / 100f) * i;
-				Vector3 at = parent.position + new Vector3(x, y, 0);
+				Vector3 at = parent.position + new Vector3(j, i, 0);
 
 				// Create sprite
 				var go = GOHelper.CreateGo(sprite.name + " (" + i + ", " + j + ")", parent);
