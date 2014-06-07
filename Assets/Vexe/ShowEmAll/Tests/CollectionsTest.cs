@@ -7,13 +7,13 @@ namespace ShowEmAll.Tests
 	{
 		public int[] ints;
 
-		[AwesomeCollection]
+		[BetterCollection]
 		public Transform[] transforms = new Transform[10];
 
 		[Readonly]
 		public List<GameObject> readonlyGos;
 
-		[AwesomeCollection]
+		[BetterCollection(advanced = true)]
 		public List<GameObject> gos;
 	}
 }

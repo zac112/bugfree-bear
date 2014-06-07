@@ -64,7 +64,7 @@ class SDfsfd
 	[Readonly]
 	public Vector3 rVector;
 
-	[AwesomeCollectionAttribute]
+	[BetterCollection]
 	public List<Transform> list;
 
 	[ShowProperty]

@@ -4,8 +4,8 @@ using UnityEngine;
 namespace ShowEmAll
 {
 	[AttributeUsage(AttributeTargets.Field)]
-	public class AwesomeCollectionAttribute : Attribute
+	public class BetterCollectionAttribute : Attribute
 	{
-
+		public bool advanced { get; set; }
 	}
 }
