@@ -14,9 +14,8 @@ public class TargetMarker : MonoBehaviour
 	{
 		if (Input.GetMouseButtonDown(mouseButton))
 		{
-			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-			RaycastHit hit;
-			if (Physics.Raycast(ray, out hit))
+			RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+			if (hit != null)
 			{
 				transform.position = hit.point;
 			}
