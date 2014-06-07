@@ -2,6 +2,7 @@
 using UnityEditor;
 using System;
 using Object = UnityEngine.Object;
+using Vexe.RuntimeExtensions;
 
 namespace EditorGUIFramework
 {
@@ -12,7 +13,7 @@ namespace EditorGUIFramework
 		protected GUIContent label;
 		private bool hasInit;
 
-		public T TypedValue { get { return typeof(PropertyAttribute).IsAssignableFrom(typeof(T)) ? attribute as T : fieldInfo.GetValue(target) as T; } }
+		public T TypedValue { get { return typeof(T).IsA<PropertyAttribute>() ? GetTypedAttribute<T>() : fieldInfo.GetValue(target) as T; } }
 		public SerializedObject serializedObject { get { return property.serializedObject; } }
 		public Object target { get { return serializedObject.targetObject; } }
 
@@ -42,6 +43,11 @@ namespace EditorGUIFramework
 		protected void ApplyAfterChange(Action change)
 		{
 			gui.ApplyAfterChange(serializedObject, change);
+		}
+
+		protected TAttribute GetTypedAttribute<TAttribute>() where TAttribute : class, T
+		{
+			return attribute as TAttribute;
 		}
 
 		protected abstract void Code();
