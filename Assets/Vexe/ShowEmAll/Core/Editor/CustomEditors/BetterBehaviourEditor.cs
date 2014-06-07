@@ -182,6 +182,11 @@ namespace ShowEmAll
 		{
 			BaseDrawer<GLWrapper, GLOption> drawer = null;
 			var spField = serializedObject.FindProperty(field.Name);
+
+			Action assignDefault = () =>
+				drawer = new DefaultDrawer<GLWrapper, GLOption>(
+					spField, field.Name.SplitPascalCase(), gui);
+
 			if (field.IsDefined<InlineAttribute>())
 			{
 				var inlineDrawer = new InlineDrawer(gui, target);
@@ -191,16 +196,20 @@ namespace ShowEmAll
 			}
 			else if (field.FieldType.IsIList())
 			{
-				var listDrawer = new IListDrawer<GLWrapper, GLOption>(gui, target);
-				listDrawer.awesomeCollection = field.IsDefined<AwesomeCollectionAttribute>();
-				listDrawer.readonlyCollection = field.IsDefined<ReadonlyAttribute>();
-				listDrawer.fieldInfo = field;
-				drawer = listDrawer;
+				var better = field.GetCustomAttribute<BetterCollectionAttribute>();
+				if (better != null)
+				{
+					var listDrawer = new IListDrawer<GLWrapper, GLOption>(gui, target);
+					listDrawer.advanced = better.advanced;
+					listDrawer.readonlyCollection = field.IsDefined<ReadonlyAttribute>();
+					listDrawer.fieldInfo = field;
+					drawer = listDrawer;
+				}
+				else assignDefault();
 			}
 			else
 			{
-				drawer = new DefaultDrawer<GLWrapper, GLOption>(
-					spField, field.Name.SplitPascalCase(), gui);
+				assignDefault();
 			}
 			return drawer.Draw;
 		}

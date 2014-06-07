@@ -19,12 +19,12 @@ namespace ShowEmAll.DrawMates
 		where TOption : LayoutOption, new()
 	{
 		private IList list;
-		private bool advancedMode;
+		private bool isAdvancedChecked;
 		private AdvancedAreaData data;
 
 		public bool readonlyCollection { get; set; }
 		public FieldInfo fieldInfo { get; set; }
-		public bool awesomeCollection { get; set; }
+		public bool advanced { get; set; }
 		private AdvancedAreaData Data { get { return RTHelper.LazyValue(() => data, d => data = d); } }
 		private Type IListType { get { return fieldInfo.FieldType; } }
 		private Type ElementType { get { return IsArray ? IListType.GetElementType() : IListType.GetProperty("Item").PropertyType; } }
@@ -55,14 +55,14 @@ namespace ShowEmAll.DrawMates
 			{
 				list = AllocateIfNull();
 
-				bool isAwesome = awesomeCollection && !readonlyCollection;
+				bool isCool = advanced && !readonlyCollection;
 				DrawHeader(
 					@add: AddToList,
 					@enableAdd: !readonlyCollection,
-					@showAdvanedToggle: isAwesome
+					@showAdvanedToggle: isCool
 				);
 
-				if (advancedMode)
+				if (isAdvancedChecked)
 					DrawAdvancedArea();
 
 				gui.Splitter();
@@ -87,7 +87,7 @@ namespace ShowEmAll.DrawMates
 								if (list[i] != newValue)
 									SetListElementAtIndex(i, newValue);
 							},
-							@showMoveUpDown: advancedMode & isAwesome,
+							@showMoveUpDown: isAdvancedChecked & isCool,
 							@moveDown: () => list.MoveElementDownNonGen(i),
 							@moveUp: () => list.MoveElementUpNonGen(i),
 							@enableRemove: !readonlyCollection,
@@ -221,7 +221,7 @@ namespace ShowEmAll.DrawMates
 				gui.BoldLabel("Elements" + (readonlyCollection ? " (Readonly)" : ""));
 				gui.FlexibleSpace();
 				if (showAdvanedToggle)
-					gui.CheckButton(advancedMode, value => advancedMode = value, "advanced mode");
+					gui.CheckButton(isAdvancedChecked, value => isAdvancedChecked = value, "advanced mode");
 				gui.EnabledBlock(enableAdd, () =>
 					gui.AddButton("element", MiniButtonStyle.ModRight, add)
 				);
