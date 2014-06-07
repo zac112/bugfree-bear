@@ -5,10 +5,10 @@ using Vexe.RuntimeHelpers;
 using System;
 using Random = UnityEngine.Random;
 
-public class GridCreator : EditorWindow
+public class GridGenerator : EditorWindow
 {
 	private GLWrapper gui;
-	private const string MenuPath = "BugFreeBear/GridCreator";
+	private const string MenuPath = "BugFreeBear/GridGenerator";
 	private const string MakeWalkableKey = "#&w";
 	private const string MakeUnwalkableKey = "#&u";
 
@@ -56,7 +56,7 @@ public class GridCreator : EditorWindow
 	[MenuItem(MenuPath + "/Show")]
 	private static void ShowMenu()
 	{
-		GetWindow<GridCreator>();
+		GetWindow<GridGenerator>();
 	}
 
 	[MenuItem(MenuPath + "/MakeSelectionUnwalkable " + MakeUnwalkableKey)]
@@ -73,7 +73,7 @@ public class GridCreator : EditorWindow
 
 	private static void SetWalkability(Tile tile, bool to)
 	{
-		var w = GetWindow<GridCreator>();
+		var w = GetWindow<GridGenerator>();
 		tile.isWalkable = to;
 		tile.color = to ? w.walkableColor : w.unwalkableColor;
 	}
