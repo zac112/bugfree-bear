@@ -29,7 +29,7 @@ namespace ShowEmAll.PropertyDrawers
 			}
 			else
 			{
-				var method = property.serializedObject.targetObject.GetMethod(fromMethod, TypeExtensions.ALL_BINDING);
+				var method = property.serializedObject.targetObject.GetMethod(fromMethod, TypeExtensions.AllBindings);
 
 				if (method == null)
 					throw new Vexe.RuntimeHelpers.Exceptions.MemberNotFoundException(fromMethod);
