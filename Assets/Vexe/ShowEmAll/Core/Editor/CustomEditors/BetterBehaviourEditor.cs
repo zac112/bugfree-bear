@@ -97,10 +97,9 @@ namespace ShowEmAll
 
 		public override void OnInspectorGUI()
 		{
-			DoScriptHeaderField();
-
 			StuffHelper.SerializedObjectBlock(serializedObject, () =>
 			{
+				DoScriptHeaderField();
 				foreach (var category in membersCategories)
 					category.Draw();
 			});
