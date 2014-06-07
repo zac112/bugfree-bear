@@ -58,6 +58,10 @@ public class GridGenerator : EditorWindow
 	/// </summary>
 	public Color unwalkableColor = new Color(1f, 0f, 0f, .5f);
 
+	/// <summary>
+	/// When a grid is created, the tiles parent GO gets assigned to this nav's tiles GO
+	/// </summary>
+	private Nav nav;
 
 	[MenuItem(MenuPath + "/Show")]
 	private static void ShowMenu()
@@ -97,6 +101,7 @@ public class GridGenerator : EditorWindow
 	private void OnGUI()
 	{
 		gui.ObjectField("Sprite", sprite, value => sprite = value);
+		gui.ObjectField("Nav", nav, value => nav = value);
 		gui.ObjectField("Parent", parent, value => parent = value);
 		gui.IntField("nRows", nRows, value => nRows = value);
 		gui.IntField("nCols", nCols, value => nCols = value);
@@ -137,6 +142,11 @@ public class GridGenerator : EditorWindow
 	{
 		if (parent == null)
 			parent = new GameObject(sprite.name).transform;
+		if (nav == null)
+		{
+			Debug.Log("No nav is specified. Don't forget to assign it manually then");
+		}
+		else nav.tiles = parent.gameObject;
 
 		Vector3 size = sprite.bounds.size;
 
