@@ -2,6 +2,7 @@
 using UnityEditor;
 using EditorGUIFramework;
 using Vexe.RuntimeHelpers;
+using Vexe.RuntimeExtensions;
 using System;
 using Random = UnityEngine.Random;
 using ShowEmAll.DrawMates;
@@ -12,7 +13,8 @@ public class GridGenerator : EditorWindow
 {
 	private GLWrapper gui;
 	private IListDrawer<GLWrapper, GLOption> listDrawer;
-	private List<string> components;
+	private List<string> walkableComponents;
+	private List<string> unwalkableComponents;
 
 	private const string MenuPath = "BugFreeBear/GridGenerator";
 	private const string MakeWalkableKey = "#&w";
@@ -93,19 +95,20 @@ public class GridGenerator : EditorWindow
 		tile.color = to ? w.walkableColor : w.unwalkableColor;
 	}
 
+	Func<string, FieldInfo> getInfo;
+
 	private void OnEnable()
 	{
+		getInfo = new Func<string, FieldInfo>(field => GetType().GetField(field, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)).Memoize();
 		RTHelper.AssignIfNull(ref gui, () => new GLWrapper());
-		RTHelper.AssignIfNull(ref components, () => new List<string>());
-		RTHelper.AssignIfNull(ref listDrawer, () => new IListDrawer<GLWrapper, GLOption>(gui, this)
-		{
-			fieldInfo = GetType().GetField("components", BindingFlags.Instance | BindingFlags.NonPublic)
-		});
-		RTHelper.AssignIfNull(ref nav, GameObject.FindObjectOfType<Nav>);
+		RTHelper.AssignIfNull(ref walkableComponents, () => new List<string>());
+		RTHelper.AssignIfNull(ref listDrawer, () => new IListDrawer<GLWrapper, GLOption>(gui, this));
 	}
 
 	private void OnGUI()
 	{
+		RTHelper.AssignIfNull(ref nav, GameObject.FindObjectOfType<Nav>);
+
 		gui.ObjectField("Sprite", sprite, value => sprite = value);
 		gui.ObjectField("Nav", nav, value => nav = value);
 		gui.ObjectField("Parent", parent, value => parent = value);
@@ -120,7 +123,8 @@ public class GridGenerator : EditorWindow
 			gui.Slider(randomWalkabilityProbability, 0f, 100f, value => randomWalkabilityProbability = value)
 		);
 
-		listDrawer.Draw();
+		listDrawer.Draw(getInfo("walkableComponents"));
+		listDrawer.Draw(getInfo("unwalkableComponents"));
 
 		gui.FlexibleSpace();
 		gui.EnabledBlock(sprite != null, () =>
@@ -180,10 +184,12 @@ public class GridGenerator : EditorWindow
 				var tile = go.AddComponent<Tile>();
 
 				// set color and walkability
-				SetWalkability(tile, !isRandomlyWalkable || (Random.Range(0f, 100f) < randomWalkabilityProbability));
+				bool walkable = !isRandomlyWalkable || (Random.Range(0f, 100f) < randomWalkabilityProbability);
+				SetWalkability(tile, walkable);
 
 				// add extra components
-				foreach(var c in components)
+				var components = walkable ? walkableComponents : unwalkableComponents;
+				foreach (var c in components)
 				{
 					Type cType = ReflectionHelper.GetType(c);
 					if (cType == null)
