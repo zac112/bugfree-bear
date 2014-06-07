@@ -101,6 +101,7 @@ public class GridGenerator : EditorWindow
 		{
 			fieldInfo = GetType().GetField("components", BindingFlags.Instance | BindingFlags.NonPublic)
 		});
+		RTHelper.AssignIfNull(ref nav, GameObject.FindObjectOfType<Nav>);
 	}
 
 	private void OnGUI()
