@@ -8,6 +8,7 @@ public class Vision : Sense
 	public float updateRate = 0.02f;
 	public float quality = 1f;
 	public float fovAngle = 90f;
+	[Min(1f)]
 	public float fovMaxDistance = 15;
 	public LayerMask layerMask = -1;
 
