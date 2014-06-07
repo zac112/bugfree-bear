@@ -63,6 +63,11 @@ public class GridGenerator : EditorWindow
 	/// </summary>
 	private Nav nav;
 
+	/// <summary>
+	/// The parent name to use if the parent transform is null
+	/// </summary>
+	private string parentName;
+
 	[MenuItem(MenuPath + "/Show")]
 	private static void ShowMenu()
 	{
@@ -103,6 +108,8 @@ public class GridGenerator : EditorWindow
 		gui.ObjectField("Sprite", sprite, value => sprite = value);
 		gui.ObjectField("Nav", nav, value => nav = value);
 		gui.ObjectField("Parent", parent, value => parent = value);
+		if (parent == null)
+			gui.TextField("Parent Name", parentName, value => parentName = value);
 		gui.IntField("nRows", nRows, value => nRows = value);
 		gui.IntField("nCols", nCols, value => nCols = value);
 		gui.ColorField("Walkable Color", walkableColor, c => walkableColor = c);
@@ -141,7 +148,8 @@ public class GridGenerator : EditorWindow
 	private void Create()
 	{
 		if (parent == null)
-			parent = new GameObject(sprite.name).transform;
+			parent = new GameObject(parentName).transform;
+
 		if (nav == null)
 		{
 			Debug.Log("No nav is specified. Don't forget to assign it manually then");
