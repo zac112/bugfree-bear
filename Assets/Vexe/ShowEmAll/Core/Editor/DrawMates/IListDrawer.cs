@@ -38,6 +38,12 @@ namespace ShowEmAll.DrawMates
 		public IListDrawer()
 		{ }
 
+		public void Draw(FieldInfo fieldInfo)
+		{
+			this.fieldInfo = fieldInfo;
+			Draw();
+		}
+
 		public override void Draw()
 		{
 			gui.Foldout(GetListName(), foldout, new TOption { ExpandWidth = true }, newValue =>
