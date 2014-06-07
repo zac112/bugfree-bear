@@ -180,6 +180,7 @@ public class GridGenerator : EditorWindow
 				// set color and walkability
 				bool walkable = !isRandomlyWalkable || (Random.Range(0f, 100f) < randomWalkabilityProbability);
 				SetWalkability(tile, walkable);
+				tile.gameObject.layer = LayerMask.NameToLayer(walkable ? Layers.Walkable : Layers.Unwalkable);
 
 				// add extra components
 				var components = walkable ? walkableComponents : unwalkableComponents;
