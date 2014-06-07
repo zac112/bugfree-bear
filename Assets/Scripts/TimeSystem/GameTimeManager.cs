@@ -49,11 +49,6 @@ public class GameTimeManager : MonoBehaviour
 		notifications.MaintainDescending(new NotificationReceiver(time, action));
 	}
 
-	// Only the first one will get the real update method, rest will get an empty anonymous one.
-	// This way, even if there are more than one time manager, game time moves at the correct rate.
-	private static Action StaticUpdate = UpdateMethod;
-	private Action AppropriateUpdate;
-
 	static void UpdateMethod()
 	{
 		PassedTime += (Time.deltaTime * TimeScale);
@@ -76,13 +71,11 @@ public class GameTimeManager : MonoBehaviour
 	{
 		if (gameTime == null)
 			gameTime = new MutableGameTime(Time.timeSinceLevelLoad);
-		AppropriateUpdate = StaticUpdate;
-		StaticUpdate = () => { };
 	}
 
 	void Update()
 	{
-		AppropriateUpdate();
+		UpdateMethod();
 	}
 
 	private class NotificationReceiver : IComparable<NotificationReceiver>
