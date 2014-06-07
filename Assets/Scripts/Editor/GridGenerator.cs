@@ -4,10 +4,16 @@ using EditorGUIFramework;
 using Vexe.RuntimeHelpers;
 using System;
 using Random = UnityEngine.Random;
+using ShowEmAll.DrawMates;
+using System.Collections.Generic;
+using System.Reflection;
 
 public class GridGenerator : EditorWindow
 {
 	private GLWrapper gui;
+	private IListDrawer<GLWrapper, GLOption> listDrawer;
+	private List<string> components;
+
 	private const string MenuPath = "BugFreeBear/GridGenerator";
 	private const string MakeWalkableKey = "#&w";
 	private const string MakeUnwalkableKey = "#&u";
@@ -45,12 +51,12 @@ public class GridGenerator : EditorWindow
 	/// <summary>
 	/// Color to use for walkable tiles
 	/// </summary>
-	public Color walkableColor = Color.green;
+	public Color walkableColor = new Color(0f, 1f, 0f, .5f);
 
 	/// <summary>
 	/// Color to use for unwalkable tiles
 	/// </summary>
-	public Color unwalkableColor = Color.red;
+	public Color unwalkableColor = new Color(1f, 0f, 0f, .5f);
 
 
 	[MenuItem(MenuPath + "/Show")]
@@ -80,7 +86,18 @@ public class GridGenerator : EditorWindow
 
 	private void OnEnable()
 	{
-		gui = new GLWrapper();
+		AssignIfNull(ref gui, () => new GLWrapper());
+		AssignIfNull(ref components, () => new List<string>());
+		AssignIfNull(ref listDrawer, () => new IListDrawer<GLWrapper, GLOption>(gui, this)
+		{
+			fieldInfo = GetType().GetField("components", BindingFlags.Instance | BindingFlags.NonPublic)
+		});
+	}
+
+	private void AssignIfNull<T>(ref T value, Func<T> create)
+	{
+		if (value == null || value.Equals(null))
+			value = create();
 	}
 
 	private void OnGUI()
@@ -95,6 +112,8 @@ public class GridGenerator : EditorWindow
 		gui.EnabledBlock(isRandomlyWalkable, () =>
 			gui.Slider(randomWalkabilityProbability, 0f, 100f, value => randomWalkabilityProbability = value)
 		);
+
+		listDrawer.Draw();
 
 		gui.FlexibleSpace();
 		gui.EnabledBlock(sprite != null, () =>
@@ -140,15 +159,24 @@ public class GridGenerator : EditorWindow
 				// set position
 				go.transform.position = at;
 
-				// Get renderer, set sprite
+				// get renderer and set sprite
 				var renderer = go.AddComponent<SpriteRenderer>();
 				renderer.sprite = sprite;
 
-				// Add Tile (Could be injected from outside as a dependecy)
+				// add Tile (Could be injected from outside as a dependecy)
 				var tile = go.AddComponent<Tile>();
 
 				// set color and walkability
 				SetWalkability(tile, !isRandomlyWalkable || (Random.Range(0f, 100f) < randomWalkabilityProbability));
+
+				// add extra components
+				foreach(var c in components)
+				{
+					Type cType = ReflectionHelper.GetType(c);
+					if (cType == null)
+						throw new InvalidOperationException("The component type `" + c + "` doesn't exist. Do you have a typo?");
+					go.AddComponent(cType);
+				}
 			}
 		}
 	}
