@@ -4,15 +4,21 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 
+[Serializable]
 public class NavMap
 {
-	private bool[, ,] navMap;
+	[SerializeField]
+	private Bool3DArray map;
+	[SerializeField]
 	private float[] offset;
 
 	public NavMap(int width, int height, float offsetX, float offsetY)
 	{
 		offset = new float[] { offsetX, offsetY };
-		navMap = new bool[width - (int)Mathf.Round (offset[0]), height - (int)Mathf.Round(offset[1]), 1];
+		map = new Bool3DArray(
+			width - Mathf.RoundToInt(offset[0]),
+			height - Mathf.RoundToInt(offset[1]),
+			1);
 	}
 
 	public void Register(Transform position, bool walkable)
@@ -30,12 +36,12 @@ public class NavMap
 			return;
 		}
 #endif
-		navMap[x, y, 0] = walkable;
+		map[x, y, 0] = walkable;
 	}
 
 	private bool IsValidCoordinate(int x, int y)
 	{
-		return x >= navMap.GetLowerBound(0) && y >= navMap.GetLowerBound(1) && x <= navMap.GetUpperBound(0) && y <= navMap.GetUpperBound(1);
+		return x >= map.GetLowerBound(0) && y >= map.GetLowerBound(1) && x <= map.GetUpperBound(0) && y <= map.GetUpperBound(1);
 	}
 
 	private bool IsWalkable(Coordinate coordinate)
@@ -45,7 +51,7 @@ public class NavMap
 
 	private bool IsWalkable(int x, int y)
 	{
-		return IsValidCoordinate(x,y) && navMap[x, y, 0];
+		return IsValidCoordinate(x, y) && map[x, y, 0];
 	}
 
 	private List<Coordinate> GetAvailableNeighbors(Coordinate position, Dictionary<Coordinate, Coordinate> closedSet)
@@ -100,16 +106,18 @@ public class NavMap
 		}
 
 
-		if(!IsWalkable(startCoord)){
+		if (!IsWalkable(startCoord))
+		{
 #if UNITY_EDITOR && DEBUGLOGS			
 			Debug.LogError("Invalid start position("+startPosition+")! Unable to find route.");
 #endif
 			return;
 		}
-		if(!IsWalkable(endCoord)){
+		if (!IsWalkable(endCoord))
+		{
 #if UNITY_EDITOR && DEBUGLOGS			
 			Debug.LogError("Invalid end position("+endPosition+")! Unable to find route.");
-#endif			
+#endif
 			return;
 		}
 		List<Coordinate> path = new List<Coordinate>();
@@ -298,7 +306,8 @@ public class NavMap
 
 			bool result = (obj != null);
 			result &= obj is Coordinate;
-			if(result){
+			if (result)
+			{
 				Coordinate c = (Coordinate)obj;
 				result = (c.x == x && c.y == y);
 			}

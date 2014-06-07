@@ -155,12 +155,6 @@ public class GridGenerator : EditorWindow
 		if (parent == null)
 			parent = new GameObject(parentName).transform;
 
-		if (nav == null)
-		{
-			Debug.Log("No nav is specified. Don't forget to assign it manually then");
-		}
-		else nav.tiles = parent.gameObject;
-
 		Vector3 size = sprite.bounds.size;
 
 		for (int i = 0; i < nRows; i++)
@@ -198,5 +192,14 @@ public class GridGenerator : EditorWindow
 				}
 			}
 		}
+
+		// I had this check earlier before creating the tiles.
+		// Setting the Tiles property in Nav then will recreate the map with no tiles because we haven't created anything yet
+		// So the assignment nav.Tiles = whatever; has to be done 'after' the tiles are created and are under the Tiles gameObject
+		if (nav == null)
+		{
+			Debug.Log("No nav is specified. Don't forget to assign it manually then and recreate map if needed");
+		}
+		else nav.Tiles = parent.gameObject;
 	}
 }

@@ -1,52 +1,60 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using Vexe.RuntimeHelpers;
 
 public class Seeker : MonoBehaviour
 {
 	public Transform targetPos;
-	private int[] currentPos = new int[2];
 	public Mover mover;
-	private List<Vector2> path = new List<Vector2> ();
-	private Vector3 rememberedTargetPos;
-	private List<Vector2> rememberedPath;
-	private int index;
-
 	public float minimumTargetMoveDistance = .4f;
 
-	void Awake ()
+	[SerializeField, HideInInspector] private int[] currentPos = new int[2];
+	[SerializeField, HideInInspector] private List<Vector2> path = new List<Vector2>();
+	[SerializeField, HideInInspector] private Vector3 rememberedTargetPos;
+	[SerializeField, HideInInspector] private int index;
+
+	private Transform mTransform;
+	private Transform cachedTransform { get { return RTHelper.LazyValue(ref mTransform, () => transform); } }
+
+	void Awake()
 	{
 		currentPos = new int[] {
-						(int)Mathf.Round (transform.position.x),
-						(int)Mathf.Round (transform.position.y)
+						(int)Mathf.Round (cachedTransform.position.x),
+						(int)Mathf.Round (cachedTransform.position.y)
 				};
 	}
 
-	void FixedUpdate ()
+	void FixedUpdate()
 	{
-		if ((rememberedTargetPos - targetPos.position).sqrMagnitude > minimumTargetMoveDistance) {
-			Nav.map.FindPath (transform, targetPos, path);
+		if ((rememberedTargetPos - targetPos.position).sqrMagnitude > minimumTargetMoveDistance)
+		{
+			Nav.Map.FindPath(cachedTransform, targetPos, path);
 			rememberedTargetPos = targetPos.position;
 			index = 0;
 		}
 
-		if (currentPos [0] != (int)Mathf.Round (transform.position.x) || currentPos [1] != (int)Mathf.Round (transform.position.y)) {
-			index = Mathf.Min (index + 1, path.Count - 1);
+		if (currentPos[0] != (int)Mathf.Round(cachedTransform.position.x) || currentPos[1] != (int)Mathf.Round(cachedTransform.position.y))
+		{
+			index = Mathf.Min(index + 1, path.Count - 1);
 			currentPos = new int[] {
-								(int)Mathf.Round (transform.position.x),
-								(int)Mathf.Round (transform.position.y)
+								(int)Mathf.Round (cachedTransform.position.x),
+								(int)Mathf.Round (cachedTransform.position.y)
 						};
 		}
 
-		if (path.Count == 0) {
+		if (path.Count == 0)
+		{
 			return;
 		}
 
-		if (path.Count <= 1) {
-			mover.Move (targetPos.position);
+		if (path.Count <= 1)
+		{
+			mover.Move(targetPos.position);
 			index = 0;
-		} else {
-			mover.Move (path [index]);
-
+		}
+		else
+		{
+			mover.Move(path[index]);
 		}
 	}
 }

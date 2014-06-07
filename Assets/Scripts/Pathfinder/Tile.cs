@@ -8,7 +8,7 @@ public class Tile : BetterBehaviour
 
 	private void Start()
 	{
-		Nav.map.Register(transform, isWalkable);
+		Nav.Map.Register(transform, isWalkable);
 	}
 
 	private SpriteRenderer spriteRenderer
