@@ -364,6 +364,11 @@
             Creates a dictionary out of the passed keys and values
             </summary>
         </member>
+        <member name="M:Vexe.RuntimeHelpers.RTHelper.AssignIfNull``1(``0@,System.Func{``0})">
+            <summary>
+            Assigns the specified ref value to the assginment func if the value was null
+            </summary>
+        </member>
         <member name="M:Vexe.RuntimeHelpers.RTHelper.GetTexture(System.Byte,System.Byte,System.Byte,System.Byte,UnityEngine.HideFlags)">
             <summary>
             Creates and returns a texture whose color components are r, g, b and a with the specifed HideFlags

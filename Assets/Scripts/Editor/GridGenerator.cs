@@ -86,18 +86,12 @@ public class GridGenerator : EditorWindow
 
 	private void OnEnable()
 	{
-		AssignIfNull(ref gui, () => new GLWrapper());
-		AssignIfNull(ref components, () => new List<string>());
-		AssignIfNull(ref listDrawer, () => new IListDrawer<GLWrapper, GLOption>(gui, this)
+		RTHelper.AssignIfNull(ref gui, () => new GLWrapper());
+		RTHelper.AssignIfNull(ref components, () => new List<string>());
+		RTHelper.AssignIfNull(ref listDrawer, () => new IListDrawer<GLWrapper, GLOption>(gui, this)
 		{
 			fieldInfo = GetType().GetField("components", BindingFlags.Instance | BindingFlags.NonPublic)
 		});
-	}
-
-	private void AssignIfNull<T>(ref T value, Func<T> create)
-	{
-		if (value == null || value.Equals(null))
-			value = create();
 	}
 
 	private void OnGUI()
