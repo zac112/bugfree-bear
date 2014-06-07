@@ -328,7 +328,8 @@ namespace ShowEmAll
 			if (!typeof(Delegate).IsAssignableFrom(type) &&
 					type.IsEnum ||
 					IsSimpleType(type) ||
-					typeof(Object).IsAssignableFrom(type)
+					typeof(Object).IsAssignableFrom(type) ||
+					UnityStructs.ContainsValue(type)
 				)
 				return true;
 
@@ -352,6 +353,19 @@ namespace ShowEmAll
 				   (IsSerializableType(fType) || IsCollection(fType) && IsSerializableCollection(fType));
 		}
 
+		public static readonly Type[] UnityStructs =
+		{
+			typeof(Vector3),
+			typeof(Vector2),
+			typeof(Vector4),
+			typeof(Rect),
+			typeof(Quaternion),
+			typeof(Matrix4x4),
+			typeof(Color),
+			typeof(Color32),
+			typeof(LayerMask),
+			typeof(Bounds)
+		};
 		public static bool IsCollection(Type type)
 		{
 			return type.IsArray || type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>);
