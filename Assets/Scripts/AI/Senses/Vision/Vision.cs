@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System;
 using ShowEmAll;
 
-public class Vision : Sense
+public abstract class Vision : Sense
 {
-	public float updateRate = 0.02f;
-	public float quality = 1f;
-	public float fovAngle = 90f;
-	[Min(1f)]
-	public float fovMaxDistance = 15;
+	[Min(0f)] public float updateRate = 0.02f;
+	[Min(0f)] public float quality = 1f;
+	[Min(1f)] public float fovMaxDistance = 15;
+	[NumericClamp(1f, 360f)] public float fovAngle = 90f;
 	public LayerMask layerMask = -1;
 
 	[SerializeField, RequiredFromThis(true)]
@@ -18,15 +17,16 @@ public class Vision : Sense
 	[SerializeField, RequiredFromThis(true)]
 	protected MeshFilter fovMeshFilter;
 
-	private List<RaycastHit> hits = new List<RaycastHit>();
-	private List<Vector3> renderLocations = new List<Vector3>();
+	protected List<GameObject> hits = new List<GameObject>();
+	protected List<Vector3> renderLocations = new List<Vector3>();
+	protected Action<GameObject, List<GameObject>> onSeen = delegate { };
+	protected Transform cachedTransform;
+
 	private float timer;
-	private Action<RaycastHit, List<RaycastHit>> onSeen = delegate { };
 	private FOVRenderer fov;
 	private bool clearedFov;
-	private Transform cachedTransform;
 
-	public Action<RaycastHit, List<RaycastHit>> OnSeen
+	public Action<GameObject, List<GameObject>> OnSeen
 	{
 		get { return onSeen; }
 		set { onSeen = value; }
@@ -59,7 +59,7 @@ public class Vision : Sense
 		{
 			if (fov == null)
 				fov = new FOVRenderer(cachedTransform, fovMeshFilter.mesh);
-			fov.RenderLocations = renderLocations.ToArray();
+			fov.RenderLocations = renderLocations;
 			fov.Update();
 			clearedFov = false;
 		}
@@ -80,23 +80,13 @@ public class Vision : Sense
 
 		for (int i = 0; i < numRays; i++)
 		{
-			Vector3 dir = Quaternion.AngleAxis(currentAngle, -cachedTransform.forward) * cachedTransform.up;
-			RaycastHit hit;
-
-			if (!Physics.Raycast(cachedTransform.position, dir, out hit, fovMaxDistance, layerMask))
-			{
-				renderLocations.Add(cachedTransform.position + (dir * fovMaxDistance));
-			}
-			else
-			{
-				renderLocations.Add(hit.point);
-				onSeen(hit, hits);
-				hits.Add(hit);
-			}
-
+			Vector3 dir = Quaternion.Euler(0, 0, -currentAngle) * cachedTransform.up;
+			CastSingleRay(dir);
 			currentAngle += 1f / quality;
 		}
 	}
+
+	protected abstract void CastSingleRay(Vector3 dir);
 
 	private void OnDrawGizmosSelected()
 	{
@@ -118,7 +108,7 @@ public class Vision : Sense
 		private Vector3[] vertices;
 		private int[] triangles;
 
-		public Vector3[] RenderLocations { get; set; }
+		public List<Vector3> RenderLocations { private get; set; }
 
 		public FOVRenderer(Transform transform, Mesh mesh)
 		{
@@ -128,7 +118,7 @@ public class Vision : Sense
 
 		public void Update()
 		{
-			int nHits = RenderLocations.Length;
+			int nHits = RenderLocations.Count;
 
 			if (nHits == 0)
 				return;
