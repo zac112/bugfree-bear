@@ -15,10 +15,13 @@ public class GridGenerator : EditorWindow
 	private IListDrawer<GLWrapper, GLOption> listDrawer;
 	private List<string> walkableComponents;
 	private List<string> unwalkableComponents;
+	private Func<string, FieldInfo> getInfo;
 
 	private const string MenuPath = "BugFreeBear/GridGenerator";
 	private const string MakeWalkableKey = "#&w";
 	private const string MakeUnwalkableKey = "#&u";
+
+	private static GridGenerator window { get { return GetWindow<GridGenerator>(); } }
 
 	/// <summary>
 	/// The sprite to use when creating the grid
@@ -28,7 +31,7 @@ public class GridGenerator : EditorWindow
 	/// <summary>
 	/// Where the creation starts
 	/// </summary>
-	private Transform parent;
+	private Grid grid;
 
 	/// <summary>
 	/// Number of rows the grid will have
@@ -66,9 +69,9 @@ public class GridGenerator : EditorWindow
 	private Nav nav;
 
 	/// <summary>
-	/// The parent name to use if the parent transform is null
+	/// The grid name to use if the Grid reference is null
 	/// </summary>
-	private string parentName;
+	private string gridName;
 
 	[MenuItem(MenuPath + "/Show")]
 	private static void ShowMenu()
@@ -79,23 +82,23 @@ public class GridGenerator : EditorWindow
 	[MenuItem(MenuPath + "/MakeSelectionUnwalkable " + MakeUnwalkableKey)]
 	private static void MakeSelectionUnwalkable()
 	{
-		ModifySelection(tile => SetWalkability(tile, false));
+		var w = window;
+		w.ModifySelection(tile =>
+		{
+			w.SetWalkabilityAndAddComponents(tile, false, w.unwalkableComponents);
+		});
 	}
 
 	[MenuItem(MenuPath + "/MakeSelectionWalkable " + MakeWalkableKey)]
 	private static void MakeSelectionWalkable()
 	{
-		ModifySelection(tile => SetWalkability(tile, true));
+		var w = window;
+		w.ModifySelection(tile =>
+		{
+			w.SetWalkabilityAndAddComponents(tile, true, w.walkableComponents);
+		});
 	}
 
-	private static void SetWalkability(Tile tile, bool to)
-	{
-		var w = GetWindow<GridGenerator>();
-		tile.isWalkable = to;
-		tile.color = to ? w.walkableColor : w.unwalkableColor;
-	}
-
-	Func<string, FieldInfo> getInfo;
 
 	private void OnEnable()
 	{
@@ -112,9 +115,9 @@ public class GridGenerator : EditorWindow
 
 		gui.ObjectField("Sprite", sprite, value => sprite = value);
 		gui.ObjectField("Nav", nav, value => nav = value);
-		gui.ObjectField("Parent", parent, value => parent = value);
-		if (parent == null)
-			gui.TextField("Parent Name", parentName, value => parentName = value);
+		gui.ObjectField("Grid", grid, value => grid = value);
+		if (grid == null)
+			gui.TextField("New Grid Name", gridName, value => gridName = value);
 		gui.IntField("nRows", nRows, value => nRows = value);
 		gui.IntField("nCols", nCols, value => nCols = value);
 		gui.ColorField("Walkable Color", walkableColor, c => walkableColor = c);
@@ -128,12 +131,19 @@ public class GridGenerator : EditorWindow
 		listDrawer.Draw(getInfo("unwalkableComponents"));
 
 		gui.FlexibleSpace();
-		gui.EnabledBlock(sprite != null, () =>
-			gui.Button("Create", Create)
-		);
+		gui.HorizontalBlock(() =>
+		{
+			bool validSprite = sprite != null;
+			gui.EnabledBlock(validSprite, () => gui.Button("Create", Create));
+			gui.EnabledBlock(validSprite && grid != null, () => gui.Button("Recreate", () =>
+			{
+				grid.Clear();
+				Create();
+			}));
+		});
 	}
 
-	private static void ModifySelection(Action<Tile> modify)
+	private void ModifySelection(Action<Tile> modify)
 	{
 		var selection = Selection.objects;
 		foreach (var s in selection)
@@ -153,8 +163,8 @@ public class GridGenerator : EditorWindow
 
 	private void Create()
 	{
-		if (parent == null)
-			parent = new GameObject(parentName).transform;
+		if (grid == null)
+			grid = GOHelper.CreateGoWithMb<Grid>(gridName);
 
 		Vector3 size = sprite.bounds.size;
 
@@ -163,10 +173,10 @@ public class GridGenerator : EditorWindow
 			for (int j = 0; j < nCols; j++)
 			{
 				// Calculate coords
-				Vector3 at = parent.position + new Vector3(j, i, 0);
+				Vector3 at = grid.transform.position + new Vector3(j, i, 0);
 
 				// Create sprite
-				var go = GOHelper.CreateGo(sprite.name + " (" + i + ", " + j + ")", parent);
+				var go = GOHelper.CreateGo(sprite.name + " (" + i + ", " + j + ")", grid.transform);
 
 				// set position
 				go.transform.position = at;
@@ -184,14 +194,7 @@ public class GridGenerator : EditorWindow
 				tile.gameObject.layer = LayerMask.NameToLayer(walkable ? Layers.Walkable : Layers.Unwalkable);
 
 				// add extra components
-				var components = walkable ? walkableComponents : unwalkableComponents;
-				foreach (var c in components)
-				{
-					Type cType = ReflectionHelper.GetType(c);
-					if (cType == null)
-						throw new InvalidOperationException("The component type `" + c + "` doesn't exist. Do you have a typo?");
-					go.AddComponent(cType);
-				}
+				AddComponents(go, walkable ? walkableComponents : unwalkableComponents);
 			}
 		}
 
@@ -202,6 +205,40 @@ public class GridGenerator : EditorWindow
 		{
 			Debug.Log("No nav is specified. Don't forget to assign it manually then and recreate map if needed");
 		}
-		else nav.Tiles = parent.gameObject;
+		else nav.Tiles = grid.gameObject;
+	}
+
+	private void SetWalkability(Tile tile, bool to)
+	{
+		var w = GetWindow<GridGenerator>();
+		tile.isWalkable = to;
+		tile.color = to ? w.walkableColor : w.unwalkableColor;
+	}
+
+	private void AddComponents(GameObject go, List<string> components)
+	{
+		foreach (var c in components)
+		{
+			Type cType = ReflectionHelper.GetType(c);
+			if (cType == null)
+				throw new InvalidOperationException("The component type `" + c + "` doesn't exist. Do you have a typo?");
+
+			// Don't add component if it exists
+			if (go.GetComponent(cType) != null)
+				continue;
+
+			go.AddComponent(cType);
+		}
+	}
+
+	private void SetWalkabilityAndAddComponents(Tile tile, bool walkable, List<string> components)
+	{
+		if (tile.isWalkable != walkable)
+		{
+			SetWalkability(tile, walkable);
+			var go = tile.gameObject;
+			go.ClearComponents(c => !(c is Tile) && !(c is SpriteRenderer));
+			AddComponents(go, components);
+		}
 	}
 }
