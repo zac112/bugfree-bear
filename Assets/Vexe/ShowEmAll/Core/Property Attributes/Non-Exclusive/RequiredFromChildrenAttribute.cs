@@ -3,7 +3,7 @@
 namespace ShowEmAll
 {
 	[AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
-	public class RequireFromChildrenAttribute : RequireAttribute
+	public class RequiredFromChildrenAttribute : RequiredAttribute
 	{
 		/// <summary>
 		/// The child path to add to (or create and add) if the component was not found
@@ -12,7 +12,7 @@ namespace ShowEmAll
 		/// </summary>
 		public readonly string childPath;
 
-		public RequireFromChildrenAttribute(string childPath = "")
+		public RequiredFromChildrenAttribute(string childPath = "")
 		{
 			this.childPath = childPath;
 		}

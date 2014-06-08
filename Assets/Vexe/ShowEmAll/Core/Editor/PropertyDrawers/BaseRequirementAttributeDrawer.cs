@@ -7,7 +7,7 @@ using System;
 
 namespace ShowEmAll.PropertyDrawers
 {
-	public abstract class RequireAttributeDrawer<TRequirement> : BetterPropertyDrawer<TRequirement> where TRequirement : RequireAttribute
+	public abstract class BaseRequirementAttributeDrawer<TRequirement> : BetterPropertyDrawer<TRequirement> where TRequirement : RequiredAttribute
 	{
 		private Func<GameObject> mGetSource;
 		protected Func<GameObject> getSource

@@ -4,13 +4,13 @@ namespace ShowEmAll.Tests
 {
 	public class RequireFromChildrenTest : MonoBehaviour
 	{
-		[RequireFromChildren]
+		[RequiredFromChildren]
 		public BoxCollider col;
 
-		[RequireFromChildren("Child")]
+		[RequiredFromChildren("Child")]
 		public AudioSource source;
 
-		[RequireFromChildren("Child/Grandchild")]
+		[RequiredFromChildren("Child/Grandchild")]
 		public Rigidbody rb;
 	}
 }

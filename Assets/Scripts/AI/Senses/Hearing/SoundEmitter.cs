@@ -28,7 +28,7 @@ public class SoundEmitter : BetterBehaviour, ISoundEmitter
 	[CategoryMember(NotSure), SerializeField, Readonly]
 	private float dbValue;
 
-	[SerializeField, RequireFromThis(true)]
+	[SerializeField, RequiredFromThis(true)]
 	private AudioSource source;
 
 	[SerializeField, HideInInspector]

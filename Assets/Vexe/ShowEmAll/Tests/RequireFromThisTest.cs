@@ -4,10 +4,10 @@ namespace ShowEmAll.Tests
 {
 	public class RequireFromThisTest : MonoBehaviour
 	{
-		[RequireFromThis]
+		[RequiredFromThis]
 		public BoxCollider col;
 
-		[RequireFromThis(true)]
+		[RequiredFromThis(true)]
 		public AudioSource source;
 	}
 }

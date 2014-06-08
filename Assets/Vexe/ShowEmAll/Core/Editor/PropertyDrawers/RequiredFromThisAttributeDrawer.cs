@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using UnityEditor;
-using Requirement = ShowEmAll.RequireFromThisAttribute;
+using Requirement = ShowEmAll.RequiredFromThisAttribute;
 
 namespace ShowEmAll.PropertyDrawers
 {
 	[CustomPropertyDrawer(typeof(Requirement))]
-	public class RequireFromThisAttributeDrawer : RequireAttributeDrawer<Requirement>
+	public class RequiredFromThisAttributeDrawer : BaseRequirementAttributeDrawer<Requirement>
 	{
 		protected override Component GetComponent()
 		{

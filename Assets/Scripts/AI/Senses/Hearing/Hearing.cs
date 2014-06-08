@@ -18,7 +18,7 @@ public class Hearing : Sense, ISoundReciever
 	[SerializeField, HideInInspector]
 	private float soundThreshold = 1f;
 
-	[SerializeField, RequireFromThis(@addIfNotExist: true)]
+	[SerializeField, RequiredFromThis(@addIfNotExist: true)]
 	private SphereCollider sphereCollider;
 
 	private Action<ISoundEmitter, GameObject> onHeard = delegate { };

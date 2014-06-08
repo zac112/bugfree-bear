@@ -3,7 +3,7 @@ using ShowEmAll;
 
 public class PlayerMover : Mover
 {
-	[SerializeField, RequireFromChildren("Footsteps")]
+	[SerializeField, RequiredFromChildren("Footsteps")]
 	private SoundEmitter footsteps;
 
 	private void OnEnable()

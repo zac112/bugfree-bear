@@ -5,13 +5,15 @@ using System.Collections.Generic;
 
 public class EnemySample : BetterBehaviour
 {
-	[SerializeField, RequireFromChildren("Senses/Vision")]
-	private Vision eyes;
+	private const string Delegates = "Delegates";
 
-	[SerializeField, RequireFromChildren("Senses/Hearing")]
+	[RequiredFromChildren("Senses/Vision"), Inline, SerializeField]
+	private Vision2D eyes;
+
+	[RequiredFromChildren("Senses/Hearing"), Inline, SerializeField]
 	private Hearing ears;
 
-	[SerializeField, RequireFromChildren("Senses/Touch")]
+	[RequiredFromChildren("Senses/Touch"), Inline, SerializeField]
 	private Touch touch;
 
 	private bool mPlayerInSight;

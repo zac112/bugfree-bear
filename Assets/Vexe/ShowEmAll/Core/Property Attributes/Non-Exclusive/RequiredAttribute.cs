@@ -3,7 +3,7 @@ using System;
 
 namespace ShowEmAll
 {
-	public abstract class RequireAttribute : PropertyAttribute
+	public class RequiredAttribute : PropertyAttribute
 	{
 	}
 }

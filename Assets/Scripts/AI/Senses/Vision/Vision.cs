@@ -12,11 +12,11 @@ public class Vision : Sense
 	public float fovMaxDistance = 15;
 	public LayerMask layerMask = -1;
 
-	[SerializeField, RequireFromThis]
-	private MeshRenderer fovMeshRenderer;
+	[SerializeField, RequiredFromThis(true)]
+	protected MeshRenderer fovMeshRenderer;
 
-	[SerializeField, RequireFromThis]
-	private MeshFilter fovMeshFilter;
+	[SerializeField, RequiredFromThis(true)]
+	protected MeshFilter fovMeshFilter;
 
 	private List<RaycastHit> hits = new List<RaycastHit>();
 	private List<Vector3> renderLocations = new List<Vector3>();

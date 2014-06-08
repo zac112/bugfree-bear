@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using Vexe.RuntimeExtensions;
-using Requirement = ShowEmAll.RequireFromChildrenAttribute;
+using Requirement = ShowEmAll.RequiredFromChildrenAttribute;
 
 namespace ShowEmAll.PropertyDrawers
 {
 	[CustomPropertyDrawer(typeof(Requirement))]
-	public class RequireFromChildrenAttributeDrawer : RequireAttributeDrawer<Requirement>
+	public class RequiredFromChildrenAttributeDrawer : BaseRequirementAttributeDrawer<Requirement>
 	{
 		protected override Component GetComponent()
 		{
@@ -22,7 +22,10 @@ namespace ShowEmAll.PropertyDrawers
 				}
 				else
 				{
-					c = go.GetOrAddChildAtPath(path).AddComponent(cType);
+					if (cType.IsAbstract)
+						gui.HelpBox("Can't add component `" + cType.Name + "` cause it's abstract", MessageType.Warning);
+					else
+						c = go.GetOrAddChildAtPath(path).AddComponent(cType);
 				}
 			}
 			return c;
