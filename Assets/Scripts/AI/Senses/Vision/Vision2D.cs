@@ -13,18 +13,10 @@ public class Vision2D : Vision
 		}
 		else
 		{
-			var tile = hit.collider.GetComponent<Tile>();
-			if (tile != null && !tile.isWalkable)
-			{
-				var hitGo = hit.collider.gameObject;
-				renderLocations.Add(hit.point);
-				onSeen(hitGo, hits);
-				hits.Add(hitGo);
-			}
-			else
-			{
-				addRenderLocation();
-			}
+			var hitGo = hit.collider.gameObject;
+			renderLocations.Add(hit.point);
+			onSeen(hitGo, hits);
+			hits.Add(hitGo);
 		}
 	}
 }

@@ -88,7 +88,7 @@ public abstract class Vision : Sense
 
 	protected abstract void CastSingleRay(Vector3 dir);
 
-	private void OnDrawGizmosSelected()
+	private void OnDrawGizmos()
 	{
 		if (drawGizmos)
 		{
