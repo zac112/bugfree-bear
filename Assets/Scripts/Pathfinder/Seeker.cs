@@ -1,15 +1,17 @@
 ﻿using UnityEngine;
-using System;
 using System.Collections.Generic;
 using Vexe.RuntimeHelpers;
+using uFAction;
+using ShowEmAll;
 
-public class Seeker : MonoBehaviour
+public class Seeker : BetterBehaviour
 {
-	public Action OnReachTarget = () => {};
-
-	public Transform targetPos;
+	public Transform target;
 	public Mover mover;
-	public float minimumTargetMoveDistance = .4f;
+	public float minTargetMoveDist = .4f;
+
+	[ShowDelegate]
+	public UnityAction onTargetReached = new UnityAction();
 
 	[SerializeField, HideInInspector] private int[] currentPos = new int[2];
 	[SerializeField, HideInInspector] private List<Vector2> path = new List<Vector2>();
@@ -19,7 +21,7 @@ public class Seeker : MonoBehaviour
 	private Transform mTransform;
 	private Transform cachedTransform { get { return RTHelper.LazyValue(ref mTransform, () => transform); } }
 
-	void Awake()
+	private void Awake()
 	{
 		currentPos = new int[] {
 						(int)Mathf.Round (cachedTransform.position.x),
@@ -27,20 +29,20 @@ public class Seeker : MonoBehaviour
 				};
 	}
 
-	void FixedUpdate()
+	private void FixedUpdate()
 	{
-		if ((rememberedTargetPos - targetPos.position).sqrMagnitude > minimumTargetMoveDistance)
+		if ((rememberedTargetPos - target.position).sqrMagnitude > minTargetMoveDist)
 		{
-			Nav.Map.FindPath(cachedTransform, targetPos, path);
-			rememberedTargetPos = targetPos.position;
+			Nav.Map.FindPath(cachedTransform, target, path);
+			rememberedTargetPos = target.position;
 			index = 0;
 		}
 
 		if (currentPos[0] != (int)Mathf.Round(cachedTransform.position.x) || currentPos[1] != (int)Mathf.Round(cachedTransform.position.y))
 		{
-			if(index == path.Count-1)
+			if (index == path.Count - 1)
 			{
-				OnReachTarget();
+				onTargetReached.Invoke();
 			}
 
 			index = Mathf.Min(index + 1, path.Count - 1);
@@ -48,11 +50,11 @@ public class Seeker : MonoBehaviour
 								(int)Mathf.Round (cachedTransform.position.x),
 								(int)Mathf.Round (cachedTransform.position.y)
 						};
-
 		}
 
-		if(index == path.Count-1){
-			mover.Move(targetPos.position);
+		if (index == path.Count - 1)
+		{
+			mover.Move(target.position);
 		}
 		else
 		{
