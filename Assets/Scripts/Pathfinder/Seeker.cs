@@ -1,26 +1,32 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using Vexe.RuntimeHelpers;
+using Vexe.RuntimeExtensions;
 using uFAction;
 using ShowEmAll;
+using Vexe.RuntimeHelpers.Helpers;
 
+[DefineCategory("Delegates")]
 public class Seeker : BetterBehaviour
 {
 	public Transform target;
 	public Mover mover;
 	public float minTargetMoveDist = .4f;
 
-	[ShowDelegate]
-	public UnityAction onTargetReached = new UnityAction();
-	[ShowDelegate]
-	public UnityAction onUnreachableEndPosition = new UnityAction();
-	[ShowDelegate]
-	public UnityAction OnAtTargetLocation = new UnityAction();
+	[ShowDelegate, CategoryMember("Delegates")]
+	public UnityAction
+		onTargetReached = new UnityAction(),
+		onUnreachableEndPosition = new UnityAction(),
+		onAtTargetLocation = new UnityAction();
 
-	[SerializeField, HideInInspector] private int[] currentPos = new int[2];
-	[SerializeField, HideInInspector] private List<Vector2> path = new List<Vector2>();
-	[SerializeField, HideInInspector] private Vector3 rememberedTargetPos;
-	[SerializeField, HideInInspector] private int index;
+	[SerializeField, HideInInspector]
+	private int[] currentPos = new int[2];
+	[SerializeField, BetterCollection]
+	protected List<Vector2> path = new List<Vector2>();
+	[SerializeField, HideInInspector]
+	private Vector3 rememberedTargetPos;
+	[SerializeField, HideInInspector]
+	private int index;
 
 	private Transform mTransform;
 	private Transform cachedTransform { get { return RTHelper.LazyValue(ref mTransform, () => transform); } }
@@ -38,9 +44,12 @@ public class Seeker : BetterBehaviour
 		//has the target location moved enough to warrant searching for a new path?
 		if ((rememberedTargetPos - target.position).sqrMagnitude > minTargetMoveDist)
 		{
-			try{
+			try
+			{
 				Nav.Map.FindPath(cachedTransform, target, path);
-			}catch(UnityException e){
+			}
+			catch (UnityException e)
+			{
 				path.Clear();
 				onUnreachableEndPosition.Invoke();
 				e.Source = "Seeker";
@@ -52,8 +61,9 @@ public class Seeker : BetterBehaviour
 		}
 
 
-		if(path.Count == 0){
-			OnAtTargetLocation.Invoke();
+		if (path.Count == 0)
+		{
+			onAtTargetLocation.Invoke();
 			//Debug.Log("already at target");
 			return;
 		}
@@ -81,4 +91,22 @@ public class Seeker : BetterBehaviour
 			mover.Move(path[index]);
 		}
 	}
+
+	private void OnDrawGizmos()
+	{
+		if (!path.IsNullOrEmpty())
+		{
+			var list = new List<Vector2>(path);
+			list.Reverse();
+			for (int i = 0; i < list.Count - 1; i++)
+			{
+				GizHelper.DrawLine(list[i], list[i + 1], pathColor);
+			}
+		}
+		if (target != null)
+			GizHelper.DrawLine(transform.position, target.position, targetColor);
+	}
+
+	[CategoryMember(DBug)]
+	public Color targetColor, pathColor;
 }

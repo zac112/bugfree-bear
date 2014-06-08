@@ -17,7 +17,7 @@ public class RandomSeeker : Seeker
 	{
 		onTargetReached += AssignNewTarget;
 		onUnreachableEndPosition += AssignNewTarget;
-		OnAtTargetLocation += AssignNewTarget;
+		onAtTargetLocation += AssignNewTarget;
 	}
 
 	[ShowMethod]
@@ -28,16 +28,10 @@ public class RandomSeeker : Seeker
 					  .RandomElement().transform;
 	}
 
-	private void OnDrawGizmos()
-	{
-		if (target != null)
-			Gizmos.DrawLine(transform.position, target.position);
-	}
-
 	private void OnDisable()
 	{
 		onUnreachableEndPosition -= AssignNewTarget;
 		onTargetReached -= AssignNewTarget;
-		OnAtTargetLocation -= AssignNewTarget;
+		onAtTargetLocation -= AssignNewTarget;
 	}
 }
