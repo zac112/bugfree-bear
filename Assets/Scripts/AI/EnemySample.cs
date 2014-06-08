@@ -47,16 +47,16 @@ public class EnemySample : BetterBehaviour
 		ears.OnHeard -= OnHeard;
 	}
 
-	private void OnSeen(RaycastHit current, List<RaycastHit> all)
+	private void OnSeen(GameObject current, List<GameObject> all)
 	{
 		// TODO: Find a better way than using tags
-		if (current.collider.tag == Tags.player)
+		if (current.tag == Tags.player)
 		{
 			playerInSight = true;
 		}
 		else if (playerInSight)
 		{
-			playerInSight = all.Select(hit => hit.collider.tag).Contains("Player");
+			playerInSight = all.Select(hit => hit.tag).Contains("Player");
 		}
 	}
 
