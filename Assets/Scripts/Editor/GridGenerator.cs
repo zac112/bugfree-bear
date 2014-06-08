@@ -102,6 +102,7 @@ public class GridGenerator : EditorWindow
 		getInfo = new Func<string, FieldInfo>(field => GetType().GetField(field, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)).Memoize();
 		RTHelper.AssignIfNull(ref gui, () => new GLWrapper());
 		RTHelper.AssignIfNull(ref walkableComponents, () => new List<string>());
+		RTHelper.AssignIfNull(ref unwalkableComponents, () => new List<string>());
 		RTHelper.AssignIfNull(ref listDrawer, () => new IListDrawer<GLWrapper, GLOption>(gui, this));
 	}
 
