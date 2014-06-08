@@ -12,6 +12,10 @@ public class Seeker : BetterBehaviour
 
 	[ShowDelegate]
 	public UnityAction onTargetReached = new UnityAction();
+	[ShowDelegate]
+	public UnityAction onUnreachableEndPosition = new UnityAction();
+	[ShowDelegate]
+	public UnityAction OnAtTargetLocation = new UnityAction();
 
 	[SerializeField, HideInInspector] private int[] currentPos = new int[2];
 	[SerializeField, HideInInspector] private List<Vector2> path = new List<Vector2>();
@@ -31,21 +35,28 @@ public class Seeker : BetterBehaviour
 
 	private void FixedUpdate()
 	{
+		//has the target location moved enough to warrant searching for a new path?
 		if ((rememberedTargetPos - target.position).sqrMagnitude > minTargetMoveDist)
 		{
 			try{
 				Nav.Map.FindPath(cachedTransform, target, path);
 			}catch(UnityException e){
 				path.Clear();
-				//Debug.Log("didn't find path");
+				onUnreachableEndPosition.Invoke();
+				e.Source = "Seeker";
+				//Debug.Log(e.Message);
 				return;
 			}
 			rememberedTargetPos = target.position;
 			index = 0;
 		}
 
-		if(path.Count == 0)
+
+		if(path.Count == 0){
+			OnAtTargetLocation.Invoke();
+			//Debug.Log("already at target");
 			return;
+		}
 
 		if (currentPos[0] != (int)Mathf.Round(cachedTransform.position.x) || currentPos[1] != (int)Mathf.Round(cachedTransform.position.y))
 		{

@@ -16,6 +16,8 @@ public class RandomSeeker : Seeker
 	private void OnEnable()
 	{
 		onTargetReached += AssignNewTarget;
+		onUnreachableEndPosition += AssignNewTarget;
+		OnAtTargetLocation += AssignNewTarget;
 	}
 
 	[ShowMethod]
@@ -34,6 +36,8 @@ public class RandomSeeker : Seeker
 
 	private void OnDisable()
 	{
+		onUnreachableEndPosition -= AssignNewTarget;
 		onTargetReached -= AssignNewTarget;
+		OnAtTargetLocation -= AssignNewTarget;
 	}
 }

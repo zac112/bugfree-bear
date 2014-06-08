@@ -100,7 +100,9 @@ public class NavMap
 		if (startCoord == endCoord) //already there..
 		{
 			Coordinate.ClearPool();
-			throw new UnityException("No path found");
+			resultList.Clear();
+			Debug.Log("already there");
+			return;
 		}
 
 
@@ -109,14 +111,14 @@ public class NavMap
 #if UNITY_EDITOR && DEBUGLOGS			
 			Debug.LogError("Invalid start position("+startPosition+")! Unable to find route.");
 #endif
-			throw new UnityException("No path found");
+			throw new UnityException("No path found; startCoordinate is unwalkable");
 		}
 		if (!IsWalkable(endCoord))
 		{
 #if UNITY_EDITOR && DEBUGLOGS			
 			Debug.LogError("Invalid end position("+endPosition+")! Unable to find route.");
 #endif
-			throw new UnityException("No path found");
+			throw new UnityException("No path found; End coordinate is unwalkable");
 		}
 		List<Coordinate> path = new List<Coordinate>();
 		PriorityStack<Coordinate> openSet = new PriorityStack<Coordinate>();
@@ -160,7 +162,7 @@ public class NavMap
 			}
 
 			if (openSet.IsEmpty()) //unable to find path
-				break;
+				throw new UnityException("Unable to find path; end position not reachable.");
 
 			closest = openSet.First;
 
