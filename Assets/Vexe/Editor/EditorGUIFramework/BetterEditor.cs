@@ -5,6 +5,7 @@ using System.Linq;
 using Vexe.RuntimeExtensions;
 using Vexe.RuntimeHelpers.Exceptions;
 using Object = UnityEngine.Object;
+using System;
 
 namespace EditorGUIFramework
 {
@@ -36,6 +37,12 @@ namespace EditorGUIFramework
 		public void log(object msg)
 		{
 			Debug.Log(msg);
+		}
+		public void SerializedObjectBlock(Action block)
+		{
+			serializedObject.Update();
+			block();
+			serializedObject.ApplyModifiedProperties();
 		}
 	}
 }
