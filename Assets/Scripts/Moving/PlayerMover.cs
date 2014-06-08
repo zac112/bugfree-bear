@@ -50,6 +50,8 @@ public class PlayerMover : Mover
 		if (abs(angle(down, direction)) <= 45)
 			log("down");
 
+		
+		animator.SetBool("Idle", false);
 		cachedTransform.position += ((Vector3)direction).normalized * SmoothedMovement;
 	}
 
@@ -88,7 +90,7 @@ public class PlayerMover : Mover
 
 	void BecomeIdle()
 	{
-		animator.SetInteger("Direction", (int)Direction.IDLE);
+		animator.SetBool("Idle", true);
 	}
 
 	public void DisableMovement()
