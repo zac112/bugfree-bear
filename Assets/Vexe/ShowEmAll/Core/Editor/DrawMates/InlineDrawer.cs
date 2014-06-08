@@ -2,6 +2,7 @@
 using UnityEditor;
 using EditorGUIFramework;
 using Object = UnityEngine.Object;
+using System;
 
 namespace ShowEmAll.DrawMates
 {
@@ -29,12 +30,31 @@ namespace ShowEmAll.DrawMates
 					bool isNull = objRef == null;
 					gui.HorizontalBlock(() =>
 					{
-						if (!isNull)
+						try
 						{
-							gui.Foldout(foldout, f => foldout = f);
-							gui.Space(-10f);
+							if (!isNull)
+							{
+								bool current = foldout;
+								gui.Foldout(current, f =>
+								{
+									if (current != f)
+										foldout = f;
+								});
+								gui.Space(-10f);
+							}
+							gui.PropertyField(property, label);
 						}
-						gui.PropertyField(property, label);
+						catch (ArgumentException e)
+						{
+							// Sometimes I get:
+							// ArgumentException: Getting control 1's position in a group with only 1 controls when doing Repaint
+							// This is due to the fact that GUI code gets executed more than once each frame
+							// The first pass is the Layout event, the second is Repaint
+							// This error occur when a control, say GUILayout.Label is executed in the Repaint event but not in the Layout
+							// so the GUI will complain that it doesn't have a Layout entry for this control thus don't know how to draw it...
+							// In our case, the condition !isNull might be true for Repaint, but not Layout
+							// so the GUI might throw from gui.Space or gui.PropertyField
+						}
 					});
 
 					if (foldout && !isNull)
