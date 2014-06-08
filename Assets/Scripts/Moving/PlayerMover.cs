@@ -3,7 +3,8 @@ using ShowEmAll;
 
 public class PlayerMover : Mover
 {
-	private enum Direction{
+	private enum Direction
+	{
 		UP,
 		LEFT,
 		DOWN,
@@ -13,28 +14,46 @@ public class PlayerMover : Mover
 
 	[SerializeField, RequiredFromChildren("Footsteps")]
 	private SoundEmitter footsteps;
-	[SerializeField]private Direction currentDirection = Direction.IDLE;
+	[SerializeField]
+	private Direction currentDirection = Direction.IDLE;
 	private Animator animator;
 
 	private void OnEnable()
 	{
 		animator = GetComponent<Animator>();
-		EnableMovement ();
+		EnableMovement();
 	}
 
 	public void Move()
 	{
-		animator.SetInteger("Direction",(int)currentDirection);
+		animator.SetInteger("Direction", (int)currentDirection);
 		Move(InputHandler.InputVector);
 		footsteps.Emit();
 	}
 
 	public override void Move(Vector2 direction)
 	{
+		var right = Vector2.right;
+		var left = -right;
+		var up = Vector2.up;
+		var down = -up;
+
+		System.Func<Vector2, Vector2, float> angle = Vector2.Angle;
+		System.Func<float, float> abs = Mathf.Abs;
+
+		if (abs(angle(right, direction)) <= 45)
+			log("right");
+		if (abs(angle(left, direction)) <= 45)
+			log("left");
+		if (abs(angle(up, direction)) <= 45)
+			log("up");
+		if (abs(angle(down, direction)) <= 45)
+			log("down");
+
 		cachedTransform.position += ((Vector3)direction).normalized * SmoothedMovement;
 	}
 
-	public void EnableMovement ()
+	public void EnableMovement()
 	{
 		InputHandler.OnMoveDown += MoveDown;
 		InputHandler.OnMoveUp += MoveUp;
@@ -43,31 +62,36 @@ public class PlayerMover : Mover
 		InputHandler.NotMoving += BecomeIdle;
 	}
 
-	void MoveRight(){
+	void MoveRight()
+	{
 		currentDirection = Direction.RIGHT;
-		Move ();
+		Move();
 	}
 
-	void MoveLeft(){
+	void MoveLeft()
+	{
 		currentDirection = Direction.LEFT;
-		Move ();
+		Move();
 	}
 
-	void MoveUp(){
+	void MoveUp()
+	{
 		currentDirection = Direction.UP;
-		Move ();
+		Move();
 	}
 
-	void MoveDown(){
+	void MoveDown()
+	{
 		currentDirection = Direction.DOWN;
-		Move ();
+		Move();
 	}
 
-	void BecomeIdle(){
+	void BecomeIdle()
+	{
 		animator.SetInteger("Direction", (int)Direction.IDLE);
 	}
 
-	public void DisableMovement ()
+	public void DisableMovement()
 	{
 		InputHandler.OnMoveDown -= MoveDown;
 		InputHandler.OnMoveUp -= MoveUp;
@@ -78,6 +102,6 @@ public class PlayerMover : Mover
 
 	private void OnDisable()
 	{
-		DisableMovement ();
+		DisableMovement();
 	}
 }
