@@ -40,7 +40,7 @@ public class Seeker : MonoBehaviour
 		{
 			if(index == path.Count-1)
 			{
-				FoundTarget();
+				OnReachTarget();
 			}
 
 			index = Mathf.Min(index + 1, path.Count - 1);
