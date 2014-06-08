@@ -21,7 +21,7 @@ public class Seeker : BetterBehaviour
 
 	[SerializeField, HideInInspector]
 	private int[] currentPos = new int[2];
-	[SerializeField, BetterCollection]
+	[SerializeField, BetterCollection, Readonly]
 	protected List<Vector2> path = new List<Vector2>();
 	[SerializeField, HideInInspector]
 	private Vector3 rememberedTargetPos;
