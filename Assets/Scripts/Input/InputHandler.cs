@@ -49,6 +49,7 @@ public class InputHandler : MonoBehaviour
 	/// </summary>
 	public static event Action OnInteract;
 
+	public static event Action NotMoving;
 	/// <summary>
 	/// The 2d input vector. 
 	/// right:	 1,  0
@@ -57,28 +58,6 @@ public class InputHandler : MonoBehaviour
 	/// down:	 0, -1
 	/// </summary>
 	public static Vector2 InputVector { get { return inputVector; } }
-
-	/// <summary>
-	/// Subscribes the specified handler to all hte player's movements
-	/// </summary>
-	public static void SubscribeToMovement(Action handler)
-	{
-		OnMoveRight += handler;
-		OnMoveLeft += handler;
-		OnMoveUp += handler;
-		OnMoveDown += handler;
-	}
-
-	/// <summary>
-	/// Unsubscribes the specified handler from all the player's movements
-	/// </summary>
-	public static void UnsubscribeFromMovement(Action handler)
-	{
-		OnMoveRight -= handler;
-		OnMoveLeft -= handler;
-		OnMoveUp -= handler;
-		OnMoveDown -= handler;
-	}
 
 	void OnEnable()
 	{
@@ -91,12 +70,15 @@ public class InputHandler : MonoBehaviour
 
 	void Update()
 	{
+		int movementKeysPressed = 0;
+
 		if (Input.anyKey)
 		{
 			SafeInvoke(OnAnyKeyDown);
 
 			if (Input.GetKey(settings.Down))
 			{
+				movementKeysPressed++;
 				inputVector.y -= 1;
 				SafeInvoke(OnMoveDown);
 				inputVector.y += 1;
@@ -104,6 +86,7 @@ public class InputHandler : MonoBehaviour
 
 			if (Input.GetKey(settings.Up))
 			{
+				movementKeysPressed++;
 				inputVector.y += 1;
 				SafeInvoke(OnMoveUp);
 				inputVector.y -= 1;
@@ -111,6 +94,7 @@ public class InputHandler : MonoBehaviour
 
 			if (Input.GetKey(settings.Left))
 			{
+				movementKeysPressed++;
 				inputVector.x -= 1;
 				SafeInvoke(OnMoveLeft);
 				inputVector.x += 1;
@@ -118,10 +102,12 @@ public class InputHandler : MonoBehaviour
 
 			if (Input.GetKey(settings.Right))
 			{
+				movementKeysPressed++;
 				inputVector.x += 1;
 				SafeInvoke(OnMoveRight);
 				inputVector.x -= 1;
 			}
+
 
 			if (Input.GetKeyDown(settings.Run))
 			{
@@ -140,6 +126,9 @@ public class InputHandler : MonoBehaviour
 
 			inputVector = Vector2.zero;
 		}
+
+		if(movementKeysPressed == 0)
+			SafeInvoke(NotMoving);
 	}
 
 
