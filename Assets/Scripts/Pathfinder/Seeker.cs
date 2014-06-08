@@ -33,10 +33,19 @@ public class Seeker : BetterBehaviour
 	{
 		if ((rememberedTargetPos - target.position).sqrMagnitude > minTargetMoveDist)
 		{
-			Nav.Map.FindPath(cachedTransform, target, path);
+			try{
+				Nav.Map.FindPath(cachedTransform, target, path);
+			}catch(UnityException e){
+				path.Clear();
+				//Debug.Log("didn't find path");
+				return;
+			}
 			rememberedTargetPos = target.position;
 			index = 0;
 		}
+
+		if(path.Count == 0)
+			return;
 
 		if (currentPos[0] != (int)Mathf.Round(cachedTransform.position.x) || currentPos[1] != (int)Mathf.Round(cachedTransform.position.y))
 		{
