@@ -46,6 +46,27 @@
             If throwIfNotFound is true and the child is not found, an InvalidOperationException is thrown
             </summary>
         </member>
+        <member name="M:Vexe.RuntimeExtensions.GenericEnumerableExtensions.RandomElement``1(System.Collections.Generic.IList{``0})">
+            <summary>
+            Returns a random element from this list
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeExtensions.GenericEnumerableExtensions.RandomElement``1(System.Collections.Generic.IList{``0},System.Random)">
+            <summary>
+            Returns a random element from this list using the specified Random object
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeExtensions.GenericEnumerableExtensions.RandomElement``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Returns a random element from this enumerable
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeExtensions.GenericEnumerableExtensions.RandomElement``1(System.Collections.Generic.IEnumerable{``0},System.Random)">
+            <summary>
+            Returns a random element from this enumerable using the specified Random object
+            Credits to Jon Skeet: http://stackoverflow.com/questions/648196/random-row-from-linq-to-sql/648240#648240
+            </summary>
+        </member>
         <member name="M:Vexe.RuntimeExtensions.GenericEnumerableExtensions.BatchRemove``1(System.Collections.Generic.IList{``0},System.Collections.Generic.IEnumerable{``0})">
             <summary>
             Removes the specified items from this list
