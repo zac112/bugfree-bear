@@ -30,9 +30,24 @@
             Toggles the component's state
             </summary>
         </member>
-        <member name="M:Vexe.RuntimeExtensions.GameObjectExtensions.Clear(UnityEngine.GameObject)">
+        <member name="M:Vexe.RuntimeExtensions.GameObjectExtensions.ClearChildren(UnityEngine.GameObject)">
             <summary>
-            Destroys all components this gameObject
+            Destroys all children objects under this gameObject
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeExtensions.GameObjectExtensions.ClearChildren(UnityEngine.GameObject,System.Predicate{UnityEngine.GameObject})">
+            <summary>
+            Destroys children objects under this gameObject meeting the specified predicate condition
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeExtensions.GameObjectExtensions.ClearComponents(UnityEngine.GameObject)">
+            <summary>
+            Destroys all components in this gameObject
+            </summary>
+        </member>
+        <member name="M:Vexe.RuntimeExtensions.GameObjectExtensions.ClearComponents(UnityEngine.GameObject,System.Predicate{UnityEngine.Component})">
+            <summary>
+            Destroys any component in this gameObject meeting the specified predicate
             </summary>
         </member>
         <member name="M:Vexe.RuntimeExtensions.GameObjectExtensions.GetOrAddChildAtPath(UnityEngine.GameObject,System.String)">

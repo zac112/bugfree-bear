@@ -28,7 +28,7 @@ public class ComponentCopier : EditorWindow
 				gui.MiniButton("S", "Set to current selection", () => source = Selection.activeGameObject);
 
 				gui.EnabledBlock(source != null, () =>
-					gui.MiniButton("C", "Clears source gameObject", MiniButtonStyle.Right, source.Clear)
+					gui.MiniButton("C", "Clears source gameObject", MiniButtonStyle.Right, source.ClearComponents)
 				);
 			});
 
@@ -37,7 +37,7 @@ public class ComponentCopier : EditorWindow
 				gui.ObjectField("Destination", destination, newGo => destination = newGo);
 				gui.MiniButton("S", "Set to current selection", () => destination = Selection.activeGameObject);
 				gui.EnabledBlock(destination != null, () =>
-					gui.MiniButton("C", "Clears destination gameObject", MiniButtonStyle.Right, destination.Clear)
+					gui.MiniButton("C", "Clears destination gameObject", MiniButtonStyle.Right, destination.ClearComponents)
 				);
 			});
 		});
