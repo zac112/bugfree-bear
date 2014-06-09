@@ -5,10 +5,14 @@ using ShowEmAll;
 
 public abstract class Vision : Sense
 {
-	[Min(0f)] public float updateRate = 0.02f;
-	[Min(0f)] public float quality = 1f;
-	[Min(1f)] public float fovMaxDistance = 15;
-	[NumericClamp(1f, 360f)] public float fovAngle = 90f;
+	[Min(0f)]
+	public float updateRate = 0.02f;
+	[Min(0f)]
+	public float quality = 1f;
+	[Min(1f)]
+	public float fovMaxDistance = 15;
+	[NumericClamp(1f, 360f)]
+	public float fovAngle = 90f;
 	public LayerMask layerMask = -1;
 
 	[SerializeField, RequiredFromThis(true)]
@@ -16,6 +20,21 @@ public abstract class Vision : Sense
 
 	[SerializeField, RequiredFromThis(true)]
 	protected MeshFilter fovMeshFilter;
+
+	/// <summary>
+	/// The axis to rotate around to get the direction vector when raycasting
+	/// For 2D, this should either be Forward or Back depending on the Fov material's normals
+	/// Use Up if the material is one-sided and it is to be seen from above (top-down 2D game)
+	/// </summary>
+	public Axis rotateAround = Axis.Back;
+
+	/// <summary>
+	/// The local Fov direction. Depending on the `rotateAround` axis you can set this value to 
+	/// display the Fov to the right of your object, left, up, etc.
+	/// Ex in a 2D game and using Axis.Back as `rotateAround`, setting this to Right, will make it
+	/// as if your character is looking at its local right
+	/// </summary>
+	public Axis localFovHeading = Axis.Up;
 
 	protected List<GameObject> hits = new List<GameObject>();
 	protected List<Vector3> renderLocations = new List<Vector3>();
@@ -41,6 +60,11 @@ public abstract class Vision : Sense
 	public void SetFOVColor(Color to)
 	{
 		fovMeshRenderer.material.color = to;
+	}
+
+	public void SetHeading(Axis to)
+	{
+		localFovHeading = to;
 	}
 
 	protected override void UpdateSense()
@@ -80,7 +104,9 @@ public abstract class Vision : Sense
 
 		for (int i = 0; i < numRays; i++)
 		{
-			Vector3 dir = Quaternion.Euler(0, 0, -currentAngle) * cachedTransform.up;
+			Vector3 rotated = VectorHelper.AxisToWorldVector(rotateAround) * currentAngle;
+			Quaternion rotation = Quaternion.Euler(rotated);
+			Vector3 dir = rotation * cachedTransform.ToLocalVector(localFovHeading);
 			CastSingleRay(dir);
 			currentAngle += 1f / quality;
 		}
