@@ -7,7 +7,7 @@ using uFAction;
 /// </summary>
 public class OnTriggerExitEvent : MonoBehaviour
 {
-	[ShowDelegate("OnTriggerExit", @canSetArgsFromEditor: false)]
+	[ShowDelegate("OnTriggerExit", CanSetArgsFromEditor =  false)]
 	public ColliderAction onTriggerExit = new ColliderAction();
 
 	void OnTriggerExit(Collider other)

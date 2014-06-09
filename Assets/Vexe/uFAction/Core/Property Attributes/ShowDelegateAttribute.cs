@@ -15,29 +15,25 @@ namespace uFAction
 		/// after converting it to Pascal casing and splitting it.
 		/// ex: if your delegate field was 'onPlayerSpotted' the title will be 'On Player Spotted'
 		/// </summary>
-		public readonly string title;
+		public string Title { get; set; }
 
 		/// <summary>
 		/// If true, the delegate header will always be unfolded (collapsed)
 		/// </summary>
-		public readonly bool forceExpand;
+		public bool ForceExpand { get; set; }
 
 		/// <summary>
 		/// If true, you can set the delegate's arguments (if any) from the editor
 		/// </summary>
-		public readonly bool canSetArgsFromEditor;
+		public bool CanSetArgsFromEditor { get; set; }
 
-		/// <summary>
-		/// If true, the delegate can't be modified from the editor (can't remove/add/set handlers)
-		/// </summary>
-		//public readonly bool readonlyDelegate;
-
-		public ShowDelegate(string title = "", bool canSetArgsFromEditor = true, bool forceExpand = false)//, bool readonlyDelegate = false)
+		public ShowDelegate()
 		{
-			this.title = title;
-			this.canSetArgsFromEditor = canSetArgsFromEditor;
-			this.forceExpand = forceExpand;
-			//this.readonlyDelegate = readonlyDelegate;
+		}
+
+		public ShowDelegate(string title)
+		{
+			Title = title;
 		}
 	}
 }

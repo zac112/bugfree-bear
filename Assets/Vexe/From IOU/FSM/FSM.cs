@@ -51,7 +51,6 @@ public class FSM : BetterBehaviour
 		get { return currentState; }
 		set
 		{
-			print(name + ": current state: " + (value == null ? "null" : value.name));
 			currentState = value;
 			if (Application.isPlaying) EnableCurrentDisableRest();
 		}

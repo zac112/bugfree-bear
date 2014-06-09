@@ -10,7 +10,7 @@ public class FSMTransition : BetterBehaviour
 	[SerializeField, Readonly]
 	private FSMState toState;
 
-	[ShowDelegate("On Transition", @canSetArgsFromEditor: false), SerializeField]
+	[ShowDelegate("On Transition", CanSetArgsFromEditor = false), SerializeField]
 	private TransitionAction onTransition = new TransitionAction();
 
 	/// <summary>
@@ -34,7 +34,7 @@ public class FSMTransition : BetterBehaviour
 	}
 
 	[Serializable]
-	public class TransitionAction : UnityAction<FSMTransition>{}
+	public class TransitionAction : UnityAction<FSMTransition> { }
 
 	// TODO: Refactor & Clean up
 	/* <<< Editor Stuff ⚡ TREAD LIGHTLY ⚡ >>> */

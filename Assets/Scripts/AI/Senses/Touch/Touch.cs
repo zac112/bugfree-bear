@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class Touch : Sense
 {
-	[ShowDelegate("On Collision", @canSetArgsFromEditor: false), SerializeField]
+	[ShowDelegate("On Collision", CanSetArgsFromEditor = false), SerializeField]
 	private CollisionAction onCollision = new CollisionAction();
 
-	[ShowDelegate("On Touch", @canSetArgsFromEditor: false), SerializeField]
+	[ShowDelegate("On Touch", CanSetArgsFromEditor = false), SerializeField]
 	private ColliderAction onTouch = new ColliderAction();
 
 	public ColliderAction OnTouch { get { return onTouch; } }

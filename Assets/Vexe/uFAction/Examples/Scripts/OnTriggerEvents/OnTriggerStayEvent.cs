@@ -7,7 +7,7 @@ using uFAction;
 /// </summary>
 public class OnTriggerStayEvent : MonoBehaviour
 {
-	[ShowDelegate("OnTriggerStay", @canSetArgsFromEditor: false)]
+	[ShowDelegate("OnTriggerStay", CanSetArgsFromEditor =  false)]
 	public ColliderAction onTriggerStay = new ColliderAction();
 
 	void OnTriggerStay(Collider other)

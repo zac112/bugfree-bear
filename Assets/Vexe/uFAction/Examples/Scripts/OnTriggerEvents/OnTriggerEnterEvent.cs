@@ -7,7 +7,7 @@ using uFAction;
 /// </summary>
 public class OnTriggerEnterEvent : MonoBehaviour
 {
-	[ShowDelegate("OnTriggerEnter", @canSetArgsFromEditor: false)]
+	[ShowDelegate("OnTriggerEnter", CanSetArgsFromEditor =  false)]
 	public ColliderAction onTriggerEnter = new ColliderAction();
 
 	void OnTriggerEnter(Collider other)

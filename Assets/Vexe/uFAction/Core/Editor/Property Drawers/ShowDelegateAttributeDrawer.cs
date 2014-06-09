@@ -22,14 +22,14 @@ namespace uFAction
 		protected override void Init(sp property, GUIContent label)
 		{
 			base.Init(property, label);
-			string title = TypedValue.title;
+			string title = TypedValue.Title;
 			drawer = new DelegateDrawer<GUIWrapper, GUIOption>(gui)
 			{
 				spDelegate = property,
 				delegateObject = fieldInfo.GetValue(target),
 				title = title.IsNullOrEmpty() ? fieldInfo.Name.SplitPascalCase() : title,
-				canSetArgsFromEditor = TypedValue.canSetArgsFromEditor,
-				forceExpand = TypedValue.forceExpand
+				canSetArgsFromEditor = TypedValue.CanSetArgsFromEditor,
+				forceExpand = TypedValue.ForceExpand
 			};
 		}
 	}
