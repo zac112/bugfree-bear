@@ -81,6 +81,7 @@ namespace ShowEmAll.DrawMates
 
 				gui.IndentedBlock(GUI.skin.box, () =>
 				{
+
 					for (int iLoop = 0; iLoop < list.Count; iLoop++)
 					{
 						int i = iLoop; // avoid any potential closure demons
@@ -93,7 +94,8 @@ namespace ShowEmAll.DrawMates
 								if (list[i] != newValue)
 									SetListElementAtIndex(i, newValue);
 							},
-							@showMoveUpDown: isAdvancedChecked & isCool,
+							@showInspect: isAdvancedChecked,
+							@showMoveUpDown: isAdvancedChecked && isCool,
 							@moveDown: () => list.MoveElementDownNonGen(i),
 							@moveUp: () => list.MoveElementUpNonGen(i),
 							@enableRemove: !readonlyCollection,
@@ -107,6 +109,12 @@ namespace ShowEmAll.DrawMates
 				DrawAddingArea();
 
 			ApplyList();
+		}
+
+		GameObject GetGo(object value)
+		{
+			var c = value as Component;
+			return c == null ? value as GameObject : c.gameObject;
 		}
 
 		private class AdvancedAreaData
@@ -157,6 +165,8 @@ namespace ShowEmAll.DrawMates
 						list.ShuffleNonGen);
 					gui.MoveDownButton(() => list.Shift(true));
 					gui.MoveUpButton(() => list.Shift(false));
+					if (ElementType.IsClass)
+						gui.MiniButton("N", "Filter nulls", () => ClearSection(e => e == null));
 					gui.ClearButton("elements", MiniButtonStyle.ModRight, ClearList);
 				});
 			});
@@ -192,6 +202,7 @@ namespace ShowEmAll.DrawMates
 		}
 
 		private void DrawField(int numeric, object value, Action<object> setValue,
+			bool showInspect,
 			bool showMoveUpDown, Action moveDown, Action moveUp,
 			bool enableRemove, Action remove)
 		{
@@ -203,8 +214,17 @@ namespace ShowEmAll.DrawMates
 					() => gui.GuessField(value, ElementType, setValue),
 					() => { if (readonlyCollection) setValue(prev); }
 				);
+
+				if (showInspect)
+				{
+					var go = GetGo(value);
+					if (go != null)
+						gui.InspectButton(go);
+				}
+
 				if (showMoveUpDown)
 					MoveUpDown(moveDown, moveUp);
+
 				gui.EnabledBlock(enableRemove, () =>
 					gui.RemoveButton("element", MiniButtonStyle.ModRight, remove)
 				);
@@ -323,6 +343,18 @@ namespace ShowEmAll.DrawMates
 		private void ClearList()
 		{
 			MakeChange("Cleared", list.Clear);
+		}
+
+		private void ClearSection(Predicate<object> predicate)
+		{
+			MakeChange("Cleared section", () =>
+			{
+				for (int i = list.Count - 1; i > -1; i--)
+				{
+					if (predicate(list[i]))
+						list.RemoveAt(i);
+				}
+			});
 		}
 
 		private void InsertToList(int atIndex, object value)
