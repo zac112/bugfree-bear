@@ -41,6 +41,8 @@ public class Seeker : BetterBehaviour
 
 	private void FixedUpdate()
 	{
+		if (target == null) return;
+
 		//has the target location moved enough to warrant searching for a new path?
 		if ((rememberedTargetPos - target.position).sqrMagnitude > minTargetMoveDist)
 		{
