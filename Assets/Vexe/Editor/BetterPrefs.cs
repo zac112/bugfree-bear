@@ -4,6 +4,7 @@ using System;
 using Vexe.RuntimeHelpers.Classes;
 using UnityEditor;
 using Vexe.EditorHelpers;
+using Vexe.RuntimeHelpers;
 
 /// <summary>
 /// A BetterPrefs class used to store boolean values at dictionaries with string/int keys
@@ -17,28 +18,36 @@ public class BetterPrefs : ScriptableObject
 	private const string MenuPath = "Vexe/BetterPrefs";
 
 	[SerializeField, HideInInspector]
-	private SerializedStringBoolDictionary strs;
+	private SerializedStringBoolDictionary mStrs;
 
 	[SerializeField, HideInInspector]
-	private SerializedIntBoolDictionary ints;
+	private SerializedIntBoolDictionary mInts;
+
+	private SerializedIntBoolDictionary ints
+	{
+		get
+		{
+			if (mInts.IsNull)
+				mInts = new SerializedIntBoolDictionary(new Dictionary<int, bool>());
+			return mInts;
+		}
+	}
+	private SerializedStringBoolDictionary strs
+	{
+		get
+		{
+			if (mStrs.IsNull)
+				mStrs = new SerializedStringBoolDictionary(new Dictionary<string, bool>());
+			return mStrs;
+		}
+	}
+
 
 	[MenuItem(MenuPath + "/Clear")]
 	public static void Clear()
 	{
 		Instance.strs.Value.Clear();
 		Instance.ints.Value.Clear();
-	}
-
-	/// <summary>
-	/// Very important to do the initialization in OnEnable instead of constructor or field initializers
-	/// See from 10:15 for more info https://www.youtube.com/watch?v=MmUT0ljrHNc
-	/// </summary>
-	private void OnEnable()
-	{
-		if (ints.IsNull)
-			ints = new SerializedIntBoolDictionary(new Dictionary<int, bool>());
-		if (strs.IsNull)
-			strs = new SerializedStringBoolDictionary(new Dictionary<string, bool>());
 	}
 
 	/// <summary>
