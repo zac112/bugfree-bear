@@ -1,14 +1,17 @@
 ﻿using UnityEngine;
 
-public static class RigidbodyExtensions
+namespace uFAction.Extensions
 {
-	public static void AddRandomForce(this Rigidbody rb, Vector2 xMinMax, Vector2 yMinMax, Vector2 zMinMax, ForceMode forceMode)
+	public static class RigidbodyExtensions
 	{
-		rb.AddForce(
-			Random.Range(xMinMax.x, xMinMax.y),
-			Random.Range(yMinMax.x, yMinMax.y),
-			Random.Range(zMinMax.x, zMinMax.y),
-			forceMode
-		);
+		public static void AddRandomForce(this Rigidbody rb, Vector2 xMinMax, Vector2 yMinMax, Vector2 zMinMax, ForceMode forceMode)
+		{
+			rb.AddForce(
+				Random.Range(xMinMax.x, xMinMax.y),
+				Random.Range(yMinMax.x, yMinMax.y),
+				Random.Range(zMinMax.x, zMinMax.y),
+				forceMode
+			);
+		}
 	}
 }
