@@ -84,11 +84,11 @@ public class Seeker : BetterBehaviour
 
 		if (index == path.Count - 1)
 		{
-			mover.Move(target.position);
+			mover.MoveTowards(target.position);
 		}
 		else
 		{
-			mover.Move(path[index]);
+			mover.MoveTowards(path[index]);
 		}
 	}
 

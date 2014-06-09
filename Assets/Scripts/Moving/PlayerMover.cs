@@ -3,103 +3,46 @@ using ShowEmAll;
 
 public class PlayerMover : Mover
 {
-	private enum Direction
-	{
-		UP,
-		LEFT,
-		DOWN,
-		RIGHT,
-		IDLE
-	}
-
 	[SerializeField, RequiredFromChildren("Footsteps")]
 	private SoundEmitter footsteps;
-	[SerializeField]
-	private Direction currentDirection = Direction.IDLE;
+
+	[SerializeField, RequiredFromThis(true)]
 	private Animator animator;
 
 	private void OnEnable()
 	{
-		animator = GetComponent<Animator>();
 		EnableMovement();
 	}
 
-	public void Move()
+	public void Move() // We wouldn't need this if the Move methods in InputHandler pass the input vector. An idea. Not sure about it yet...
 	{
-		animator.SetInteger("Direction", (int)currentDirection);
 		Move(InputHandler.InputVector);
-		footsteps.Emit();
 	}
 
 	public override void Move(Vector2 direction)
 	{
-		var right = Vector2.right;
-		var left = -right;
-		var up = Vector2.up;
-		var down = -up;
-
-		System.Func<Vector2, Vector2, float> angle = Vector2.Angle;
-		System.Func<float, float> abs = Mathf.Abs;
-
-		if (abs(angle(right, direction)) <= 45)
-			log("right");
-		if (abs(angle(left, direction)) <= 45)
-			log("left");
-		if (abs(angle(up, direction)) <= 45)
-			log("up");
-		if (abs(angle(down, direction)) <= 45)
-			log("down");
-
-		
+		animator.SetInteger("HorizontalDirection", (int)direction.x);
+		animator.SetInteger("VerticalDirection", (int)direction.y);
 		animator.SetBool("Idle", false);
-		cachedTransform.position += ((Vector3)direction).normalized * SmoothedMovement;
+		MoveBy(direction);
+		footsteps.Emit();
 	}
 
 	public void EnableMovement()
 	{
-		InputHandler.OnMoveDown += MoveDown;
-		InputHandler.OnMoveUp += MoveUp;
-		InputHandler.OnMoveRight += MoveRight;
-		InputHandler.OnMoveLeft += MoveLeft;
+		InputHandler.SubscribeToMovement(Move);
 		InputHandler.NotMoving += BecomeIdle;
-	}
-
-	void MoveRight()
-	{
-		currentDirection = Direction.RIGHT;
-		Move();
-	}
-
-	void MoveLeft()
-	{
-		currentDirection = Direction.LEFT;
-		Move();
-	}
-
-	void MoveUp()
-	{
-		currentDirection = Direction.UP;
-		Move();
-	}
-
-	void MoveDown()
-	{
-		currentDirection = Direction.DOWN;
-		Move();
-	}
-
-	void BecomeIdle()
-	{
-		animator.SetBool("Idle", true);
 	}
 
 	public void DisableMovement()
 	{
-		InputHandler.OnMoveDown -= MoveDown;
-		InputHandler.OnMoveUp -= MoveUp;
-		InputHandler.OnMoveRight -= MoveRight;
-		InputHandler.OnMoveLeft -= MoveLeft;
+		InputHandler.UnsubscribeFromMovement(Move);
 		InputHandler.NotMoving -= BecomeIdle;
+	}
+
+	private void BecomeIdle()
+	{
+		animator.SetBool("Idle", true);
 	}
 
 	private void OnDisable()

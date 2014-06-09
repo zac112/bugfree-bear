@@ -127,10 +127,25 @@ public class InputHandler : MonoBehaviour
 			inputVector = Vector2.zero;
 		}
 
-		if(movementKeysPressed == 0)
+		if (movementKeysPressed == 0)
 			SafeInvoke(NotMoving);
 	}
 
+	public static void SubscribeToMovement(Action handler)
+	{
+		OnMoveDown += handler;
+		OnMoveUp += handler;
+		OnMoveRight += handler;
+		OnMoveLeft += handler;
+	}
+
+	public static void UnsubscribeFromMovement(Action handler)
+	{
+		OnMoveDown -= handler;
+		OnMoveUp -= handler;
+		OnMoveRight -= handler;
+		OnMoveLeft -= handler;
+	}
 
 	private static void SafeInvoke(Action del)
 	{
