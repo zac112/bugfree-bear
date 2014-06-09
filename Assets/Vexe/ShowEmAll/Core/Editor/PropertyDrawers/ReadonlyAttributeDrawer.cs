@@ -3,6 +3,7 @@ using Vexe.EditorHelpers;
 using Vexe.EditorExtensions;
 using Vexe.RuntimeHelpers;
 using EditorGUIFramework;
+using UnityEngine;
 
 namespace ShowEmAll.PropertyDrawers
 {
@@ -11,6 +12,12 @@ namespace ShowEmAll.PropertyDrawers
 	{
 		protected override void Code()
 		{
+			if (!Application.isPlaying && TypedValue.AssignAtEditTime)
+			{
+				gui.PropertyField(property, label);
+				return;
+			}
+
 			var value = property.GetValue();
 			bool isNull = value == null;
 			gui.HorizontalBlock(() =>

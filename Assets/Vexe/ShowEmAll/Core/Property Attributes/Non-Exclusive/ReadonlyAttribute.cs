@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace ShowEmAll
 {
-	[System.AttributeUsage(System.AttributeTargets.Field)]
+	[AttributeUsage(AttributeTargets.Field)]
 	public class ReadonlyAttribute : PropertyAttribute
 	{
-
+		public bool AssignAtEditTime { get; set; }
 	}
 }
