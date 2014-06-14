@@ -14,8 +14,6 @@ public class GridSnapper{
 	}
 
 	public static void SceneUpdate(SceneView view){
-		Event e = Event.current;
-
 		if (Selection.activeTransform != null) {
 			Transform tform = Selection.activeTransform;
 			Vector3 temp = new Vector3(Mathf.FloorToInt(tform.position.x),Mathf.FloorToInt(tform.position.y), tform.position.z);

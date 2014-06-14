@@ -166,8 +166,6 @@ public class GridGenerator : EditorWindow
 		if (grid == null)
 			grid = GOHelper.CreateGoWithMb<Grid>(gridName);
 
-		Vector3 size = sprite.bounds.size;
-
 		for (int i = 0; i < nRows; i++)
 		{
 			for (int j = 0; j < nCols; j++)

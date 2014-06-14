@@ -7,6 +7,6 @@ public class SceneTrigger : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other){
 		Application.LoadLevel (sceneToLoad);
-		Nav.instance.RecreateMap ();
+		//Nav.instance.RecreateMap ();
 	}
 }

@@ -32,7 +32,6 @@ public class StartupSceneStarter {
 
 	static void RememberStartingScene(SceneMemory memory)
 	{
-		string currScene = EditorApplication.currentScene;
 		
 		for(int i=0; i< EditorBuildSettings.scenes.Length; i++){
 			if(EditorApplication.currentScene.Equals(EditorBuildSettings.scenes[i].path)){

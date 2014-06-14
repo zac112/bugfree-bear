@@ -22,15 +22,22 @@ public class Nav : BetterBehaviour
 		}
 	}
 
+	void Start(){
+		map = CreateMap ();
+	}
+
 	public static NavMap Map
 	{
-		get { return RTHelper.LazyValue(ref instance.map, instance.CreateMap); }
+		get{ return instance.map;}
+
+		//get { return RTHelper.LazyValue(ref instance.map, instance.CreateMap); }
 	}
 
 	private static Nav mInstance;
-	private static Nav instance
+	public static Nav instance
 	{
-		get { return RTHelper.LazyValue(ref mInstance, FindObjectOfType<Nav>); }
+		get{if(mInstance == null) mInstance = FindObjectOfType<Nav>(); return mInstance;}
+		//get { return RTHelper.LazyValue(ref mInstance, FindObjectOfType<Nav>); }
 	}
 
 	[ShowMethod]
@@ -41,6 +48,7 @@ public class Nav : BetterBehaviour
 
 	private NavMap CreateMap()
 	{
+		tiles = GameObject.Find ("Ground");
 		float maxX = float.MinValue;
 		float maxY = float.MinValue;
 		float minX = float.MaxValue;

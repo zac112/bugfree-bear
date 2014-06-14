@@ -11,6 +11,7 @@ public class PlayerMover : Mover
 
 	private void OnEnable()
 	{
+		animator = GetComponent<Animator> ();
 		EnableMovement();
 	}
 
