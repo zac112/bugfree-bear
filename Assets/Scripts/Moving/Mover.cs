@@ -49,6 +49,13 @@ public abstract class Mover : BetterBehaviour
 		onHeadingChanged.Invoke(heading);
 		dbgHeading = amount;
 		cachedTransform.position += ((Vector3)amount).normalized * SmoothedMovement;
+		SetDepth ();
+	}
+
+	private void SetDepth(){
+		Vector3 currentPosition = cachedTransform.position;
+		currentPosition.z = -(Nav.MAX_DEPTH-(currentPosition.y/Nav.MAX_DEPTH));
+		cachedTransform.position = currentPosition;
 	}
 
 	private void OnDrawGizmos()

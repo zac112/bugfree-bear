@@ -4,6 +4,7 @@ using Vexe.RuntimeHelpers;
 
 public class Nav : BetterBehaviour
 {
+	public static readonly int MAX_DEPTH = 10;
 	[SerializeField, HideInInspector]
 	private GameObject tiles;
 

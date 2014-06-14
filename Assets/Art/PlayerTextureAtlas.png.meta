@@ -49,8 +49,8 @@ TextureImporter:
         y: 192
         width: 64
         height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: .455289781, y: .178841114}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: PlayerTextureAtlas_1
       rect:
@@ -59,8 +59,8 @@ TextureImporter:
         y: 192
         width: 64
         height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: .459354281, y: .162582874}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: PlayerTextureAtlas_2
       rect:
@@ -69,8 +69,8 @@ TextureImporter:
         y: 192
         width: 64
         height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: .47154808, y: .166647434}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: PlayerTextureAtlas_3
       rect:
@@ -79,8 +79,8 @@ TextureImporter:
         y: 192
         width: 64
         height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: .451225281, y: .186970234}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: PlayerTextureAtlas_4
       rect:
@@ -89,8 +89,8 @@ TextureImporter:
         y: 128
         width: 64
         height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: .455289781, y: .15044713}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: PlayerTextureAtlas_5
       rect:
@@ -99,8 +99,8 @@ TextureImporter:
         y: 128
         width: 64
         height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: .447160602, y: .19109273}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: PlayerTextureAtlas_6
       rect:
@@ -109,8 +109,8 @@ TextureImporter:
         y: 128
         width: 64
         height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: .439031601, y: .170711994}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: PlayerTextureAtlas_7
       rect:
@@ -119,8 +119,8 @@ TextureImporter:
         y: 128
         width: 64
         height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: .430902243, y: .170711994}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: PlayerTextureAtlas_8
       rect:
@@ -129,8 +129,8 @@ TextureImporter:
         y: 64
         width: 64
         height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: .430902392, y: .16264081}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: PlayerTextureAtlas_9
       rect:
@@ -139,8 +139,8 @@ TextureImporter:
         y: 64
         width: 64
         height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: .439031363, y: .17483449}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: PlayerTextureAtlas_10
       rect:
@@ -149,8 +149,8 @@ TextureImporter:
         y: 64
         width: 64
         height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: .426837683, y: .17076993}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: PlayerTextureAtlas_11
       rect:
@@ -159,8 +159,8 @@ TextureImporter:
         y: 64
         width: 64
         height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: .451225281, y: .17076993}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: PlayerTextureAtlas_12
       rect:
@@ -169,8 +169,8 @@ TextureImporter:
         y: 0
         width: 64
         height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: .430902392, y: .166705459}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: PlayerTextureAtlas_13
       rect:
@@ -179,8 +179,8 @@ TextureImporter:
         y: 0
         width: 64
         height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: .430902243, y: .187028304}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: PlayerTextureAtlas_14
       rect:
@@ -189,8 +189,8 @@ TextureImporter:
         y: 0
         width: 64
         height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: .430902243, y: .162640885}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: PlayerTextureAtlas_15
       rect:
@@ -199,8 +199,8 @@ TextureImporter:
         y: 0
         width: 64
         height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: .426837683, y: .178899169}
       border: {x: 0, y: 0, z: 0, w: 0}
   spritePackingTag: 
   userData: 
