@@ -45,8 +45,8 @@ TextureImporter:
     - name: TownTileSet_0
       rect:
         serializedVersion: 2
-        x: 384
-        y: 256
+        x: 0
+        y: 448
         width: 64
         height: 64
       alignment: 0
@@ -245,10 +245,10 @@ TextureImporter:
     - name: TownTileSet_20
       rect:
         serializedVersion: 2
-        x: 448
-        y: 384
-        width: 64
-        height: 64
+        x: 0
+        y: 511
+        width: 1
+        height: 1
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -329,6 +329,166 @@ TextureImporter:
         y: 256
         width: 64
         height: 64
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: TownTileSet_29
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 256
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: TownTileSet_30
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 395
+        width: 35
+        height: 53
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: TownTileSet_31
+      rect:
+        serializedVersion: 2
+        x: 172
+        y: 387
+        width: 14
+        height: 61
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: TownTileSet_32
+      rect:
+        serializedVersion: 2
+        x: 393
+        y: 456
+        width: 49
+        height: 41
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: TownTileSet_33
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 473
+        width: 26
+        height: 39
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: TownTileSet_34
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 448
+        width: 26
+        height: 25
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: TownTileSet_35
+      rect:
+        serializedVersion: 2
+        x: 474
+        y: 448
+        width: 38
+        height: 25
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: TownTileSet_36
+      rect:
+        serializedVersion: 2
+        x: 474
+        y: 480
+        width: 4
+        height: 7
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: TownTileSet_37
+      rect:
+        serializedVersion: 2
+        x: 474
+        y: 487
+        width: 17
+        height: 8
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: TownTileSet_38
+      rect:
+        serializedVersion: 2
+        x: 474
+        y: 495
+        width: 7
+        height: 17
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: TownTileSet_39
+      rect:
+        serializedVersion: 2
+        x: 481
+        y: 495
+        width: 5
+        height: 17
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: TownTileSet_40
+      rect:
+        serializedVersion: 2
+        x: 486
+        y: 495
+        width: 5
+        height: 11
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: TownTileSet_41
+      rect:
+        serializedVersion: 2
+        x: 491
+        y: 499
+        width: 7
+        height: 13
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: TownTileSet_42
+      rect:
+        serializedVersion: 2
+        x: 498
+        y: 497
+        width: 6
+        height: 15
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: TownTileSet_43
+      rect:
+        serializedVersion: 2
+        x: 491
+        y: 495
+        width: 5
+        height: 4
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: TownTileSet_44
+      rect:
+        serializedVersion: 2
+        x: 496
+        y: 491
+        width: 5
+        height: 6
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
